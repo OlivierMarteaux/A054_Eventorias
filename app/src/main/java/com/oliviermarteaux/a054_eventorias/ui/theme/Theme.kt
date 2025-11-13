@@ -1,6 +1,5 @@
-package com.example.a054_eventorias.ui.theme
+package com.oliviermarteaux.a054_eventorias.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

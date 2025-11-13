@@ -18,7 +18,7 @@ tasks.withType<Test> {
 }
 
 android {
-    namespace = "com.example.a054_eventorias"
+    namespace = "com.oliviermarteaux.a054_eventorias"
     compileSdk {
         version = release(36)
     }
@@ -27,7 +27,7 @@ android {
     testCoverage { version = "0.8.8" }
 
     defaultConfig {
-        applicationId = "com.example.a054_eventorias"
+        applicationId = "com.oliviermarteaux.a054_eventorias"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

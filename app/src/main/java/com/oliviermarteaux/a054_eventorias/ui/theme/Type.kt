@@ -1,4 +1,4 @@
-package com.example.a054_eventorias.ui.theme
+package com.oliviermarteaux.a054_eventorias.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -142,6 +142,15 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
+    //_ Firebase
+    implementation(platform(libs.firebase.bom)) // Bom
+    implementation(libs.firebase.analytics)  // Google Analytics
+    implementation(libs.firebase.crashlytics.ndk)  // Crashlytics
+    implementation(libs.firebase.auth) // Authentication
+    implementation(libs.firebase.firestore) // Database
+    implementation(libs.firebase.messaging) // Cloud notifications
+    implementation(libs.firebase.storage) // Media files storage
+
     // hilt for DI
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)

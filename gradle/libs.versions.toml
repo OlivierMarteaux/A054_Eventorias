@@ -3,8 +3,10 @@ activityCompose = "1.11.0"
 agp = "8.13.1"
 composeBom = "2025.11.00"
 coreKtx = "1.17.0"
-cucumber = "7.18.1"
+cucumber = "30.1.0"
 espressoCore = "3.7.0"
+firebase = "34.5.0"
+googleservices = "4.4.4"
 hilt = "2.57.2"
 hiltNavigationCompose = "1.3.0"
 junit = "4.13.2"
@@ -25,14 +27,21 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 cucumber-android = { module = "io.cucumber:cucumber-android", version.ref = "cucumber" }
 cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber" }
 cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumber" }
 cucumber-messages = { module = "io.cucumber:messages", version.ref = "cucumber" }
 cucumber-picocontainer = { module = "io.cucumber:cucumber-picocontainer", version.ref = "cucumber" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+firebase-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+firebase-storage = { module = "com.google.firebase:firebase-storage" }
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
@@ -40,12 +49,10 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 oliviermarteaux-compose = { module = "com.github.OlivierMarteaux.shared-android-library:compose", version.ref = "oliviermarteaux" }
 oliviermarteaux-core = { module = "com.github.OlivierMarteaux.shared-android-library:core", version.ref = "oliviermarteaux" }
 
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+googleservices = { id = "com.google.gms.google-services", version.ref = "googleservices" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-
-

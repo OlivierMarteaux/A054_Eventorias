@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     id("jacoco")  // for JaCoCo test coverage
+    // Add the dependency for the Google services Gradle plugin for Firebase authentication
+    alias(libs.plugins.googleservices)
 }
 
 // Specific for JaCoCo

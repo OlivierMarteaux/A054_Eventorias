@@ -1,8 +1,6 @@
-package com.oliviermarteaux.a054_eventorias.ui.screen
+package com.oliviermarteaux.localshared.firebase.authentication.ui.screen
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
@@ -12,6 +10,8 @@ import com.oliviermarteaux.shared.ui.showToastFlag
 import com.oliviermarteaux.shared.utils.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 /**
  * An abstract view model that provides authentication and user state management.
@@ -74,15 +74,15 @@ abstract class AuthUserViewModel(
     /**
      * Shows a toast message for a network error.
      */
-    fun showNetworkErrorToast() = viewModelScope.launch { showToastFlag{ networkError = it } }
+    fun showNetworkErrorToast() = viewModelScope.launch { showToastFlag { networkError = it } }
     /**
      * Shows a toast message for an unknown error.
      */
-    fun showUnknownErrorToast() = viewModelScope.launch { showToastFlag{ unknownError = it } }
+    fun showUnknownErrorToast() = viewModelScope.launch { showToastFlag { unknownError = it } }
     /**
      * Shows a toast message for an authentication error.
      */
-    fun showAuthErrorToast() = viewModelScope.launch {showToastFlag{ authError = it }}
+    fun showAuthErrorToast() = viewModelScope.launch { showToastFlag { authError = it } }
 
     /**
      * Observes the online state of the device.

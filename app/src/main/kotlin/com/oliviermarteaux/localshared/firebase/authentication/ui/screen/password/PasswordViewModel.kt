@@ -1,4 +1,4 @@
-package com.oliviermarteaux.a054_eventorias.ui.screen.password
+package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.oliviermarteaux.a054_eventorias.ui.screen.AuthUserViewModel
+import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.shared.ui.showToastFlag
 import com.oliviermarteaux.shared.utils.Logger
 import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository

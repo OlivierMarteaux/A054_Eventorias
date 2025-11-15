@@ -9,7 +9,8 @@ import androidx.navigation.navArgument
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash.SplashScreen
 import com.oliviermarteaux.a054_eventorias.R
-import com.oliviermarteaux.a054_eventorias.ui.screen.password.PasswordScreen
+import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password.PasswordScreen
+import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset.ResetScreen
 
 /**
  * The main navigation graph for the application.
@@ -57,20 +58,20 @@ fun EventoriasNavHost(navHostController: NavHostController) {
 //                }
                                        },
                 navigateToPasswordResetScreen = {
-//                        email -> navHostController.navigate(Screen.Reset.route + "/${email}")
+                        email -> navHostController.navigate(Screen.Reset.route + "/${email}")
                 }
             )
         }
-//        /*_ RESET SCREEN #############################################################################*/
-//        composable(
-//            route = Screen.Reset.route+ "/{email}",
-//            arguments = listOf(navArgument("email") { type = NavType.StringType })
-//        ) { backStackEntry ->
-//            ResetScreen(
-//                onBackClick = { navHostController.navigateUp() },
-//                navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) },
-//            )
-//        }
+        /*_ RESET SCREEN #############################################################################*/
+        composable(
+            route = Screen.Reset.routeWithArgs,
+            arguments = Screen.Reset.navArguments,
+        ) { backStackEntry ->
+            ResetScreen(
+                onBackClick = { navHostController.navigateUp() },
+                navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) },
+            )
+        }
 //        /*_ HOME SCREEN ##############################################################################*/
 //        composable(route = Screen.Homefeed.route) {
 //            HomeFeedScreen(

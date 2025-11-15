@@ -1,26 +1,38 @@
 package com.oliviermarteaux.localshared.firebase.authentication.data.service
 
+import android.content.Context
 import android.util.Log
+import androidx.core.content.ContextCompat.getString
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.firebase.authentication.domain.mapper.toUser
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.NewUser
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
-import com.oliviermarteaux.localshared.firebase.authentication.domain.mapper.toUser
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 /**
  * A Firebase implementation of the [UserApi] interface.
  */
-class UserFirebaseApi: UserApi {
+class UserFirebaseApi @Inject constructor(private val context: Context): UserApi {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val user: FirebaseUser? = firebaseAuth.currentUser
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val credentialManager = CredentialManager.create(context)
 
     /**
      * A flow that emits the current authentication state of the user.
@@ -135,6 +147,47 @@ class UserFirebaseApi: UserApi {
         firebaseUser?.toUser()
     }.onFailure { e ->
         Log.e("OM_TAG", "UserFirebaseApi:signIn: exception: ${e.message}")
+    }
+
+    /**
+     * Launch Google Sign-In using Credential Manager
+     * Returns the signed-in FirebaseUser or null
+     */
+    override suspend fun signInWithGoogle(): Result<User?> = runCatching {
+
+        // Instantiate a Google sign-in request
+        val googleIdOption = GetGoogleIdOption.Builder()
+            // Your server's client ID, not your Android client ID.
+            .setServerClientId(getString(context, R.string.default_web_client_id))
+            // Only show accounts previously used to sign in.
+            .setFilterByAuthorizedAccounts(true)
+            .build()
+
+        // Create the Credential Manager request
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
+        // Get the credential
+        val credential = credentialManager.getCredential(context, request).credential
+
+        // Check if credential is of type Google ID
+        if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+            // Create Google ID Token
+            val idToken = GoogleIdTokenCredential.createFrom(credential.data).idToken
+            // Sign-in using credential
+            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+            firebaseAuth.signInWithCredential(firebaseCredential)
+            // Sign in success, return the signed-in user
+            Log.d("OM_TAG", "UserFirebaseApi::signInWithGoogle: signInWithCredential:success")
+            val user = firebaseAuth.currentUser?.toUser()
+            user
+        } else {
+            Log.e("OM_TAG", "UserFirebaseApi::signInWithGoogle: Credential is not of type Google ID!")
+            return Result.failure(IllegalStateException("signInWithGoogle: Credential is not of type Google ID!"))
+        }
+    }.onFailure { e ->
+        Log.e("OM_TAG", "UserFirebaseApi::signInWithGoogle: signInWithGoogle:failure", e)
     }
 
     /**

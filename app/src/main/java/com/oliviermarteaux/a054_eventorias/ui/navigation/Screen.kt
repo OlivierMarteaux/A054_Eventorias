@@ -33,4 +33,12 @@ sealed class Screen(
         navArguments = listOf(navArgument("email") { type = NavType.StringType }),
         routeWithArgs = "password/{email}"
     )
+    /**
+     * The reset screen.
+     */
+    data object Reset : Screen(
+        route = "reset",
+        navArguments = listOf(navArgument("email") { type = NavType.StringType }),
+        routeWithArgs = "reset/{email}"
+    )
 }

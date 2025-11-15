@@ -64,4 +64,6 @@ class UserRepository @Inject constructor(private val userApi: UserApi) {
      * @return A [Result] containing the deleted [User] on success, or an error.
      */
     suspend fun deleteAccount(): Result<User?> = userApi.deleteAccount()
+
+    suspend fun signInWithGoogle(): Result<User?> = userApi.signInWithGoogle()
 }

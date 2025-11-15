@@ -64,6 +64,7 @@ fun LoginScreen(
         ) { contentPadding ->
             Box {
                 LoginBody(
+                    logoDrawableRes = logoDrawableRes,
                     newUser = newUser,
                     emailExist = emailExist,
                     isOnline = isOnline,
@@ -116,6 +117,7 @@ fun LoginScreen(
  */
 @Composable
 private fun LoginBody(
+    logoDrawableRes: Int,
     newUser: NewUser,
     emailExist: Boolean?,
     isOnline: Boolean,
@@ -135,7 +137,7 @@ private fun LoginBody(
     var scaffoldModifier: Modifier by remember { mutableStateOf(modifier) }
 
     IconScaffold(
-        icon = IconSource.PainterIcon(painterResource(R.drawable.eventorias_logo)),
+        icon = IconSource.PainterIcon(painterResource(logoDrawableRes)),
         modifier = scaffoldModifier,
         verticalArrangement = verticalArrangement,
     ){

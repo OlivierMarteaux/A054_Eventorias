@@ -7,6 +7,8 @@
     <string name="application_error_unknown">Une erreur inconnue s\'est produite</string>
     <string name="application_next">Suivant</string>
     <string name="application_ok">OK</string>
+    <string name="application_password">Mot de passe</string>
+    <string name="application_send">Envoyer</string>
     <string name="login_screen_create_account">Enregistrer</string>
     <string name="login_screen_email_error_empty">Saisissez votre adresse email pour continuer</string>
     <string name="login_screen_email_error_format">Cette adresse email n\'est pas valide</string>
@@ -18,10 +20,14 @@
     <string name="login_screen_last_name_error_empty">Veuillez saisir un nom</string>
     <string name="login_screen_new_password">Nouveau mot de passe</string>
     <string name="login_screen_password_error_strength">Le mot de passe n\'est pas assez sécurisé. Utilisez au moins 6 caractères et une combinaison de chiffres, de lettres et de caractères spéciaux</string>
-    <string name="splash_screen_sign_in_with_email">Se connecter avec une adresse e-mail</string>
-    <string name="password_screen_sign_in">Se connecter</string>
     <string name="password_screen_error_incorrect_password">Mot de passe incorrect</string>
-    <string name="application_password">Mot de passe</string>
-    <string name="password_screen_text">Bienvenue! Vous avez déja utilisé l\'adresse e-mail %1$s pour vous connecter. Saisissez le mot de passe du compte.</string>
     <string name="password_screen_forgot_password">Vous ne parvenez pas à vous connecter ?</string>
+    <string name="password_screen_sign_in">Se connecter</string>
+    <string name="password_screen_text">Bienvenue! Vous avez déja utilisé l\'adresse e-mail %1$s pour vous connecter. Saisissez le mot de passe du compte.</string>
+    <string name="reset_screen_alert_dialog_text">Suivez les instructions envoyées à l\'adresse %1$s pour récupérer votre mot de passe.</string>
+    <string name="reset_screen_alert_dialog_title">Consultez votre boite de réception</string>
+    <string name="reset_screen_text">Les instructions relatives à la réinitialisation de votre mot de passe seront envoyées à cette adresse e-mail.</string>
+    <string name="reset_screen_title">Récupérer votre mot de passe</string>
+    <string name="splash_screen_sign_in_with_email">Se connecter avec une adresse e-mail</string>
+    <string name="splash_screen_sign_in_with_google">Se connecter avec Google</string>
 </resources>

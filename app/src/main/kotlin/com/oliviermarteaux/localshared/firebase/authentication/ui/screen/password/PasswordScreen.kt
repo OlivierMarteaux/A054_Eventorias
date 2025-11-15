@@ -1,4 +1,4 @@
-package com.oliviermarteaux.a054_eventorias.ui.screen.password
+package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

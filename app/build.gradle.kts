@@ -144,6 +144,9 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose) // Navigation
 
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx) // usage of lifecycleScope
+
     //_ Firebase
     implementation(platform(libs.firebase.bom)) // Bom
     implementation(libs.firebase.analytics)  // Google Analytics
@@ -152,6 +155,10 @@ dependencies {
     implementation(libs.firebase.firestore) // Database
     implementation(libs.firebase.messaging) // Cloud notifications
     implementation(libs.firebase.storage) // Media files storage
+    // For google account authentication
+    implementation(libs.play.services.credentials)
+    implementation(libs.androidx.credentials)
+    implementation(libs.googleid)
 
     // hilt for DI
     implementation(libs.hilt)

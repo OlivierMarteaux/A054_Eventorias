@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
-import com.oliviermarteaux.a054_eventorias.ui.screen.AuthUserViewModel
+import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.NewUser
 import com.oliviermarteaux.shared.ui.showToastFlag

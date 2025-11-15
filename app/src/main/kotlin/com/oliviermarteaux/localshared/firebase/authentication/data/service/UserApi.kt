@@ -61,4 +61,6 @@ interface UserApi {
      * @return A [Result] containing the deleted [User] on success, or an error.
      */
     suspend fun deleteAccount(): Result<User?>
+
+    suspend fun signInWithGoogle(): Result<User?>
 }

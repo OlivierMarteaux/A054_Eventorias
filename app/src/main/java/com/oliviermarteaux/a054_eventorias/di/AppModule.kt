@@ -45,8 +45,10 @@ class AppModule {
    */
   @Singleton
   @Provides
-  fun provideUserApi(): UserApi {
-    return UserFirebaseApi()
+  fun provideUserApi(
+      @ApplicationContext context: Context
+  ): UserApi {
+    return UserFirebaseApi(context)
   }
 
   /**

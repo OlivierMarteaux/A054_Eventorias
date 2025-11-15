@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.shared.composables.SharedButton
 import com.oliviermarteaux.shared.composables.SharedImage
@@ -18,6 +19,7 @@ import com.oliviermarteaux.shared.composables.SharedImage
 @Composable
 fun SplashScreen(
     logoDrawableRes: Int,
+    splashViewModel: SplashViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     navigateToLoginScreen: () -> Unit,
 ) {
@@ -30,6 +32,10 @@ fun SplashScreen(
         SharedButton(
             onClick = navigateToLoginScreen,
             text = stringResource(R.string.splash_screen_sign_in_with_email)
+        )
+        SharedButton(
+            onClick = splashViewModel::signInWithGoogle,
+            text = stringResource(R.string.splash_screen_sign_in_with_google)
         )
     }
 }

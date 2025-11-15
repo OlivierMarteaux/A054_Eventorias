@@ -20,21 +20,17 @@ sealed class Screen(
      */
     data object Splash : Screen("splash")
 
-//    /**
-//     * The detail screen.
-//     */
-//    data object Detail : Screen(
-//        route = "detail",
-//        navArguments = listOf(navArgument("customer_id") { type = NavType.IntType }),
-//        routeWithArgs = "detail/{customer_id}"
-//    )
-//
-//    /**
-//     * The add screen.
-//     */
-//    data object Add : Screen(
-//        route = "add",
-//        navArguments = listOf(navArgument("new_customer_id") { type = NavType.IntType }),
-//        routeWithArgs = "add/{new_customer_id}"
-//    )
+    /**
+     * The login screen.
+     */
+    data object Login : Screen("login")
+
+    /**
+     * The password screen.
+     */
+    data object Password : Screen(
+        route = "password",
+        navArguments = listOf(navArgument("email") { type = NavType.StringType }),
+        routeWithArgs = "password/{email}"
+    )
 }

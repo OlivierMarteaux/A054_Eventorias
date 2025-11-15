@@ -6,7 +6,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.oliviermarteaux.a054_eventorias.ui.screen.splash.SplashScreen
+import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
+import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash.SplashScreen
+import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.a054_eventorias.ui.screen.password.PasswordScreen
 
 /**
  * The main navigation graph for the application.
@@ -19,35 +22,45 @@ fun EventoriasNavHost(navHostController: NavHostController) {
         navController = navHostController,
         startDestination = Screen.Splash.route
     ) {
+        val logoDrawableRes = R.drawable.eventorias_logo
         /*_ SPLASH SCREEN ############################################################################*/
         composable(route = Screen.Splash.route) {
-            SplashScreen(navigateToLoginScreen = {  })
+            SplashScreen(
+                logoDrawableRes = logoDrawableRes,
+                navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) }
+            )
         }
-//        /*_ LOGIN SCREEN #############################################################################*/
-//        composable(route = Screen.Login.route) {
-//            LoginScreen(
-//                onBackClick = { navHostController.navigateUp() },
-//                navigateToPasswordScreen = {
-//                        email -> navHostController.navigate("password/$email")
-//                },
-//                navigateToHomeScreen = { navHostController.navigate(Screen.Homefeed.route) }
-//            )
-//        }
-//        /*_ PASSWORD SCREEN ##########################################################################*/
-//        composable(
-//            route = Screen.Password.route,
-//            arguments = listOf(navArgument("email") { type = NavType.StringType })
-//        ) { backStackEntry ->
-//            PasswordScreen(
-//                onBackClick = { navHostController.navigateUp() },
-//                navigateToHomeScreen = { navHostController.navigate(Screen.Homefeed.route){
+        /*_ LOGIN SCREEN #############################################################################*/
+        composable(route = Screen.Login.route) {
+            LoginScreen(
+                logoDrawableRes = logoDrawableRes,
+                onBackClick = { navHostController.navigateUp() },
+                navigateToPasswordScreen = {
+                        email -> navHostController.navigate("password/$email")
+                },
+                navigateToHomeScreen = {
+//                    navHostController.navigate(Screen.Homefeed.route)
+                }
+            )
+        }
+        /*_ PASSWORD SCREEN ##########################################################################*/
+        composable(
+            route = Screen.Password.routeWithArgs,
+            arguments = Screen.Password.navArguments
+        ) { backStackEntry ->
+            PasswordScreen(
+                logoDrawableRes = logoDrawableRes,
+                onBackClick = { navHostController.navigateUp() },
+                navigateToHomeScreen = {
+//                    navHostController.navigate(Screen.Homefeed.route){
 //                    popUpTo(0) { inclusive = true } // clear everything
-//                } },
-//                navigateToPasswordResetScreen = {
-//                        email -> navHostController.navigate(Screen.Reset.route + "/${email}")
 //                }
-//            )
-//        }
+                                       },
+                navigateToPasswordResetScreen = {
+//                        email -> navHostController.navigate(Screen.Reset.route + "/${email}")
+                }
+            )
+        }
 //        /*_ RESET SCREEN #############################################################################*/
 //        composable(
 //            route = Screen.Reset.route+ "/{email}",

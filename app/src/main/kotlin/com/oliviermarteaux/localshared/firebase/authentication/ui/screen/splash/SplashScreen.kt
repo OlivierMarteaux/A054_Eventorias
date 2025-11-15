@@ -1,4 +1,4 @@
-package com.oliviermarteaux.a054_eventorias.ui.screen.splash
+package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -17,6 +17,7 @@ import com.oliviermarteaux.shared.composables.SharedImage
  */
 @Composable
 fun SplashScreen(
+    logoDrawableRes: Int,
     modifier: Modifier = Modifier,
     navigateToLoginScreen: () -> Unit,
 ) {
@@ -24,7 +25,7 @@ fun SplashScreen(
         modifier = modifier
     ){
         SharedImage(
-            painter = painterResource(id = R.drawable.eventorias_logo),
+            painter = painterResource(id = logoDrawableRes),
         )
         SharedButton(
             onClick = navigateToLoginScreen,

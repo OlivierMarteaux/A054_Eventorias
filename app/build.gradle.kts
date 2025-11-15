@@ -9,6 +9,7 @@ plugins {
     id("jacoco")  // for JaCoCo test coverage
     // Add the dependency for the Google services Gradle plugin for Firebase authentication
     alias(libs.plugins.googleservices)
+    alias(libs.plugins.crashlytics) // firebase crashlytics
 }
 
 // Specific for JaCoCo
@@ -141,6 +142,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.navigation.compose) // Navigation
 
     //_ Firebase
     implementation(platform(libs.firebase.bom)) // Bom

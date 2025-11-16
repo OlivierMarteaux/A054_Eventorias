@@ -1,5 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
+import android.R.attr.name
 import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +42,14 @@ class HomeViewModel @Inject constructor(
     var homeUiState: ListUiState<Post> by mutableStateOf(ListUiState.Loading)
         private set
 
+    var query: String by mutableStateOf("")
+        private set
+    fun onQueryChange(newQuery: String) { query = newQuery }
+
+    var searchBar: Boolean by mutableStateOf(false)
+        private set
+    fun showSearchBar() { searchBar = !searchBar }
+
     /**
      * Loads the posts from the repository.
      */
@@ -53,7 +62,7 @@ class HomeViewModel @Inject constructor(
                     .onSuccess { posts ->
                         homeUiState =
                             if (posts.isEmpty()) ListUiState.Empty
-                            else ListUiState.Success(posts)
+                            else ListUiState.Success(posts.filter { it.title.contains(query) })
                     }
                     .onFailure { e ->
                         homeUiState = ListUiState.Error(e)

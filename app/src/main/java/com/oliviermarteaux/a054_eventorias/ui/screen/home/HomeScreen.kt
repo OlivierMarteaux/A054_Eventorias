@@ -1,11 +1,15 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
+import android.R.attr.text
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -33,7 +37,15 @@ import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
 import com.oliviermarteaux.shared.ui.ListUiState
 import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.oliviermarteaux.localshared.composables.SharedSearchBar
 
 /**
  * A screen that displays a feed of posts.
@@ -50,7 +62,7 @@ import androidx.compose.ui.platform.LocalContext
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel = hiltViewModel(),
     onPostClick: (Post) -> Unit = {},
     onSettingsClick: () -> Unit = {},
     navigateToLogin: () -> Unit = {},
@@ -59,10 +71,10 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
 
-    with(viewModel) {
+    with(homeViewModel) {
         SharedScaffold(
             title = stringResource(Screen.Home.titleRes),
-            onSearchClick = {},
+            onSearchClick = ::showSearchBar,
             onSortByAscendingTitle = {},
             onSortByDescendingTitle = {},
             onSortByAscendingDate = {},
@@ -96,9 +108,16 @@ fun HomeScreen(
 
                     is ListUiState.Success -> {
                         HomeFeedList(
-                            modifier = modifier.padding(contentPadding).padding(horizontal = SharedPadding.medium),
+                            modifier = modifier
+                                .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
+                                .fillMaxSize()
+                                .padding(contentPadding)
+                                .padding(horizontal = SharedPadding.medium),
                             posts = (homeUiState as ListUiState.Success<Post>).data,
-                            onPostClick = onPostClick
+                            onPostClick = onPostClick,
+                            searchBar = searchBar,
+                            query = query,
+                            onQueryChange = ::onQueryChange
                         )
                     }
                 }
@@ -127,16 +146,27 @@ private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
     onPostClick: (Post) -> Unit,
+    searchBar: Boolean,
+    query: String,
+    onQueryChange: (String) -> Unit
 ) {
-    LazyColumn(
-        modifier = modifier/*.padding(8.dp)*/,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        items(posts) { post ->
-            HomeFeedCell(
-                post = post,
-                onPostClick = onPostClick
+    Column (modifier = modifier ) {
+        if (searchBar){
+            SharedSearchBar(
+                query = query,
+                onQueryChange = onQueryChange,
+                modifier = Modifier.padding(bottom =  8.dp)
             )
+        }
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(posts.filter { it.title.contains(query) }) { post ->
+                HomeFeedCell(
+                    post = post,
+                    onPostClick = onPostClick
+                )
+            }
         }
     }
 }

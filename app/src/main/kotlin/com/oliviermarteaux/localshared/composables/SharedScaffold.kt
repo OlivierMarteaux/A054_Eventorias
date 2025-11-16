@@ -1,6 +1,7 @@
 package com.oliviermarteaux.localshared.composables
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -15,6 +16,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -29,9 +31,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedIcon
 import com.oliviermarteaux.shared.composables.SharedIconButton
@@ -124,7 +128,7 @@ fun SharedScaffold(
 ){
     var showMenu by rememberSaveable { mutableStateOf(false) }
     var showSortOptions by rememberSaveable { mutableStateOf(false) }
-    var showSearchBar by rememberSaveable { mutableStateOf(false) }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -139,10 +143,10 @@ fun SharedScaffold(
                     }
                 },
                 actions = {
-                    onSearchClick?.let{
+                    onSearchClick?.let {
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.Default.Search),
-                        ){showSearchBar = !showSearchBar}
+                        ){ onSearchClick() }
                     }
                     onSortByAscendingTitle?.let{
                         SharedIconButton(

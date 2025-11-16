@@ -1,0 +1,122 @@
+package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.oliviermarteaux.shared.ui.theme.SharedPadding
+import com.oliviermarteaux.shared.composables.IconScaffold
+import com.oliviermarteaux.shared.composables.IconSource
+import com.oliviermarteaux.shared.composables.SharedAlertDialog
+import com.oliviermarteaux.shared.composables.SharedButton
+import com.oliviermarteaux.shared.composables.SharedOutlinedEmail
+import com.oliviermarteaux.shared.composables.SharedScaffold
+import com.oliviermarteaux.shared.composables.SharedToast
+import com.oliviermarteaux.shared.extensions.isValidEmail
+import com.oliviermarteaux.a054_eventorias.R
+
+/**
+ * A screen for resetting the user's password.
+ *
+ * @param modifier The modifier to apply to this screen.
+ * @param navigateToLoginScreen A function to call to navigate to the login screen.
+ * @param onBackClick A function to call when the back button is clicked.
+ * @param resetViewModel The view model for this screen.
+ */
+@Composable
+fun ResetScreen(
+    modifier: Modifier = Modifier,
+    navigateToLoginScreen: () -> Unit,
+    onBackClick: () -> Unit = {},
+    resetViewModel: ResetViewModel = hiltViewModel()
+) {
+
+    SharedScaffold(
+        modifier = modifier,
+        title = stringResource(R.string.reset_screen_title),
+        onBackClick = onBackClick
+    ) { contentPadding ->
+        with (resetViewModel) {
+            Box {
+                ResetBody(
+                    email = email,
+                    modifier = modifier
+                        .padding(contentPadding)
+                        .padding(horizontal = SharedPadding.xl)
+                        .fillMaxSize()
+                    ,
+                    onEmailChange = ::onEmailChange,
+                    sendPasswordResetEmail = ::sendPasswordResetEmail,
+                    alertDialog = alertDialog,
+                    navigateToLoginScreen = navigateToLoginScreen,
+                )
+                if(unknownError) SharedToast(text = stringResource(R.string.application_error_unknown))
+                if(networkError) SharedToast(
+                    text = stringResource(R.string.application_error_network),
+                    bottomPadding = 120
+                )
+            }
+        }
+    }
+}
+
+/**
+ * A composable for the body of the reset screen.
+ *
+ * @param email The user's email address.
+ * @param modifier The modifier to apply to this composable.
+ * @param onEmailChange A function to call when the email changes.
+ * @param sendPasswordResetEmail A function to call to send a password reset email.
+ * @param alertDialog A boolean indicating if the alert dialog should be shown.
+ * @param navigateToLoginScreen A function to call to navigate to the login screen.
+ */
+@Composable
+private fun ResetBody(
+    email: String,
+    modifier: Modifier = Modifier,
+    onEmailChange: (String) -> Unit,
+    sendPasswordResetEmail: (String) -> Unit,
+    alertDialog: Boolean,
+    navigateToLoginScreen: () -> Unit,
+) {
+    IconScaffold(
+        icon = IconSource.PainterIcon(painterResource(R.drawable.eventorias_logo)),
+        modifier = modifier
+    ){
+        Text(
+            text = stringResource(R.string.reset_screen_text),
+            textAlign = TextAlign.Center
+        )
+        SharedOutlinedEmail(
+            value = email,
+            onValueChange = { onEmailChange(it) },
+            label = stringResource(R.string.application_email),
+            imeAction = ImeAction.Done,
+            modifier = Modifier.fillMaxWidth(),
+            errorText = when {
+                email.isEmpty() -> stringResource(R.string.login_screen_email_error_empty)
+                !email.isValidEmail() -> stringResource(R.string.login_screen_email_error_format)
+                else -> null
+            }
+        )
+        SharedButton(text = stringResource(R.string.application_send)) { sendPasswordResetEmail(email) }
+    }
+    AnimatedVisibility(alertDialog) {
+        SharedAlertDialog(
+            title = stringResource(R.string.reset_screen_alert_dialog_title),
+            text = stringResource(R.string.reset_screen_text, email),
+            onConfirm = navigateToLoginScreen,
+            confirmText = stringResource(R.string.application_ok)
+        )
+    }
+}
+

@@ -1,4 +1,4 @@
-package com.example.a054_eventorias
+package com.oliviermarteaux.a054_eventorias
 
 import org.junit.Test
 

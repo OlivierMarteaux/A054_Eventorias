@@ -7,6 +7,9 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     id("jacoco")  // for JaCoCo test coverage
+    // Add the dependency for the Google services Gradle plugin for Firebase authentication
+    alias(libs.plugins.googleservices)
+    alias(libs.plugins.crashlytics) // firebase crashlytics
 }
 
 // Specific for JaCoCo
@@ -18,7 +21,7 @@ tasks.withType<Test> {
 }
 
 android {
-    namespace = "com.example.a054_eventorias"
+    namespace = "com.oliviermarteaux.a054_eventorias"
     compileSdk {
         version = release(36)
     }
@@ -27,7 +30,7 @@ android {
     testCoverage { version = "0.8.8" }
 
     defaultConfig {
-        applicationId = "com.example.a054_eventorias"
+        applicationId = "com.oliviermarteaux.a054_eventorias"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -139,6 +142,23 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.navigation.compose) // Navigation
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx) // usage of lifecycleScope
+
+    //_ Firebase
+    implementation(platform(libs.firebase.bom)) // Bom
+    implementation(libs.firebase.analytics)  // Google Analytics
+    implementation(libs.firebase.crashlytics.ndk)  // Crashlytics
+    implementation(libs.firebase.auth) // Authentication
+    implementation(libs.firebase.firestore) // Database
+    implementation(libs.firebase.messaging) // Cloud notifications
+    implementation(libs.firebase.storage) // Media files storage
+    // For google account authentication
+    implementation(libs.play.services.credentials)
+    implementation(libs.androidx.credentials)
+    implementation(libs.googleid)
 
     // hilt for DI
     implementation(libs.hilt)

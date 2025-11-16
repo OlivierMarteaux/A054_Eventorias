@@ -8,4 +8,7 @@ plugins {
     // for Hilt DI
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ksp) apply false
+    // Add the dependency for the Google services Gradle plugin for Firebase authentication
+    alias(libs.plugins.googleservices) apply false
+    alias(libs.plugins.crashlytics) apply false // firebase crashlytics
 }

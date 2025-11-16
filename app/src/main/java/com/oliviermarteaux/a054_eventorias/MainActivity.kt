@@ -1,4 +1,4 @@
-package com.example.a054_eventorias
+package com.oliviermarteaux.a054_eventorias
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,20 +11,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.a054_eventorias.ui.theme.A054_EventoriasTheme
+import com.oliviermarteaux.a054_eventorias.ui.theme.A054_EventoriasTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             A054_EventoriasTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                EventoriasApp()
             }
         }
     }

@@ -3,6 +3,7 @@ package com.oliviermarteaux.localshared.firebase.firestore.domain.model
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
 import java.io.Serializable
 import java.util.Date
+import java.util.UUID
 
 /**
  * This class represents a Post data object. It holds information about a post, including its
@@ -13,7 +14,7 @@ data class Post(
     /**
      * Unique identifier for the Post.
      */
-    val id: String = "",
+    val id: String = UUID.randomUUID().toString(),
 
     /**
      * Title of the Post.

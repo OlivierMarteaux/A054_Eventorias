@@ -33,6 +33,7 @@ import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
 import com.oliviermarteaux.shared.ui.ListUiState
 import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.platform.LocalContext
 
 /**
  * A screen that displays a feed of posts.
@@ -56,6 +57,8 @@ fun HomeScreen(
     navigateToAccount: () -> Unit = {},
     navigateToAddPost: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+
     with(viewModel) {
         SharedScaffold(
             title = stringResource(Screen.Home.titleRes),
@@ -69,10 +72,11 @@ fun HomeScreen(
             },
             menuItem2Title = stringResource(id = R.string.menu_action_my_account),
             onFabClick = {
-                checkUserState(
-                    onUserLogged = navigateToAddPost,
-                    onNoUserLogged = ::showAuthErrorToast
-                )
+                uploadSamplePosts(context)
+//                checkUserState(
+//                    onUserLogged = navigateToAddPost,
+//                    onNoUserLogged = ::showAuthErrorToast
+//                )
             }
         ) { contentPadding ->
             LaunchedEffect(homeUiState) {

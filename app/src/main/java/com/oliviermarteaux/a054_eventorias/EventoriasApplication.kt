@@ -1,7 +1,10 @@
 package com.oliviermarteaux.a054_eventorias
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.oliviermarteaux.shared.firebase.firebaseCloudMessaging.subscribeToFcmNotificationTopic
@@ -13,7 +16,18 @@ import dagger.hilt.android.HiltAndroidApp
  * initialization tasks such as dependency injection setup using Hilt.
  */
 @HiltAndroidApp
-class EventoriasApplication : Application() {
+class EventoriasApplication : Application(), SingletonImageLoader.Factory {
+
+    /**
+     * Creates a new [ImageLoader] for the application.
+     *
+     * @param context The application context.
+     * @return A new [ImageLoader] instance.
+     */
+    override fun newImageLoader(context: Context): ImageLoader {
+        return ImageLoader.Builder(context = context)
+            .build()
+    }
 
     /**
      * Called when the application is starting, before any activity, service, or receiver objects (excluding content providers) have been created.

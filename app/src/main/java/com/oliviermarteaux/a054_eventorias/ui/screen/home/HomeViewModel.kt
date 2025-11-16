@@ -1,14 +1,17 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostRepository
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.localshared.firebase.firestore.utils.uploadSamplePosts
 import com.oliviermarteaux.shared.ui.ListUiState
 import com.oliviermarteaux.shared.utils.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,10 +62,20 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /**
+     * upload a list of sample posts to firestore for app demonstration purpose
+     */
+    fun uploadSamplePosts(context: Context){
+        viewModelScope.launch {
+            uploadSamplePosts(context){ post -> postRepository.addPost(post) } }
+    }
+
+
     init {
 //    throw RuntimeException("Test Crash") // Force a crash
-        // Fetch posts from the repository
         log.d("HomeFeedViewModel: init")
+
+        // Fetch posts from the repository
         loadPosts()
     }
 }

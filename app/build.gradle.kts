@@ -160,10 +160,14 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.googleid)
 
-    // hilt for DI
+    //_ hilt for DI
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    //_ Coil for image loading
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp) // to load images from internet
 
     // Unit Tests
     testImplementation(libs.junit)

@@ -2,15 +2,14 @@ package com.oliviermarteaux.a054_eventorias.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
-import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash.SplashScreen
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.a054_eventorias.ui.screen.home.HomeScreen
+import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password.PasswordScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset.ResetScreen
+import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash.SplashScreen
 
 /**
  * The main navigation graph for the application.
@@ -28,7 +27,8 @@ fun EventoriasNavHost(navHostController: NavHostController) {
         composable(route = Screen.Splash.route) {
             SplashScreen(
                 logoDrawableRes = logoDrawableRes,
-                navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) }
+                navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) },
+                navigateToHomeScreen = { navHostController.navigate(Screen.Home.route) }
             )
         }
         /*_ LOGIN SCREEN #############################################################################*/
@@ -40,7 +40,7 @@ fun EventoriasNavHost(navHostController: NavHostController) {
                         email -> navHostController.navigate("password/$email")
                 },
                 navigateToHomeScreen = {
-//                    navHostController.navigate(Screen.Homefeed.route)
+                    navHostController.navigate(Screen.Home.route)
                 }
             )
         }
@@ -53,9 +53,9 @@ fun EventoriasNavHost(navHostController: NavHostController) {
                 logoDrawableRes = logoDrawableRes,
                 onBackClick = { navHostController.navigateUp() },
                 navigateToHomeScreen = {
-//                    navHostController.navigate(Screen.Homefeed.route){
-//                    popUpTo(0) { inclusive = true } // clear everything
-//                }
+                    navHostController.navigate(Screen.Home.route){
+                    popUpTo(0) { inclusive = true } // clear everything
+                }
                                        },
                 navigateToPasswordResetScreen = {
                         email -> navHostController.navigate(Screen.Reset.route + "/${email}")
@@ -72,18 +72,19 @@ fun EventoriasNavHost(navHostController: NavHostController) {
                 navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) },
             )
         }
-//        /*_ HOME SCREEN ##############################################################################*/
-//        composable(route = Screen.Homefeed.route) {
-//            HomeFeedScreen(
-//                onPostClick = {
+        /*_ HOME SCREEN ##############################################################################*/
+        composable(route = Screen.Home.route) {
+            HomeScreen(
+                onPostClick = {
 //                        post -> navHostController.navigate(Screen.Detail.route + "/${post.id}")
-//                },
-//                onSettingsClick = { navHostController.navigate(Screen.Settings.route) },
-//                navigateToLogin = { navHostController.navigate(Screen.Login.route) },
-//                navigateToAccount = { navHostController.navigate(Screen.Account.route) },
-//                navigateToAddPost = { navHostController.navigate(Screen.AddPost.route) }
-//            )
-//        }/*_ DETAIL SCREEN ###########################################################################*/
+                },
+                onSettingsClick = { /*navHostController.navigate(Screen.Settings.route)*/ },
+                navigateToLogin = { /*navHostController.navigate(Screen.Login.route)*/ },
+                navigateToAccount = { /*navHostController.navigate(Screen.Account.route)*/ },
+                navigateToAddPost = { /*navHostController.navigate(Screen.AddPost.route)*/ }
+            )
+        }
+//        /*_ DETAIL SCREEN ###########################################################################*/
 //        composable(
 //            route = Screen.Detail.route + "/{post_id}",
 //            arguments = listOf(navArgument("post_id") { type = NavType.StringType })

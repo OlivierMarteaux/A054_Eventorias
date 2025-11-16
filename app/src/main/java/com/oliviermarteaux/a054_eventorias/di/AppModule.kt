@@ -5,6 +5,10 @@ import android.app.NotificationManager
 import android.content.Context
 import com.oliviermarteaux.localshared.firebase.authentication.data.service.UserApi
 import com.oliviermarteaux.localshared.firebase.authentication.data.service.UserFirebaseApi
+import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostFirebaseRepository
+import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostRepository
+import com.oliviermarteaux.localshared.firebase.firestore.data.service.PostApi
+import com.oliviermarteaux.localshared.firebase.firestore.data.service.PostFirebaseApi
 import com.oliviermarteaux.shared.utils.AndroidLogger
 import com.oliviermarteaux.shared.utils.CoroutineDispatcherProvider
 import com.oliviermarteaux.shared.utils.Logger
@@ -25,18 +29,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-//  /**
-//   * Provides a Singleton instance of PostApi using a PostFakeApi implementation for testing purposes.
-//   * This means that whenever a dependency on PostApi is requested, the same instance of PostFakeApi will be used
-//   * throughout the application, ensuring consistent data for testing scenarios.
-//   *
-//   * @return A Singleton instance of PostFakeApi.
-//   */
-//  @Provides
-//  @Singleton
-//  fun providePostApi(): PostApi {
-//    return PostFirebaseApi() // PostFakeApi() // to be replaced for test
-//  }
+  /**
+   * Provides a Singleton instance of PostApi using a PostFirebaseApi implementation.
+   * This means that whenever a dependency on PostApi is requested, the same instance of PostFirebaseApi will be used
+   * throughout the application.
+   *
+   * @return A Singleton instance of PostFirebaseApi.
+   */
+  @Provides
+  @Singleton
+  fun providePostApi(): PostApi {
+    return PostFirebaseApi()
+  }
 
   /**
    * Provides a singleton instance of [UserApi].
@@ -50,6 +54,14 @@ class AppModule {
   ): UserApi {
     return UserFirebaseApi(context)
   }
+
+    @Provides
+    @Singleton
+    fun providePostRepository(
+        postApi: PostApi,
+    ): PostRepository {
+        return PostFirebaseRepository(postApi)
+    }
 
   /**
    * Provides the [NotificationManager] system service.

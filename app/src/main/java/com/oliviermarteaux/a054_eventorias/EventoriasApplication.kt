@@ -40,7 +40,7 @@ class EventoriasApplication : Application() {
 //            //_ Firebase cloud messaging: subscribe to Firebase topic (Mandatory to receive notifs)
 //            subscribeToFcmNotificationTopic()
 
-            //_ manage application exceptions
+            // manage application exceptions
         } catch (e: Exception) {
             Log.e("OM_TAG", "EventoriasApplication: onCreate(): FirebaseApp initialization failed", e)
         }

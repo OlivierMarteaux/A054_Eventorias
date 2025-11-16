@@ -19,6 +19,7 @@ lifecycleRuntimeKtx = "2.9.4"
 oliviermarteaux = "3.6.1"
 credentials = "1.5.0"
 coil = "3.0.4"
+materialIconsExtended = "1.7.8"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -58,6 +59,7 @@ oliviermarteaux-core = { module = "com.github.OlivierMarteaux.shared-android-lib
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose" }
 play-services-credentials = {module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials"}
 androidx-credentials = {module = "androidx.credentials:credentials", version.ref = "credentials"}
+material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

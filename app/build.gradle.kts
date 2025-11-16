@@ -143,6 +143,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose) // Navigation
+    implementation(libs.material.icons.extended) // Icons (full material library)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx) // usage of lifecycleScope

@@ -26,7 +26,7 @@ import com.oliviermarteaux.a054_eventorias.ui.navigation.Screen
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
-import com.oliviermarteaux.shared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.composables.texts.TextTitleMedium
 import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
@@ -62,21 +62,18 @@ fun HomeScreen(
     with(viewModel) {
         SharedScaffold(
             title = stringResource(Screen.Home.titleRes),
-            onMenuItem1Click = onSettingsClick,
-            menuItem1Title = stringResource(id = R.string.menu_action_settings),
-            onMenuItem2Click = {
-                checkUserState(
-                    onUserLogged = navigateToAccount,
-                    onNoUserLogged = navigateToLogin
-                )
-            },
-            menuItem2Title = stringResource(id = R.string.menu_action_my_account),
+            onSearchClick = {},
+            onSortByAscendingTitle = {},
+            onSortByDescendingTitle = {},
+            onSortByAscendingDate = {},
+            onSortByDescendingDate = {},
             onFabClick = {
-                uploadSamplePosts(context)
-//                checkUserState(
-//                    onUserLogged = navigateToAddPost,
-//                    onNoUserLogged = ::showAuthErrorToast
-//                )
+                // for initial posts populating purpose
+                // uploadSamplePosts(context)
+                checkUserState(
+                    onUserLogged = navigateToAddPost,
+                    onNoUserLogged = ::showAuthErrorToast
+                )
             }
         ) { contentPadding ->
             LaunchedEffect(homeUiState) {

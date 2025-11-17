@@ -20,6 +20,9 @@ oliviermarteaux = "3.6.1"
 credentials = "1.5.0"
 coil = "3.0.4"
 materialIconsExtended = "1.7.8"
+googlemapsAndroid = "2.13.0"
+googlemapsSdk = "19.2.0"
+accompanist = "0.32.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -60,6 +63,9 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 play-services-credentials = {module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials"}
 androidx-credentials = {module = "androidx.credentials:credentials", version.ref = "credentials"}
 material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+googlemaps-android = {module = "com.google.maps.android:maps-compose", version.ref = "googlemapsAndroid"}
+googlemaps-sdk = {module = "com.google.android.gms:play-services-maps", version.ref = "googlemapsSdk"}
+google-accompanist = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

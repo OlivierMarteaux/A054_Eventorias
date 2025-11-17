@@ -53,6 +53,16 @@ sealed class Screen(
     )
 
     /**
+     * The detail screen.
+     */
+    data object Detail : Screen(
+        route = "detail",
+        titleRes = R.string.account_screen_title,
+        navArguments = listOf(navArgument("post_id") { type = NavType.IntType }),
+        routeWithArgs = "detail/{post_id}"
+    )
+
+    /**
      * The account screen.
      */
     data object Account : Screen(

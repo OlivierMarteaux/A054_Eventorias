@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.composables.SharedGoogleMap
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.extensions.toLocalDate
 import com.oliviermarteaux.localshared.extensions.toLocalTime
@@ -126,9 +127,14 @@ fun DetailScreen(
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
-                        Image(
-                            painter = painterResource(id = R.drawable.placeholder),
-                            contentDescription = "Map preview",
+//                        Image(
+//                            painter = painterResource(id = R.drawable.placeholder),
+//                            contentDescription = "Map preview",
+//                            modifier = Modifier
+//                                .size(80.dp)
+//                                .clip(MaterialTheme.shapes.small)
+//                        )
+                        SharedGoogleMap(
                             modifier = Modifier
                                 .size(80.dp)
                                 .clip(MaterialTheme.shapes.small)

@@ -1,4 +1,5 @@
 import com.android.build.gradle.BaseExtension
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -35,6 +36,15 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+
+        // For GoogleMaps API
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { localProperties.load(it) }
+        }
+        val mapsApiKey: String = localProperties.getProperty("MAPS_API_KEY") ?: ""
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
 
         // choose test runner
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -169,6 +179,14 @@ dependencies {
     //_ Coil for image loading
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp) // to load images from internet
+
+    // _ GoogleMaps
+    // Google Maps Compose
+    implementation(libs.googlemaps.android)
+    // Google Maps SDK
+    implementation(libs.googlemaps.sdk)
+    // Accompanist
+    implementation(libs.google.accompanist)
 
     // Unit Tests
     testImplementation(libs.junit)

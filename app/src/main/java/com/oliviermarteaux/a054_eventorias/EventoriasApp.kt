@@ -2,6 +2,7 @@ package com.oliviermarteaux.a054_eventorias
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
+import com.oliviermarteaux.localshared.composables.startup.RequestMapsPermission
 import com.oliviermarteaux.localshared.ui.navigation.Screen
 import com.oliviermarteaux.localshared.ui.navigation.SharedNavGraph
 import com.oliviermarteaux.shared.composables.startup.DismissKeyboardOnTapOutside
@@ -9,6 +10,7 @@ import com.oliviermarteaux.shared.composables.startup.DismissKeyboardOnTapOutsid
 @Composable
 fun EventoriasApp(){
 
+    RequestMapsPermission()
     DismissKeyboardOnTapOutside { SharedNavGraph(
         navHostController = rememberNavController(),
         startDestination = Screen.Splash.route,

@@ -9,6 +9,17 @@ import java.util.UUID
  * This class represents a Post data object. It holds information about a post, including its
  * ID, title, description, photo URL, creation timestamp, and the author (User object).
  * The class implements Serializable to allow for potential serialization needs.
+ *
+ * @property id Unique identifier for the Post.
+ * @property title Title of the Post.
+ * @property description Optional description for the Post.
+ * @property photoUrl URL of an image associated with the Post, if any.
+ * @property timestamp Timestamp representing the creation date and time of the Post
+ * in milliseconds since epoch.
+ * @property author User object representing the author of the Post.
+ * @property comments A list of comments on the post.
+ * @property date the date for the post event
+ * @property address the address for the post event *
  */
 data class Post(
     /**

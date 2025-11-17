@@ -1,11 +1,9 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
-import android.R.attr.text
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -14,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,65 +24,54 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.navigation.Screen
+import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.composables.SharedSearchBar
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
-import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.composables.texts.TextTitleMedium
 import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
 import com.oliviermarteaux.shared.ui.ListUiState
-import com.oliviermarteaux.shared.ui.theme.SharedPadding
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.oliviermarteaux.localshared.composables.SharedSearchBar
 
 /**
  * A screen that displays a feed of posts.
  *
  * @param modifier The modifier to apply to this screen.
  * @param viewModel The view model for this screen.
- * @param onPostClick A function to call when a post is clicked.
+ * @param navigateToDetailScreen A function to call when a post is clicked.
  * @param onSettingsClick A function to call when the settings button is clicked.
- * @param navigateToLogin A function to call to navigate to the login screen.
- * @param navigateToAccount A function to call to navigate to the account screen.
- * @param navigateToAddPost A function to call to navigate to the add post screen.
+ * @param navigateToLoginScreen A function to call to navigate to the login screen.
+ * @param navigateToAccountScreen A function to call to navigate to the account screen.
+ * @param navigateToAddScreen A function to call to navigate to the add post screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onPostClick: (Post) -> Unit = {},
+    navigateToDetailScreen: (Post) -> Unit = {},
     onSettingsClick: () -> Unit = {},
-    navigateToLogin: () -> Unit = {},
-    navigateToAccount: () -> Unit = {},
-    navigateToAddPost: () -> Unit = {}
+    navigateToLoginScreen: () -> Unit = {},
+    navigateToAccountScreen: () -> Unit = {},
+    navigateToAddScreen: () -> Unit = {}
 ) {
-    val context = LocalContext.current
-
     with(homeViewModel) {
         SharedScaffold(
             title = stringResource(Screen.Home.titleRes),
             onSearchClick = ::showSearchBar,
-            onSortByAscendingTitle = {},
-            onSortByDescendingTitle = {},
-            onSortByAscendingDate = {},
-            onSortByDescendingDate = {},
+            onSortByTitleClick = {},
+            onSortByAscendingDateClick = {},
+            onSortByDescendingDateClick = {},
             onFabClick = {
                 // for initial posts populating purpose
-                // uploadSamplePosts(context)
+                // uploadSamplePosts(LocalContext.current)
                 checkUserState(
-                    onUserLogged = navigateToAddPost,
+                    onUserLogged = navigateToAddScreen,
                     onNoUserLogged = ::showAuthErrorToast
                 )
             }
@@ -113,11 +101,12 @@ fun HomeScreen(
                                 .fillMaxSize()
                                 .padding(contentPadding)
                                 .padding(horizontal = SharedPadding.medium),
-                            posts = (homeUiState as ListUiState.Success<Post>).data,
-                            onPostClick = onPostClick,
+                            posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
+                            navigateToDetailScreen = navigateToDetailScreen,
                             searchBar = searchBar,
                             query = query,
-                            onQueryChange = ::onQueryChange
+                            updateQuery = ::updateQuery,
+                            filterPosts = ::filterPosts
                         )
                     }
                 }
@@ -139,32 +128,33 @@ fun HomeScreen(
  *
  * @param modifier The modifier to apply to this composable.
  * @param posts The list of posts to display.
- * @param onPostClick A function to call when a post is clicked.
+ * @param navigateToDetailScreen A function to call when a post is clicked.
  */
 @Composable
 private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
-    onPostClick: (Post) -> Unit,
+    navigateToDetailScreen: (Post) -> Unit,
     searchBar: Boolean,
     query: String,
-    onQueryChange: (String) -> Unit
+    updateQuery: (String) -> Unit,
+    filterPosts: (String) -> Unit
 ) {
     Column (modifier = modifier ) {
         if (searchBar){
             SharedSearchBar(
                 query = query,
-                onQueryChange = onQueryChange,
-                modifier = Modifier.padding(bottom =  8.dp)
+                onQueryChange = {updateQuery(it) ; filterPosts(it)},
+                modifier = Modifier.padding(bottom = SharedPadding.medium)
             )
         }
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(posts.filter { it.title.contains(query) }) { post ->
+            items(posts) { post ->
                 HomeFeedCell(
                     post = post,
-                    onPostClick = onPostClick
+                    onPostClick = navigateToDetailScreen
                 )
             }
         }

@@ -75,13 +75,13 @@ fun EventoriasNavHost(navHostController: NavHostController) {
         /*_ HOME SCREEN ##############################################################################*/
         composable(route = Screen.Home.route) {
             HomeScreen(
-                onPostClick = {
+                navigateToDetailScreen = {
 //                        post -> navHostController.navigate(Screen.Detail.route + "/${post.id}")
                 },
                 onSettingsClick = { /*navHostController.navigate(Screen.Settings.route)*/ },
-                navigateToLogin = { /*navHostController.navigate(Screen.Login.route)*/ },
-                navigateToAccount = { /*navHostController.navigate(Screen.Account.route)*/ },
-                navigateToAddPost = { /*navHostController.navigate(Screen.AddPost.route)*/ }
+                navigateToLoginScreen = { /*navHostController.navigate(Screen.Login.route)*/ },
+                navigateToAccountScreen = { /*navHostController.navigate(Screen.Account.route)*/ },
+                navigateToAddScreen = { /*navHostController.navigate(Screen.AddPost.route)*/ }
             )
         }
 //        /*_ DETAIL SCREEN ###########################################################################*/

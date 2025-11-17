@@ -110,10 +110,9 @@ fun SharedScaffold(
     onFabClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onSearchClick: (() -> Unit)? = null,
-    onSortByAscendingTitle: (() -> Unit)? = null,
-    onSortByDescendingTitle: (() -> Unit)? = null,
-    onSortByAscendingDate: (() -> Unit)? = null,
-    onSortByDescendingDate: (() -> Unit)? = null,
+    onSortByTitleClick: (() -> Unit)? = null,
+    onSortByAscendingDateClick: (() -> Unit)? = null,
+    onSortByDescendingDateClick: (() -> Unit)? = null,
     onMenuItem1Click: (() -> Unit)? = null,
     onMenuItem2Click: (() -> Unit)? = null,
     menuItem1Title: String = "",
@@ -148,7 +147,7 @@ fun SharedScaffold(
                             icon = IconSource.VectorIcon(Icons.Default.Search),
                         ){ onSearchClick() }
                     }
-                    onSortByAscendingTitle?.let{
+                    onSortByTitleClick?.let{
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.Default.SwapVert),
                         ){ showSortOptions = !showSortOptions }
@@ -159,28 +158,21 @@ fun SharedScaffold(
                             DropdownMenuItem(
                                 text = { TextTitleSmall(text = "Ascending title") },
                                 onClick = {
-                                    onSortByAscendingTitle()
+                                    onSortByTitleClick()
                                     showMenu = false
                                 },
                             )
-                            onSortByDescendingTitle?.let { DropdownMenuItem(
-                                text = { TextTitleSmall(text = "Descending title") },
-                                onClick = {
-                                    onSortByDescendingTitle()
-                                    showMenu = false
-                                },
-                            )}
-                            onSortByAscendingDate?.let { DropdownMenuItem(
+                            onSortByAscendingDateClick?.let { DropdownMenuItem(
                                 text = { TextTitleSmall(text = "Ascending date") },
                                 onClick = {
-                                    onSortByAscendingDate()
+                                    onSortByAscendingDateClick()
                                     showMenu = false
                                 },
                             )}
-                            onSortByDescendingDate?.let { DropdownMenuItem(
+                            onSortByDescendingDateClick?.let { DropdownMenuItem(
                                 text = { TextTitleSmall(text = "Descending date") },
                                 onClick = {
-                                    onSortByDescendingDate()
+                                    onSortByDescendingDateClick()
                                     showMenu = false
                                 },
                             )}

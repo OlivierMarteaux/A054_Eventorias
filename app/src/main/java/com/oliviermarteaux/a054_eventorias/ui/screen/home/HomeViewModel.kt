@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.play.integrity.internal.q
 import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostRepository
@@ -42,13 +43,37 @@ class HomeViewModel @Inject constructor(
     var homeUiState: ListUiState<Post> by mutableStateOf(ListUiState.Loading)
         private set
 
+    var posts: List<Post> by mutableStateOf(emptyList())
+        private set
+
+    var filteredPosts: List<Post> by mutableStateOf(emptyList())
+        private set
+
     var query: String by mutableStateOf("")
         private set
-    fun onQueryChange(newQuery: String) { query = newQuery }
+    fun updateQuery(newQuery: String) {
+        query = newQuery
+    }
 
     var searchBar: Boolean by mutableStateOf(false)
         private set
     fun showSearchBar() { searchBar = !searchBar }
+
+    fun filterPosts(query: String) {
+        filteredPosts = posts.filter { post ->
+            listOfNotNull(post.title, post.author?.firstname, post.author?.lastname)
+                .any { field -> field.contains(query, true) }
+        }
+    }
+
+    fun sortPosts(posts: List<Post>, sort: String) :List<Post> {
+        return when (sort) {
+            "sorted by title" -> posts.sortedBy { it.title }
+            "oldest first" -> posts.sortedBy { it.date }
+            "newest first" -> posts.sortedByDescending { it.date }
+            else -> posts
+        }
+    }
 
     /**
      * Loads the posts from the repository.
@@ -59,10 +84,12 @@ class HomeViewModel @Inject constructor(
 //      delay(3000) // simulate network delay for Loading state evidence
             postRepository.posts.collect { result ->
                 result
-                    .onSuccess { posts ->
+                    .onSuccess {
+                        posts = it
+                        filteredPosts = it
                         homeUiState =
                             if (posts.isEmpty()) ListUiState.Empty
-                            else ListUiState.Success(posts.filter { it.title.contains(query) })
+                            else ListUiState.Success(posts)
                     }
                     .onFailure { e ->
                         homeUiState = ListUiState.Error(e)

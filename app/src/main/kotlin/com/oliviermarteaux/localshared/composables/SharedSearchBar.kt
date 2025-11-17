@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SharedSearchBar(
     query: String,
+    modifier: Modifier = Modifier,
     onQueryChange: (String) -> Unit,
     searchLabel: String = "",
-    modifier: Modifier = Modifier
 ){
     val onActiveChange = { _: Boolean ->}
     SearchBar(

@@ -28,7 +28,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.navigation.Screen
 import com.oliviermarteaux.localshared.composables.SharedScaffold
-import com.oliviermarteaux.localshared.composables.SharedSearchBar
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
@@ -63,10 +62,17 @@ fun HomeScreen(
     with(homeViewModel) {
         SharedScaffold(
             title = stringResource(Screen.Home.titleRes),
-            onSearchClick = ::showSearchBar,
-            onSortByTitleClick = {},
-            onSortByAscendingDateClick = {},
-            onSortByDescendingDateClick = {},
+            // search bar
+            onSearchIconClick = ::showSearchBar,
+            searchBarVisible = searchBarVisible,
+            query = query,
+            onQueryChange = { updateQuery(it) ; filterPosts(it)},
+            onSearchBarIconClick = {clearQuery(); hideSearchBar()},
+            // sort menu
+            onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
+            onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
+            onSortByDescendingDateClick = { sortPostsBy(SortOption.DATE_DESCENDING) },
+            // fab button
             onFabClick = {
                 // for initial posts populating purpose
                 // uploadSamplePosts(LocalContext.current)
@@ -103,10 +109,6 @@ fun HomeScreen(
                                 .padding(horizontal = SharedPadding.medium),
                             posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
                             navigateToDetailScreen = navigateToDetailScreen,
-                            searchBar = searchBar,
-                            query = query,
-                            updateQuery = ::updateQuery,
-                            filterPosts = ::filterPosts
                         )
                     }
                 }
@@ -135,19 +137,8 @@ private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
     navigateToDetailScreen: (Post) -> Unit,
-    searchBar: Boolean,
-    query: String,
-    updateQuery: (String) -> Unit,
-    filterPosts: (String) -> Unit
 ) {
     Column (modifier = modifier ) {
-        if (searchBar){
-            SharedSearchBar(
-                query = query,
-                onQueryChange = {updateQuery(it) ; filterPosts(it)},
-                modifier = Modifier.padding(bottom = SharedPadding.medium)
-            )
-        }
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {

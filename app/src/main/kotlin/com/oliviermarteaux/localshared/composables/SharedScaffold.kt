@@ -3,7 +3,10 @@ package com.oliviermarteaux.localshared.composables
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Sort
@@ -24,18 +27,25 @@ import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.ui.theme.SharedPadding
+import com.oliviermarteaux.localshared.utils.hideKeyboard
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedIcon
 import com.oliviermarteaux.shared.composables.SharedIconButton
@@ -107,33 +117,50 @@ fun SharedScaffold(
     modifier: Modifier = Modifier,
     title: String = "",
     topAppBarModifier: Modifier = Modifier,
-    onFabClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
-    onSearchClick: (() -> Unit)? = null,
+    //_ search function
+    onSearchIconClick: (() -> Unit)? = null,
+    searchBarVisible: Boolean = false,
+    query: String = "",
+    onQueryChange: (String) -> Unit = {},
+//    onSearchClick: (() -> Unit)? = null,
+    onSearchBarIconClick: (() -> Unit) = {},
+    searchBarModifier: Modifier = Modifier,
+    //_ sort function
     onSortByTitleClick: (() -> Unit)? = null,
     onSortByAscendingDateClick: (() -> Unit)? = null,
     onSortByDescendingDateClick: (() -> Unit)? = null,
+    //_ menu function
     onMenuItem1Click: (() -> Unit)? = null,
     onMenuItem2Click: (() -> Unit)? = null,
     menuItem1Title: String = "",
     menuItem2Title: String = "",
+    //_ fab function
+    onFabClick: (() -> Unit)? = null,
     fabEnabled: Boolean = true,
     fabShape: Shape =  FloatingActionButtonDefaults.shape,
     fabContainerColor: Color =  FloatingActionButtonDefaults.containerColor,
     fabContentColor: Color = contentColorFor(fabContainerColor),
     fabInteractionSource: MutableInteractionSource? = null,
     fabContentDescription: String = "",
+    //_ content
     content: @Composable (contentPadding: PaddingValues) -> Unit = {},
 ){
-    var showMenu by rememberSaveable { mutableStateOf(false) }
-    var showSortOptions by rememberSaveable { mutableStateOf(false) }
+    var menuDisplayed by rememberSaveable { mutableStateOf(false) }
+    var sortOptionsDisplayed by rememberSaveable { mutableStateOf(false) }
+    fun showMenu(){ menuDisplayed = true }
+    fun hideMenu(){ menuDisplayed = false }
+    fun showSortOptions(){ sortOptionsDisplayed = true }
+    fun hideSortOptions(){ sortOptionsDisplayed = false }
+
+    val topAppBarModifierWithSearchBar = onSearchIconClick?.let { topAppBarModifier.height(110.dp) }?:topAppBarModifier
 
     Scaffold(
         modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { TextTitleLarge(title) },
-                modifier = topAppBarModifier,
+                modifier = topAppBarModifierWithSearchBar,
                 navigationIcon = {
                     onBackClick?.let {
                         SharedIconButton(
@@ -142,55 +169,62 @@ fun SharedScaffold(
                     }
                 },
                 actions = {
-                    onSearchClick?.let {
-                        SharedIconButton(
-                            icon = IconSource.VectorIcon(Icons.Default.Search),
-                        ){ onSearchClick() }
+                    onSearchIconClick?.let {
+                        if (searchBarVisible){
+                            val searchBarFocusRequester = remember { FocusRequester() }
+                            LaunchedEffect(Unit) { searchBarFocusRequester.requestFocus() }
+                            val keyboardController = LocalSoftwareKeyboardController.current
+                            SharedSearchBar(
+                                query = query,
+                                onQueryChange = onQueryChange,
+                                modifier = searchBarModifier
+                                    .focusRequester(searchBarFocusRequester)
+                                    .width(250.dp)
+                                    .alignBy { it.measuredHeight / 2 },
+                                onSearch =  { keyboardController?.hide() },
+                                onIconClick = onSearchBarIconClick
+                            )
+                        } else {
+                            SharedIconButton(
+                                icon = IconSource.VectorIcon(Icons.Default.Search),
+                            ) { onSearchIconClick() }
+                        }
                     }
                     onSortByTitleClick?.let{
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.Default.SwapVert),
-                        ){ showSortOptions = !showSortOptions }
+                        ){ showSortOptions() }
                         DropdownMenu(
-                            expanded = showSortOptions,
-                            onDismissRequest = { showSortOptions = false }
+                            expanded = sortOptionsDisplayed,
+                            onDismissRequest = { hideSortOptions() }
                         ) {
                             DropdownMenuItem(
                                 text = { TextTitleSmall(text = "Ascending title") },
-                                onClick = {
-                                    onSortByTitleClick()
-                                    showMenu = false
-                                },
+                                onClick = { onSortByTitleClick() },
                             )
                             onSortByAscendingDateClick?.let { DropdownMenuItem(
                                 text = { TextTitleSmall(text = "Ascending date") },
-                                onClick = {
-                                    onSortByAscendingDateClick()
-                                    showMenu = false
-                                },
+                                onClick = { onSortByAscendingDateClick() },
                             )}
                             onSortByDescendingDateClick?.let { DropdownMenuItem(
                                 text = { TextTitleSmall(text = "Descending date") },
-                                onClick = {
-                                    onSortByDescendingDateClick()
-                                    showMenu = false
-                                },
+                                onClick = { onSortByDescendingDateClick() },
                             )}
                         }
                     }
                     onMenuItem1Click?.let{
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.Default.MoreVert),
-                        ) { showMenu = !showMenu }
+                        ) { showMenu() }
                         DropdownMenu(
-                            expanded = showMenu,
-                            onDismissRequest = { showMenu = false }
+                            expanded = menuDisplayed,
+                            onDismissRequest = { hideMenu() }
                         ) {
                             DropdownMenuItem(
                                 text = { TextTitleSmall(text = menuItem1Title) },
                                 onClick = {
                                     onMenuItem1Click()
-                                    showMenu = false
+                                    hideMenu()
                                 },
                             )
                             onMenuItem2Click?.let {
@@ -198,7 +232,7 @@ fun SharedScaffold(
                                     text = { TextTitleSmall(text = menuItem2Title) },
                                     onClick = {
                                         onMenuItem2Click()
-                                        showMenu = false
+                                        hideMenu()
                                     },
                                 )
                             }

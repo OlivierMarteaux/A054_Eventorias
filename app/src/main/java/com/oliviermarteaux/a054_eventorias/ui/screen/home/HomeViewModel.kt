@@ -1,14 +1,10 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
-import android.R.attr.name
 import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.play.integrity.internal.q
 import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostRepository
@@ -43,10 +39,12 @@ class HomeViewModel @Inject constructor(
     var homeUiState: ListUiState<Post> by mutableStateOf(ListUiState.Loading)
         private set
 
-    var posts: List<Post> by mutableStateOf(emptyList())
-        private set
+    private var posts: List<Post> by mutableStateOf(emptyList())
 
     var filteredPosts: List<Post> by mutableStateOf(emptyList())
+        private set
+
+    var currentSortOption: SortOption? by mutableStateOf(null)
         private set
 
     var query: String by mutableStateOf("")
@@ -54,25 +52,26 @@ class HomeViewModel @Inject constructor(
     fun updateQuery(newQuery: String) {
         query = newQuery
     }
+    fun clearQuery(){
+        query = ""
+        filterPosts("")
+    }
 
-    var searchBar: Boolean by mutableStateOf(false)
+    var searchBarVisible: Boolean by mutableStateOf(false)
         private set
-    fun showSearchBar() { searchBar = !searchBar }
+    fun showSearchBar() { searchBarVisible = true }
+    fun hideSearchBar() { searchBarVisible = false }
 
     fun filterPosts(query: String) {
         filteredPosts = posts.filter { post ->
             listOfNotNull(post.title, post.author?.firstname, post.author?.lastname)
                 .any { field -> field.contains(query, true) }
-        }
+        }.sortedWith ( currentSortOption?.comparator?:compareBy { null } )
     }
 
-    fun sortPosts(posts: List<Post>, sort: String) :List<Post> {
-        return when (sort) {
-            "sorted by title" -> posts.sortedBy { it.title }
-            "oldest first" -> posts.sortedBy { it.date }
-            "newest first" -> posts.sortedByDescending { it.date }
-            else -> posts
-        }
+    fun sortPostsBy(sortOption: SortOption) {
+        currentSortOption = sortOption
+        filteredPosts = filteredPosts.sortedWith(sortOption.comparator)
     }
 
     /**
@@ -105,7 +104,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             uploadSamplePosts(context){ post -> postRepository.addPost(post) } }
     }
-
 
     init {
 //    throw RuntimeException("Test Crash") // Force a crash

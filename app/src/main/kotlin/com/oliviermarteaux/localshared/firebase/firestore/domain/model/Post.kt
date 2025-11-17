@@ -2,6 +2,9 @@ package com.oliviermarteaux.localshared.firebase.firestore.domain.model
 
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
 import java.io.Serializable
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
 import java.util.Date
 import java.util.UUID
 
@@ -35,7 +38,7 @@ data class Post(
     /**
      * Optional description for the Post.
      */
-    val description: String? = "",
+    val description: String = "",
 
     /**
      * URL of an image associated with the Post, if any.
@@ -61,10 +64,28 @@ data class Post(
      * the date for the post event
      */
     val date: Date = Date(),
-
+    /**
+     * the time for the post event
+     */
+    val time: Date = Date(),
     /**
      * the address for the post event
      */
     val address: Address = Address(),
 
-) : Serializable
+    ) : Serializable {
+
+    // --- Compose-friendly getters ---
+    val localDate: LocalDate
+        get() = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+
+    val localTime: LocalTime
+        get() = time.toInstant().atZone(ZoneId.systemDefault()).toLocalTime()
+
+    // --- Helpers to update date/time in Post ---
+    fun copyWithLocalDate(newDate: LocalDate): Post =
+        copy(date = Date.from(newDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+
+    fun copyWithLocalTime(newTime: LocalTime): Post =
+        copy(time = Date.from(newTime.atDate(localDate).atZone(ZoneId.systemDefault()).toInstant()))
+}

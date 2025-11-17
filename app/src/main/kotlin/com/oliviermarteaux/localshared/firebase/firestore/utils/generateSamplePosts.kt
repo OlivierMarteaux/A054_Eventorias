@@ -1,10 +1,12 @@
 package com.oliviermarteaux.localshared.firebase.firestore.utils
 
+import com.oliviermarteaux.localshared.extensions.toDate
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Address
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Comment
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
-import java.util.Date
+import java.time.LocalDate
+import java.time.LocalTime
 
 fun generateSamplePosts(): List<Post> {
     val user1 = User("u1", "Alice", "Smith", "alice.smith@example.com")
@@ -20,7 +22,8 @@ fun generateSamplePosts(): List<Post> {
             comments = listOf(
                 Comment(user2, "Can't wait!", System.currentTimeMillis())
             ),
-            date = Date(2025 - 1900, 11, 5), // Dec 5, 2025
+            date = LocalDate.of(2025, 11, 5).toDate(), // Dec 5, 2025
+            time = LocalTime.of(10,0).toDate() ,
             address = Address("Main Street", "Downtown", "Paris", "75001", "France")
         ),
         Post(
@@ -30,7 +33,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 4, 12), // May 12, 2025
+            date = LocalDate.of(2025, 4, 12).toDate(), // May 12, 2025
+            time = LocalTime.of(11,0).toDate() ,
             address = Address("Park Avenue", "East Side", "New York", "10010", "USA")
         ),
         Post(
@@ -42,7 +46,8 @@ fun generateSamplePosts(): List<Post> {
             comments = listOf(
                 Comment(user2, "Excited to shop!", System.currentTimeMillis())
             ),
-            date = Date(2025 - 1900, 6, 20),
+            date = LocalDate.of(2025, 6, 20).toDate(),
+            time = LocalTime.of(12,0).toDate() ,
             address = Address("Market Street", "Uptown", "London", "E1 6AN", "UK")
         ),
         Post(
@@ -52,7 +57,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 7, 15),
+            date = LocalDate.of(2025, 7, 15).toDate(),
+            time = LocalTime.of(13,0).toDate() ,
             address = Address("Riverside Blvd", "Old Town", "Berlin", "10115", "Germany")
         ),
         Post(
@@ -62,7 +68,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user1,
             comments = emptyList(),
-            date = Date(2025 - 1900, 6, 1),
+            date = LocalDate.of(2025, 6, 1).toDate(),
+            time = LocalTime.of(14,0).toDate() ,
             address = Address("Central Park", "Midtown", "Toronto", "M5V", "Canada")
         ),
         Post(
@@ -72,7 +79,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 11, 20),
+            date = LocalDate.of(2025, 11, 20).toDate(),
+            time = LocalTime.of(15,0).toDate() ,
             address = Address("Lakeview Street", "Center", "Stockholm", "111 21", "Sweden")
         ),
         Post(
@@ -84,7 +92,8 @@ fun generateSamplePosts(): List<Post> {
             comments = listOf(
                 Comment(user2, "Amazing pieces!", System.currentTimeMillis())
             ),
-            date = Date(2025 - 1900, 3, 18),
+            date = LocalDate.of(2025, 3, 18).toDate(),
+            time = LocalTime.of(16,0).toDate() ,
             address = Address("Art Street", "Cultural District", "Rome", "00186", "Italy")
         ),
         Post(
@@ -94,7 +103,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 8, 10),
+            date = LocalDate.of(2025, 8, 10).toDate(),
+            time = LocalTime.of(17,0).toDate() ,
             address = Address("Main Boulevard", "City Center", "Madrid", "28013", "Spain")
         ),
         Post(
@@ -106,7 +116,8 @@ fun generateSamplePosts(): List<Post> {
             comments = listOf(
                 Comment(user2, "Love jazz!", System.currentTimeMillis())
             ),
-            date = Date(2025 - 1900, 5, 25),
+            date = LocalDate.of(2025, 5, 25).toDate(),
+            time = LocalTime.of(18,0).toDate() ,
             address = Address("River Street", "Old Quarter", "Lisbon", "1100-148", "Portugal")
         ),
         Post(
@@ -116,7 +127,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 9, 2),
+            date = LocalDate.of(2025, 9, 2).toDate(),
+            time = LocalTime.of(19,0).toDate() ,
             address = Address("Tech Park", "Innovation District", "San Francisco", "94103", "USA")
         ),
         Post(
@@ -126,7 +138,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user1,
             comments = emptyList(),
-            date = Date(2025 - 1900, 2, 12),
+            date = LocalDate.of(2025, 2, 12).toDate(),
+            time = LocalTime.of(20,0).toDate() ,
             address = Address("Market Lane", "Downtown", "Amsterdam", "1012", "Netherlands")
         ),
         Post(
@@ -136,7 +149,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 9, 31),
+            date = LocalDate.of(2025, 9, 30).toDate(),
+            time = LocalTime.of(21,0).toDate() ,
             address = Address("Pumpkin Street", "Old Town", "Dublin", "D01", "Ireland")
         ),
         Post(
@@ -148,7 +162,8 @@ fun generateSamplePosts(): List<Post> {
             comments = listOf(
                 Comment(user2, "Can't wait!", System.currentTimeMillis())
             ),
-            date = Date(2025 - 1900, 6, 10),
+            date = LocalDate.of(2025, 6, 10).toDate(),
+            time = LocalTime.of(22,0).toDate() ,
             address = Address("Library Road", "Central", "Edinburgh", "EH1", "UK")
         ),
         Post(
@@ -158,7 +173,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 4, 5),
+            date = LocalDate.of(2025, 4, 5).toDate(),
+            time = LocalTime.of(23,0).toDate() ,
             address = Address("Innovation Street", "Tech District", "Copenhagen", "1050", "Denmark")
         ),
         Post(
@@ -168,7 +184,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user1,
             comments = emptyList(),
-            date = Date(2025 - 1900, 7, 8),
+            date = LocalDate.of(2025, 7, 8).toDate(),
+            time = LocalTime.of(0,0).toDate() ,
             address = Address("Riverfront", "Downtown", "Melbourne", "3000", "Australia")
         ),
         Post(
@@ -178,7 +195,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 5, 18),
+            date = LocalDate.of(2025, 5, 18).toDate(),
+            time = LocalTime.of(1,0).toDate() ,
             address = Address(
                 "Cinema Street",
                 "Entertainment District",
@@ -194,7 +212,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user1,
             comments = emptyList(),
-            date = Date(2025 - 1900, 6, 22),
+            date = LocalDate.of(2025, 6, 22).toDate(),
+            time = LocalTime.of(2,0).toDate() ,
             address = Address("Green Park", "Midtown", "London", "SW1A", "UK")
         ),
         Post(
@@ -204,7 +223,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 8, 14),
+            date = LocalDate.of(2025, 8, 14).toDate(),
+            time = LocalTime.of(3,0).toDate() ,
             address = Address("Fun Street", "Downtown", "Rio de Janeiro", "20010", "Brazil")
         ),
         Post(
@@ -216,7 +236,8 @@ fun generateSamplePosts(): List<Post> {
             comments = listOf(
                 Comment(user2, "Lovely idea!", System.currentTimeMillis())
             ),
-            date = Date(2025 - 1900, 7, 30),
+            date = LocalDate.of(2025, 7, 30).toDate(),
+            time = LocalTime.of(4,0).toDate() ,
             address = Address("Theater Avenue", "Cultural District", "Paris", "75002", "France")
         ),
         Post(
@@ -226,7 +247,8 @@ fun generateSamplePosts(): List<Post> {
             timestamp = System.currentTimeMillis(),
             author = user2,
             comments = emptyList(),
-            date = Date(2025 - 1900, 11, 10),
+            date = LocalDate.of(2025, 11, 10).toDate(),
+            time = LocalTime.of(5,0).toDate() ,
             address = Address("Lantern Street", "Old Town", "Tokyo", "100-0001", "Japan")
         )
     )

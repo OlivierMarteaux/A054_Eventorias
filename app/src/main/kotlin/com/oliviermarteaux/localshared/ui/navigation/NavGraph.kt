@@ -2,9 +2,12 @@ package com.oliviermarteaux.localshared.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.oliviermarteaux.a054_eventorias.ui.screen.account.AccountScreen
+import com.oliviermarteaux.a054_eventorias.ui.screen.detail.DetailScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.home.HomeScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password.PasswordScreen
@@ -81,7 +84,7 @@ fun SharedNavGraph(
             HomeScreen(
                 navController = navHostController,
                 navigateToDetailScreen = {
-//                        post -> navHostController.navigate(Screen.Detail.route + "/${post.id}")
+                        post -> navHostController.navigate(Screen.Detail.route + "/${post.id}")
                 },
                 onSettingsClick = { /*navHostController.navigate(Screen.Settings.route)*/ },
                 navigateToLoginScreen = { /*navHostController.navigate(Screen.Login.route)*/ },
@@ -89,18 +92,15 @@ fun SharedNavGraph(
                 navigateToAddScreen = { /*navHostController.navigate(Screen.AddPost.route)*/ }
             )
         }
-//        /*_ DETAIL SCREEN ###########################################################################*/
-//        composable(
-//            route = Screen.Detail.route + "/{post_id}",
-//            arguments = listOf(navArgument("post_id") { type = NavType.StringType })
-//        ){
-//            DetailScreen(
-//                onBackClick = { navHostController.navigateUp() },
-//                navigateToCommentScreen = {
-//                        post -> navHostController.navigate(Screen.Comment.route + "/${post.id}")
-//                }
-//            )
-//        }
+        /*_ DETAIL SCREEN ###########################################################################*/
+        composable(
+            route = Screen.Detail.route + "/{post_id}",
+            arguments = listOf(navArgument("post_id") { type = NavType.StringType })
+        ){
+            DetailScreen(
+                onBackClick = { navHostController.navigateUp() },
+            )
+        }
 //        /*_ COMMENT SCREEN ###########################################################################*/
 //        composable(
 //            route = Screen.Comment.route + "/{post_id}",

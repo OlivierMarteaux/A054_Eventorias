@@ -1,4 +1,4 @@
-package com.oliviermarteaux.a054_eventorias.ui.navigation
+package com.oliviermarteaux.localshared.ui.navigation
 
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavType
@@ -15,7 +15,7 @@ sealed class Screen(
     val route: String,
     val navArguments: List<NamedNavArgument> = emptyList(),
     val routeWithArgs: String = "",
-    val titleRes: Int = -1
+    val titleRes: Int = -1,
 ) {
     /**
      * The splash screen.
@@ -50,5 +50,13 @@ sealed class Screen(
     data object Home : Screen(
         route = "home",
         titleRes = R.string.home_screen_title
+    )
+
+    /**
+     * The account screen.
+     */
+    data object Account : Screen(
+        route = "account",
+        titleRes = R.string.account_screen_title
     )
 }

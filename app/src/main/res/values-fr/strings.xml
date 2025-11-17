@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">A054_Eventorias</string>
     <!-- shared string resources -->
     <string name="application_cancel">Annuler</string>
     <string name="application_email">E-mail</string>
@@ -30,4 +29,13 @@
     <string name="reset_screen_title">Récupérer votre mot de passe</string>
     <string name="splash_screen_sign_in_with_email">Se connecter avec une adresse e-mail</string>
     <string name="splash_screen_sign_in_with_google">Se connecter avec Google</string>
+    <string name="menu_action_settings">Paramètres</string>
+    <string name="menu_action_my_account">Mon compte</string>
+    <string name="home_screen_empty_state">Aucune publication</string>
+    <string name="home_screen_error_no_user_logged">Un compte est nécessaire pour ajouter une publication.</string>
+    <string name="application_by_author">Par %1$s %2$s</string>
+    <!-- specific string resources -->
+    <string name="app_name">A054_Eventorias</string>
+    <string name="home_screen_title">Event list</string>
+    <string name="home_screen_search_bar_label">Rechercher un évenement</string>
 </resources>

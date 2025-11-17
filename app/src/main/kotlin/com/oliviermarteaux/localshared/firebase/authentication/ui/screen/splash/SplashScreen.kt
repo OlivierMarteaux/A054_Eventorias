@@ -1,5 +1,6 @@
 package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash
 
+import android.R.attr.text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,23 +20,26 @@ import com.oliviermarteaux.shared.composables.SharedImage
 @Composable
 fun SplashScreen(
     logoDrawableRes: Int,
-    splashViewModel: SplashViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    splashViewModel: SplashViewModel = hiltViewModel(),
     navigateToLoginScreen: () -> Unit,
+    navigateToHomeScreen: () -> Unit
 ) {
-    Column(
-        modifier = modifier
-    ){
-        SharedImage(
-            painter = painterResource(id = logoDrawableRes),
-        )
-        SharedButton(
-            onClick = navigateToLoginScreen,
-            text = stringResource(R.string.splash_screen_sign_in_with_email)
-        )
-        SharedButton(
-            onClick = splashViewModel::signInWithGoogle,
-            text = stringResource(R.string.splash_screen_sign_in_with_google)
-        )
+    with(splashViewModel) {
+        Column(
+            modifier = modifier
+        ) {
+            SharedImage(
+                painter = painterResource(id = logoDrawableRes),
+            )
+            SharedButton(
+                onClick = navigateToLoginScreen,
+                text = stringResource(R.string.splash_screen_sign_in_with_email)
+            )
+            SharedButton(
+                onClick = { signInWithGoogle(navigateToHomeScreen) },
+                text = stringResource(R.string.splash_screen_sign_in_with_google)
+            )
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.oliviermarteaux.a054_eventorias.ui.navigation
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.oliviermarteaux.a054_eventorias.R
 
 /**
  * A sealed class that represents the different screens in the application.
@@ -13,7 +14,8 @@ import androidx.navigation.navArgument
 sealed class Screen(
     val route: String,
     val navArguments: List<NamedNavArgument> = emptyList(),
-    val routeWithArgs: String = ""
+    val routeWithArgs: String = "",
+    val titleRes: Int = -1
 ) {
     /**
      * The splash screen.
@@ -40,5 +42,13 @@ sealed class Screen(
         route = "reset",
         navArguments = listOf(navArgument("email") { type = NavType.StringType }),
         routeWithArgs = "reset/{email}"
+    )
+
+    /**
+     * The home screen.
+     */
+    data object Home : Screen(
+        route = "home",
+        titleRes = R.string.home_screen_title
     )
 }

@@ -25,8 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.navigation.Screen
+import com.oliviermarteaux.localshared.composables.SharedBottomAppBar
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
@@ -51,6 +54,7 @@ import com.oliviermarteaux.shared.ui.ListUiState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
     navigateToDetailScreen: (Post) -> Unit = {},
@@ -72,6 +76,8 @@ fun HomeScreen(
             onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
             onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
             onSortByDescendingDateClick = { sortPostsBy(SortOption.DATE_DESCENDING) },
+            // bottom app bar
+            bottomBar = { SharedBottomAppBar(navController) },
             // fab button
             onFabClick = {
                 // for initial posts populating purpose

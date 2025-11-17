@@ -36,6 +36,7 @@
     <string name="application_by_author">Par %1$s %2$s</string>
     <!-- specific string resources -->
     <string name="app_name">A054_Eventorias</string>
-    <string name="home_screen_title">Event list</string>
-    <string name="home_screen_search_bar_label">Rechercher un évenement</string>
+    <string name="home_screen_title">Liste des évènements</string>
+    <string name="home_screen_search_bar_label">Rechercher un évènement</string>
+    <string name="account_screen_title">Profil utilisateur</string>
 </resources>

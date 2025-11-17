@@ -5,7 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.a054_eventorias.ui.screen.account.AccountScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.home.HomeScreen
+import com.oliviermarteaux.localshared.composables.BottomNavItem
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password.PasswordScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset.ResetScreen
@@ -75,6 +77,7 @@ fun EventoriasNavHost(navHostController: NavHostController) {
         /*_ HOME SCREEN ##############################################################################*/
         composable(route = Screen.Home.route) {
             HomeScreen(
+                navController = navHostController,
                 navigateToDetailScreen = {
 //                        post -> navHostController.navigate(Screen.Detail.route + "/${post.id}")
                 },
@@ -103,10 +106,10 @@ fun EventoriasNavHost(navHostController: NavHostController) {
 //        ){
 //            CommentScreen(onBackClick = { navHostController.navigateUp() })
 //        }
-//        /*_ ACCOUNT SCREEN ###########################################################################*/
-//        composable(route = Screen.Account.route) {
-//            AccountScreen(navigateBack = { navHostController.navigateUp() })
-//        }
+        /*_ ACCOUNT SCREEN ###########################################################################*/
+        composable(route = Screen.Account.route) {
+            AccountScreen()
+        }
 //        /*_ ADD POST SCREEN ##########################################################################*/
 //        composable(route = Screen.AddPost.route) {
 //            AddScreen(navigateBack = { navHostController.navigateUp() })

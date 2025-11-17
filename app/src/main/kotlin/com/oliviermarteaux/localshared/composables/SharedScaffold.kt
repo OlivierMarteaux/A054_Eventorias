@@ -85,6 +85,7 @@ import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
  * @param fabContentColor Content color of the FAB. Defaults to [contentColorFor(fabContainerColor)].
  * @param fabInteractionSource Optional [MutableInteractionSource] for the FAB.
  * @param fabContentDescription Accessibility content description for the FAB.
+ * @param bottomBar The composable to be used as the bottom app bar.
  * @param content Composable lambda representing the main content of the scaffold. Receives [contentPadding] to account for system bars and FAB.
  *
  * ### Example Usage:
@@ -143,6 +144,8 @@ fun SharedScaffold(
     fabContentColor: Color = contentColorFor(fabContainerColor),
     fabInteractionSource: MutableInteractionSource? = null,
     fabContentDescription: String = "",
+    //_ bottom bar
+    bottomBar: @Composable () -> Unit = {},
     //_ content
     content: @Composable (contentPadding: PaddingValues) -> Unit = {},
 ){
@@ -241,6 +244,7 @@ fun SharedScaffold(
                 }
             )
         },
+        bottomBar = bottomBar,
         floatingActionButton = {
             onFabClick?.let {
                 FloatingActionButton(

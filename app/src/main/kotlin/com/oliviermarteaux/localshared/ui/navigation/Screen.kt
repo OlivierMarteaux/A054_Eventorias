@@ -1,8 +1,5 @@
-package com.oliviermarteaux.a054_eventorias.ui.navigation
+package com.oliviermarteaux.localshared.ui.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavType
 import androidx.navigation.navArgument

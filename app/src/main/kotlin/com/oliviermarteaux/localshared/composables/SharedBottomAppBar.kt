@@ -12,12 +12,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.oliviermarteaux.a054_eventorias.ui.navigation.Screen
+import com.oliviermarteaux.localshared.ui.navigation.BottomNavItem
+import com.oliviermarteaux.localshared.ui.navigation.Screen
 
-sealed class BottomNavItem(val screen: Screen, val icon: ImageVector, val title: String) {
-    object Home : BottomNavItem(Screen.Home, Icons.Filled.Event, "Events")
-    object Account : BottomNavItem(Screen.Account, Icons.Filled.Person, "Profile")
-}
+
 
 @Composable
 fun SharedBottomAppBar(

@@ -42,11 +42,12 @@ class AddViewModel @Inject constructor(
     var post: Post by mutableStateOf(Post())
         private set
 
-    fun onTitleChange(title: String) { post = post.copy(title = title) }
-    fun onDescriptionChange(description: String) { post = post.copy(description = description) }
-    fun onDateChange(date: String) { post = post.copy(date = date.toDateTypeDate()) }
-    fun onTimeChange(time: String) { post = post.copy(time = time.toDateTypeTime()) }
-    fun onAddressChange(address: String) { post = post.copy(address = Address(address)) }
+    fun updatePostTitle(title: String) { post = post.copy(title = title) }
+    fun updatePostDescription(description: String) { post = post.copy(description = description) }
+    fun updatePostDate(date: String) { post = post.copy(date = date.toDateTypeDate()) }
+    fun updatePostTime(time: String) { post = post.copy(time = time.toDateTypeTime()) }
+    fun updatePostAddress(address: String) { post = post.copy(address = Address(address)) }
+    fun updatePostPhoto(photoUrl: String) { post = post.copy(photoUrl = photoUrl) }
 
     /**
      * Attempts to add the current post to the repository after setting the author.

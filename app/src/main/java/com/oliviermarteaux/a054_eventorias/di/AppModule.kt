@@ -3,6 +3,7 @@ package com.openclassrooms.hexagonal.games.di
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
+import com.oliviermarteaux.localshared.cameraX.CameraRepository
 import com.oliviermarteaux.localshared.firebase.authentication.data.service.UserApi
 import com.oliviermarteaux.localshared.firebase.authentication.data.service.UserFirebaseApi
 import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostFirebaseRepository

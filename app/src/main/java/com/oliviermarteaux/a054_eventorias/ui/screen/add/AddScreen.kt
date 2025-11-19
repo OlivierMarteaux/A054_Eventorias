@@ -1,15 +1,28 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.add
 
-import android.R.attr.description
-import android.R.attr.onClick
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.AttachFile
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,20 +30,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.composables.SharedOutlinedTextField
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
-import com.oliviermarteaux.localshared.composables.SharedOutlinedTextField
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
 import com.oliviermarteaux.shared.composables.SharedIconButton
 import com.oliviermarteaux.shared.composables.sharedImagePicker
-import com.oliviermarteaux.shared.ui.theme.SharedPadding
 
 @Composable
 fun AddScreen(
     addViewModel: AddViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
-    onValidateClick: () -> Unit = {}
+    navigateToCamera: ((String) -> Unit) -> Unit
 ) {
     with(addViewModel) {
         SharedScaffold(
@@ -45,8 +57,10 @@ fun AddScreen(
                 updatePostTime = ::updatePostTime,
                 updatePostAddress = ::updatePostAddress,
                 updatePostPhoto = ::updatePostPhoto,
+                navigateToCamera = navigateToCamera,
+                addPost = { addPost(navigateBack) },
+                navigateBack = navigateBack,
                 paddingValues = paddingValues,
-                onValidateClick = {}
             )
         }
     }
@@ -61,8 +75,10 @@ fun AddScreenBody(
     updatePostTime: (String) -> Unit,
     updatePostAddress: (String) -> Unit,
     updatePostPhoto: (String) -> Unit,
+    navigateToCamera: ((String) -> Unit) -> Unit,
+    addPost: () -> Unit,
+    navigateBack: () -> Unit,
     paddingValues: PaddingValues,
-    onValidateClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -80,14 +96,17 @@ fun AddScreenBody(
             updatePostAddress = updatePostAddress,
         )
 
-        AddScreenPhotoPickButtonsCard(updatePostPhoto)
+        AddScreenPhotoPickButtonsCard(
+            updatePostPhoto = updatePostPhoto,
+            navigateToCamera = navigateToCamera
+        )
 
         post.photoUrl?.let { AddScreenImagePreview(it) }
 
         Spacer(modifier = Modifier.weight(1f))
 
         AddScreenSaveButton(
-            onValidateClick = onValidateClick
+            onClick = addPost
         )
     }
 }
@@ -159,12 +178,13 @@ fun AddScreenTextForm(
 
 @Composable
 fun AddScreenPhotoPickButtonsCard(
-    updatePostPhoto: (String) -> Unit
+    updatePostPhoto: (String) -> Unit,
+    navigateToCamera: ((String) -> Unit) -> Unit
 ){
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        CameraPhotoPickButton({})
+        CameraPhotoPickButton { navigateToCamera(updatePostPhoto) }
 
         LocalePhotoPickButton(updatePostPhoto)
     }
@@ -179,18 +199,18 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
         tint = Color.White,
         colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red)
     ) { imagePickerLauncher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly)) }
-    IconButton(
-        onClick = { /* Handle attachment click */ },
-        colors = IconButtonDefaults.iconButtonColors(
-            containerColor = Color.Red
-        )
-    ) {
-        Icon(
-            Icons.Default.AttachFile,
-            contentDescription = stringResource(R.string.add_a_photo),
-            tint = Color.White
-        )
-    }
+//    IconButton(
+//        onClick = { /* Handle attachment click */ },
+//        colors = IconButtonDefaults.iconButtonColors(
+//            containerColor = Color.Red
+//        )
+//    ) {
+//        Icon(
+//            Icons.Default.AttachFile,
+//            contentDescription = stringResource(R.string.add_a_photo),
+//            tint = Color.White
+//        )
+//    }
 }
 
 @Composable
@@ -217,10 +237,10 @@ fun AddScreenImagePreview(photoUrl: String){
 
 @Composable
 fun AddScreenSaveButton(
-    onValidateClick: () -> Unit
+    onClick: () -> Unit
 ){
     Button(
-        onClick = onValidateClick,
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),

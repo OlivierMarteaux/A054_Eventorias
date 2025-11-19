@@ -23,6 +23,7 @@ materialIconsExtended = "1.7.8"
 googlemapsAndroid = "2.13.0"
 googlemapsSdk = "19.2.0"
 accompanist = "0.32.0"
+cameraX = "1.5.1"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -66,6 +67,11 @@ material-icons-extended = { module = "androidx.compose.material:material-icons-e
 googlemaps-android = {module = "com.google.maps.android:maps-compose", version.ref = "googlemapsAndroid"}
 googlemaps-sdk = {module = "com.google.android.gms:play-services-maps", version.ref = "googlemapsSdk"}
 google-accompanist = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist"}
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraX" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraX" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraX" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraX" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

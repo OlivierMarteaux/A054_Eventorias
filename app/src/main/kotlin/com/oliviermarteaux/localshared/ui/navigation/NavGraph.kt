@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.oliviermarteaux.a054_eventorias.ui.screen.account.AccountScreen
+import com.oliviermarteaux.a054_eventorias.ui.screen.add.AddScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.detail.DetailScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.home.HomeScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
@@ -89,7 +90,7 @@ fun SharedNavGraph(
                 onSettingsClick = { /*navHostController.navigate(Screen.Settings.route)*/ },
                 navigateToLoginScreen = { /*navHostController.navigate(Screen.Login.route)*/ },
                 navigateToAccountScreen = { /*navHostController.navigate(Screen.Account.route)*/ },
-                navigateToAddScreen = { /*navHostController.navigate(Screen.AddPost.route)*/ }
+                navigateToAddScreen = { navHostController.navigate(Screen.Add.route) }
             )
         }
         /*_ DETAIL SCREEN ###########################################################################*/
@@ -112,10 +113,12 @@ fun SharedNavGraph(
         composable(route = Screen.Account.route) {
             AccountScreen()
         }
-//        /*_ ADD POST SCREEN ##########################################################################*/
-//        composable(route = Screen.AddPost.route) {
-//            AddScreen(navigateBack = { navHostController.navigateUp() })
-//        }
+        /*_ ADD POST SCREEN ##########################################################################*/
+        composable(route = Screen.Add.route) {
+            AddScreen(
+                navigateBack = { navHostController.navigateUp() },
+            )
+        }
 //        /*_ SETTINGS SCREEN ##########################################################################*/
 //        composable(route = Screen.Settings.route) {
 //            SettingsScreen(onBackClick = { navHostController.navigateUp() })

@@ -99,10 +99,10 @@ fun HomeScreen(
                 //_ UiState management: Empty, Error, Loading, Success
                 when (homeUiState) {
                     is ListUiState.Loading -> CenteredCircularProgressIndicator()
-                    is ListUiState.Empty -> SharedToast(stringResource(R.string.home_screen_empty_state))
+                    is ListUiState.Empty -> SharedToast(stringResource(R.string.no_posts))
                     is ListUiState.Error -> {
                         SharedToast(
-                            text = stringResource(R.string.application_error_unknown),
+                            text = stringResource(R.string.an_unknown_error_occurred),
                             bottomPadding = 200
                         )
                     }
@@ -120,11 +120,11 @@ fun HomeScreen(
                     }
                 }
                 if (authError) SharedToast(
-                    text = stringResource(R.string.home_screen_error_no_user_logged),
+                    text = stringResource(R.string.an_account_is_mandatory_to_add_a_post),
                     bottomPadding = 120
                 )
                 if (networkError) SharedToast(
-                    text = stringResource(R.string.application_error_network),
+                    text = stringResource(R.string.network_error_check_your_internet_connection),
                     bottomPadding = 160
                 )
             }
@@ -181,7 +181,7 @@ private fun HomeFeedCell(
         ) {
             TextTitleSmall(
                 text = stringResource(
-                    id = R.string.application_by_author,
+                    id = R.string.by_x_y,
                     post.author?.firstname ?: "",
                     post.author?.lastname ?: ""
                 ),

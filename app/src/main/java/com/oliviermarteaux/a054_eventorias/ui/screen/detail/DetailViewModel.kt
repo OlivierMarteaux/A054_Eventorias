@@ -1,5 +1,7 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.detail
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,6 +26,7 @@ import javax.inject.Inject
  * @param log The logger.
  * @param isOnlineFlow A flow that emits the current internet connection status.
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,

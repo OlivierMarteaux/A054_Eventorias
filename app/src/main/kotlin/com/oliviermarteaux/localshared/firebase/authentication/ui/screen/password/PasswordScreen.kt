@@ -43,7 +43,7 @@ fun PasswordScreen(
 ){
     SharedScaffold(
         modifier = modifier,
-        title = stringResource(R.string.password_screen_sign_in),
+        title = stringResource(R.string.sign_in),
         onBackClick = onBackClick
     ){ contentPadding ->
         Box {
@@ -61,13 +61,13 @@ fun PasswordScreen(
                     navigateToPasswordResetScreen = navigateToPasswordResetScreen,
                     signIn = ::signIn
                 )
-                if(unknownError) SharedToast(text = stringResource(R.string.application_error_unknown))
+                if(unknownError) SharedToast(text = stringResource(R.string.an_unknown_error_occurred))
                 if(networkError) SharedToast(
-                    text = stringResource(R.string.application_error_network),
+                    text = stringResource(R.string.network_error_check_your_internet_connection),
                     bottomPadding = 120
                 )
                 if(incorrectPassword)SharedToast(
-                    text = stringResource(R.string.password_screen_error_incorrect_password),
+                    text = stringResource(R.string.incorrect_password),
                     bottomPadding = 160
                 )
             }
@@ -102,17 +102,17 @@ private fun PasswordBody(
         modifier = modifier
     ){
         Text(
-            text = stringResource(R.string.password_screen_text, email),
+            text = stringResource(R.string.welcome_back_you_ve_already_used_to_sign_in_enter_your_password_for_that_account, email),
             textAlign = TextAlign.Center,
         )
         SharedOutlinedPassword(
             value = password,
             onValueChange = { onPasswordChange(it) },
-            label = stringResource(R.string.application_password),
+            label = stringResource(R.string.password),
             imeAction = ImeAction.Done,
             modifier = Modifier.fillMaxWidth()
         )
-        SharedButton(text = stringResource(R.string.password_screen_forgot_password)){ navigateToPasswordResetScreen(email) }
-        SharedButton(text = stringResource(R.string.password_screen_sign_in)){ signIn(password) { navigateToHomeScreen() } }
+        SharedButton(text = stringResource(R.string.trouble_signing_in)){ navigateToPasswordResetScreen(email) }
+        SharedButton(text = stringResource(R.string.sign_in)){ signIn(password) { navigateToHomeScreen() } }
     }
 }

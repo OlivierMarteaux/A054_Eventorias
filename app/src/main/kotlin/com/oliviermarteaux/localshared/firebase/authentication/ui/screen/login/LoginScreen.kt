@@ -59,7 +59,7 @@ fun LoginScreen(
     with (loginViewModel) {
         SharedScaffold(
             modifier = modifier,
-            title = stringResource(R.string.login_screen_label),
+            title = stringResource(R.string.sign_in),
             onBackClick = onBackClick,
         ) { contentPadding ->
             Box {
@@ -83,13 +83,13 @@ fun LoginScreen(
                     showNetworkErrorToast = ::showNetworkErrorToast,
                     onEmailExist = ::onEmailExist,
                 )
-                if(unknownError) SharedToast(text = stringResource(R.string.application_error_unknown))
+                if(unknownError) SharedToast(text = stringResource(R.string.an_unknown_error_occurred))
                 if(networkError) SharedToast(
-                    text = stringResource(R.string.application_error_network),
+                    text = stringResource(R.string.network_error_check_your_internet_connection),
                     bottomPadding = 120
                 )
                 if(accountCreationError) SharedToast(
-                    text = stringResource(R.string.login_screen_error_account),
+                    text = stringResource(R.string.email_account_registration_unsuccessful),
                     bottomPadding = 160
                 )
             }
@@ -144,13 +144,13 @@ private fun LoginBody(
         SharedOutlinedEmail(
             value = newUser.email,
             onValueChange = { onEmailChange(it) },
-            label = stringResource(R.string.application_email),
+            label = stringResource(R.string.email),
             imeAction = ImeAction.Done,
             modifier = Modifier.fillMaxWidth(),
             bottomPadding = SharedPadding.xxl,
             errorText = when {
-                newUser.email.isEmpty() -> stringResource(R.string.login_screen_email_error_empty)
-                !newUser.email.isValidEmail() -> stringResource(R.string.login_screen_email_error_format)
+                newUser.email.isEmpty() -> stringResource(R.string.enter_your_email_address_to_continue)
+                !newUser.email.isValidEmail() -> stringResource(R.string.incorrect_email_address)
                 else -> null
             }
         )
@@ -158,7 +158,7 @@ private fun LoginBody(
             emailExist == null -> {
                 SharedButton(
                     onClick = { if (isOnline) checkEmail(newUser.email) else showNetworkErrorToast() },
-                    text = stringResource(R.string.application_next),
+                    text = stringResource(R.string.next),
                     enabled = newUser.email.run {isValidEmail() && isNotEmpty()}
                 )
             }
@@ -173,9 +173,9 @@ private fun LoginBody(
                 SharedOutlinedTextField(
                     value = newUser.firstname,
                     onValueChange = { onFirstNameChange(it) },
-                    label = stringResource(R.string.login_screen_first_name),
+                    label = stringResource(R.string.first_name),
                     isError = newUser.firstname.isEmpty(),
-                    errorText = stringResource(R.string.login_screen_first_name_error_empty),
+                    errorText = stringResource(R.string.please_enter_a_first_name),
                     bottomPadding = SharedPadding.xxl,
                     modifier = Modifier
                         .focusRequester(firstNameFocusRequester)
@@ -184,24 +184,24 @@ private fun LoginBody(
                 SharedOutlinedTextField(
                     value = newUser.lastname,
                     onValueChange = { onLastNameChange(it) },
-                    label = stringResource(R.string.login_screen_last_name),
+                    label = stringResource(R.string.last_name),
                     isError = newUser.lastname.isEmpty(),
-                    errorText = stringResource(R.string.login_screen_last_name_error_empty),
+                    errorText = stringResource(R.string.please_enter_a_last_name),
                     bottomPadding = SharedPadding.xxl,
                     modifier = Modifier.fillMaxWidth()
                 )
                 SharedOutlinedPassword(
                     value = newUser.password,
                     onValueChange = { onPasswordChange(it) },
-                    label = stringResource(R.string.login_screen_new_password),
-                    errorText = stringResource(R.string.login_screen_password_error_strength),
+                    label = stringResource(R.string.new_password),
+                    errorText = stringResource(R.string.password_is_not_strong_enough_use_at_least_6_characters_and_a_mix_of_letters_numbers_and_a_special_character),
                     passwordSetting = true,
                     modifier = Modifier.fillMaxWidth(),
                     bottomPadding = SharedPadding.xxl
                 )
                 SharedButton(
                     onClick = { createAccount(newUser){navigateToHomeScreen()} },
-                    text = stringResource(R.string.login_screen_create_account),
+                    text = stringResource(R.string.save),
                     modifier = Modifier.padding(vertical = SharedPadding.xxl)
                 )
                 Spacer(modifier = Modifier.size(300.dp))

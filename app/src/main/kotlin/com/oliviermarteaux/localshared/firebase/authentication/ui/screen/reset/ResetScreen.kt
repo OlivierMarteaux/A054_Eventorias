@@ -42,7 +42,7 @@ fun ResetScreen(
 
     SharedScaffold(
         modifier = modifier,
-        title = stringResource(R.string.reset_screen_title),
+        title = stringResource(R.string.recover_password),
         onBackClick = onBackClick
     ) { contentPadding ->
         with (resetViewModel) {
@@ -59,9 +59,9 @@ fun ResetScreen(
                     alertDialog = alertDialog,
                     navigateToLoginScreen = navigateToLoginScreen,
                 )
-                if(unknownError) SharedToast(text = stringResource(R.string.application_error_unknown))
+                if(unknownError) SharedToast(text = stringResource(R.string.an_unknown_error_occurred))
                 if(networkError) SharedToast(
-                    text = stringResource(R.string.application_error_network),
+                    text = stringResource(R.string.network_error_check_your_internet_connection),
                     bottomPadding = 120
                 )
             }
@@ -93,29 +93,29 @@ private fun ResetBody(
         modifier = modifier
     ){
         Text(
-            text = stringResource(R.string.reset_screen_text),
+            text = stringResource(R.string.receive_instructions_to_this_email_that_explain_how_to_reset_your_password),
             textAlign = TextAlign.Center
         )
         SharedOutlinedEmail(
             value = email,
             onValueChange = { onEmailChange(it) },
-            label = stringResource(R.string.application_email),
+            label = stringResource(R.string.email),
             imeAction = ImeAction.Done,
             modifier = Modifier.fillMaxWidth(),
             errorText = when {
-                email.isEmpty() -> stringResource(R.string.login_screen_email_error_empty)
-                !email.isValidEmail() -> stringResource(R.string.login_screen_email_error_format)
+                email.isEmpty() -> stringResource(R.string.enter_your_email_address_to_continue)
+                !email.isValidEmail() -> stringResource(R.string.incorrect_email_address)
                 else -> null
             }
         )
-        SharedButton(text = stringResource(R.string.application_send)) { sendPasswordResetEmail(email) }
+        SharedButton(text = stringResource(R.string.send)) { sendPasswordResetEmail(email) }
     }
     AnimatedVisibility(alertDialog) {
         SharedAlertDialog(
-            title = stringResource(R.string.reset_screen_alert_dialog_title),
-            text = stringResource(R.string.reset_screen_text, email),
+            title = stringResource(R.string.check_your_email),
+            text = stringResource(R.string.receive_instructions_to_this_email_that_explain_how_to_reset_your_password, email),
             onConfirm = navigateToLoginScreen,
-            confirmText = stringResource(R.string.application_ok)
+            confirmText = stringResource(R.string.ok)
         )
     }
 }

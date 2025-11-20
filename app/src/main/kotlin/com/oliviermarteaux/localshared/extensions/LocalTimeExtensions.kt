@@ -1,5 +1,7 @@
 package com.oliviermarteaux.localshared.extensions
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -8,9 +10,11 @@ import java.time.ZoneId
 import java.util.Date
 
 // Convert LocalTime → Date
+@RequiresApi(Build.VERSION_CODES.O)
 fun LocalTime.toDate(): Date =
     Date.from(this.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant())
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun LocalTime.toLocalTimeString(locale: Locale = Locale.getDefault()): String {
     val pattern = when (locale.language.lowercase()) {
         // French → 24h format "HH:mm"

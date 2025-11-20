@@ -49,7 +49,7 @@ sealed class Screen(
      */
     data object Home : Screen(
         route = "home",
-        titleRes = R.string.home_screen_title
+        titleRes = R.string.event_list
     )
 
     /**
@@ -57,9 +57,19 @@ sealed class Screen(
      */
     data object Detail : Screen(
         route = "detail",
-        titleRes = R.string.account_screen_title,
+        titleRes = R.string.user_profile,
         navArguments = listOf(navArgument("post_id") { type = NavType.IntType }),
         routeWithArgs = "detail/{post_id}"
+    )
+
+    /**
+     * The add screen.
+     */
+    data object Add : Screen(
+        route = "add",
+        titleRes = R.string.creation_of_an_event,
+        navArguments = listOf(navArgument("photo_url") { type = NavType.StringType }),
+        routeWithArgs = "add/{photo_url}"
     )
 
     /**
@@ -67,6 +77,13 @@ sealed class Screen(
      */
     data object Account : Screen(
         route = "account",
-        titleRes = R.string.account_screen_title
+        titleRes = R.string.user_profile
+    )
+    /**
+     * The camera screen.
+     */
+    data object Camera : Screen(
+        route = "camera",
+        titleRes = R.string.camera
     )
 }

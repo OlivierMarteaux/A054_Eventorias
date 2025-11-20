@@ -1,10 +1,14 @@
 package com.oliviermarteaux.localshared.firebase.firestore.domain.model
 
+import com.oliviermarteaux.localshared.extensions.toLocalTimeString
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
+import com.oliviermarteaux.shared.extensions.toLocalDateString
 import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.temporal.TemporalQueries.localDate
+import java.time.temporal.TemporalQueries.localTime
 import java.util.Date
 import java.util.UUID
 
@@ -48,7 +52,7 @@ data class Post(
     /**
      * Timestamp representing the creation date and time of the Post in milliseconds since epoch.
      */
-    val timestamp: Long = 0L,
+    val timestamp: Long = System.currentTimeMillis(),
 
     /**
      * User object representing the author of the Post.
@@ -63,29 +67,34 @@ data class Post(
     /**
      * the date for the post event
      */
-    val date: Date = Date(),
+    val date: Date? = null,
     /**
      * the time for the post event
      */
-    val time: Date = Date(),
+    val time: Date? = null,
     /**
      * the address for the post event
      */
     val address: Address = Address(),
 
     ) : Serializable {
-
     // --- Compose-friendly getters ---
-    val localDate: LocalDate
-        get() = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+    val localeDate: LocalDate?
+        get() = date?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()
 
-    val localTime: LocalTime
-        get() = time.toInstant().atZone(ZoneId.systemDefault()).toLocalTime()
+    val localeDateString : String
+        get() = localeDate?.toLocalDateString()?:""
+
+    val localeTime: LocalTime?
+        get() = time?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalTime()
+
+    val localeTimeString : String
+        get() = localeTime?.toLocalTimeString()?:""
 
     // --- Helpers to update date/time in Post ---
     fun copyWithLocalDate(newDate: LocalDate): Post =
         copy(date = Date.from(newDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
 
     fun copyWithLocalTime(newTime: LocalTime): Post =
-        copy(time = Date.from(newTime.atDate(localDate).atZone(ZoneId.systemDefault()).toInstant()))
+        copy(time = Date.from(newTime.atDate(localeDate).atZone(ZoneId.systemDefault()).toInstant()))
 }

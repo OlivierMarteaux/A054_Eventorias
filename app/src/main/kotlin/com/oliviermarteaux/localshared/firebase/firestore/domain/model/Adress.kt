@@ -8,4 +8,13 @@ data class Address(
     val city: String = "",
     val zipCode: String = "",
     val country: String = ""
-): Serializable
+): Serializable{
+
+    var fullAddress: String = ""
+        get() = field.ifEmpty { computeFullAddress() }
+
+    private fun computeFullAddress() = listOf(street, district, city, zipCode, country)
+        .filter { it.isNotBlank() }
+        .joinToString(", ")
+    // fun getFullAddress(): String = fullAddress?: "$street, $district, $city, $zipCode, $country"
+}

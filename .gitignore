@@ -18,3 +18,4 @@ testReports
 app/release
 htmlReport
 app/google-services.json
+app/src/main/java/com/oliviermarteaux/apikeys

@@ -7,12 +7,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.oliviermarteaux.a054_eventorias.ui.screen.account.AccountScreen
+import com.oliviermarteaux.a054_eventorias.ui.screen.add.AddScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.detail.DetailScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.home.HomeScreen
+import com.oliviermarteaux.localshared.cameraX.CameraScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password.PasswordScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset.ResetScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash.SplashScreen
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 /**
  * The main navigation graph for the application.
@@ -89,7 +93,11 @@ fun SharedNavGraph(
                 onSettingsClick = { /*navHostController.navigate(Screen.Settings.route)*/ },
                 navigateToLoginScreen = { /*navHostController.navigate(Screen.Login.route)*/ },
                 navigateToAccountScreen = { /*navHostController.navigate(Screen.Account.route)*/ },
-                navigateToAddScreen = { /*navHostController.navigate(Screen.AddPost.route)*/ }
+                navigateToAddScreen = {
+                    navHostController.navigate(Screen.Add.route)
+//                    navHostController.navigate(Screen.Add.route + "/")
+
+                }
             )
         }
         /*_ DETAIL SCREEN ###########################################################################*/
@@ -112,14 +120,25 @@ fun SharedNavGraph(
         composable(route = Screen.Account.route) {
             AccountScreen()
         }
-//        /*_ ADD POST SCREEN ##########################################################################*/
-//        composable(route = Screen.AddPost.route) {
-//            AddScreen(navigateBack = { navHostController.navigateUp() })
-//        }
-//        /*_ SETTINGS SCREEN ##########################################################################*/
-//        composable(route = Screen.Settings.route) {
-//            SettingsScreen(onBackClick = { navHostController.navigateUp() })
-//        }
+        /*_ ADD POST SCREEN ##########################################################################*/
+        composable(
+            route = Screen.Add.route,
+        ) {
+            AddScreen(
+                navigateBack = { navHostController.navigateUp() },
+                navigateToCamera = { navHostController.navigate(Screen.Camera.route) }
+            )
+        }
+        /*_ CAMERA SCREEN ##########################################################################*/
+        composable(route = Screen.Camera.route) {
+            CameraScreen(
+                navigateBack = { navHostController.navigateUp() },
+//                onImageCapture = { photoUrl ->
+//                    val encodedPhotoUrl = URLEncoder.encode(photoUrl, StandardCharsets.UTF_8.toString())
+//                    navHostController.navigate(Screen.Add.route + "/$encodedPhotoUrl")
+//                }
+            )
+        }
     }
 }
 //@Composable

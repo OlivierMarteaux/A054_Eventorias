@@ -7,6 +7,8 @@
     <!-- for GoogleMaps -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- for camera -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".EventoriasApplication"
@@ -14,14 +16,18 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/a054_eventorias"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.A054_Eventorias">
+        <!-- for GoogleMaps
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/a054_eventorias"
             android:theme="@style/Theme.A054_Eventorias">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,10 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- for GoogleMaps -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}"/>
     </application>
 
 </manifest>

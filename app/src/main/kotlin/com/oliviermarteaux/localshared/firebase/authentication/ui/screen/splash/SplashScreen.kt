@@ -1,6 +1,5 @@
 package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash
 
-import android.R.attr.text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,11 +33,11 @@ fun SplashScreen(
             )
             SharedButton(
                 onClick = navigateToLoginScreen,
-                text = stringResource(R.string.splash_screen_sign_in_with_email)
+                text = stringResource(R.string.sign_in_with_email)
             )
             SharedButton(
                 onClick = { signInWithGoogle(navigateToHomeScreen) },
-                text = stringResource(R.string.splash_screen_sign_in_with_google)
+                text = stringResource(R.string.sign_in_with_Google)
             )
         }
     }

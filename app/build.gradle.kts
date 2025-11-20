@@ -32,7 +32,7 @@ android {
 
     defaultConfig {
         applicationId = "com.oliviermarteaux.a054_eventorias"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -173,12 +173,19 @@ dependencies {
 
     //_ hilt for DI
     implementation(libs.hilt)
+
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
     //_ Coil for image loading
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp) // to load images from internet
+
+    //_ cameraX for camera capture
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.camera2)
 
     // _ GoogleMaps
     // Google Maps Compose

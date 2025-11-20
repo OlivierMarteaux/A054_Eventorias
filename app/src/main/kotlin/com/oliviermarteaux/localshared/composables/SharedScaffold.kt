@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Sort
@@ -19,6 +21,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
@@ -34,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -47,6 +51,7 @@ import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 import com.oliviermarteaux.localshared.utils.hideKeyboard
 import com.oliviermarteaux.shared.composables.IconSource
+import com.oliviermarteaux.shared.composables.SharedAsyncImage
 import com.oliviermarteaux.shared.composables.SharedIcon
 import com.oliviermarteaux.shared.composables.SharedIconButton
 import com.oliviermarteaux.shared.composables.texts.TextTitleLarge
@@ -118,6 +123,8 @@ fun SharedScaffold(
     modifier: Modifier = Modifier,
     title: String = "",
     topAppBarModifier: Modifier = Modifier,
+    trailingIcon: IconSource? = null,
+    avatarUrl: String? = null,
     onBackClick: (() -> Unit)? = null,
     //_ search function
     onSearchIconClick: (() -> Unit)? = null,
@@ -172,6 +179,22 @@ fun SharedScaffold(
                     }
                 },
                 actions = {
+                    avatarUrl?.let {
+                        SharedAsyncImage(
+                            photoUri = avatarUrl,
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(shape = CircleShape)
+                        )
+                    }
+                    trailingIcon?.let {
+                        SharedIcon(
+                            icon  =  trailingIcon,
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(shape = CircleShape)
+                        )
+                    }
                     onSearchIconClick?.let {
                         if (searchBarVisible){
                             val searchBarFocusRequester = remember { FocusRequester() }

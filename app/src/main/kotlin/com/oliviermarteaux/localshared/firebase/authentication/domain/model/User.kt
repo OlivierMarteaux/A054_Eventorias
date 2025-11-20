@@ -1,6 +1,7 @@
 package com.oliviermarteaux.localshared.firebase.authentication.domain.model
 
 import java.io.Serializable
+import kotlin.text.ifEmpty
 
 /**
  * This class represents a User data object. It holds basic information about a user, including
@@ -8,22 +9,19 @@ import java.io.Serializable
  * serialization needs.
  */
 data class User(
-  /**
-   * Unique identifier for the User.
-   */
-  val id: String = "",
-  
-  /**
-   * User's first name.
-   */
-  val firstname: String = "",
-  
-  /**
-   * User's last name.
-   */
-  val lastname: String = "",
-  /**
-   * User's email address.
-   */
-  val email: String = "",
-) : Serializable
+
+    val id: String = "",
+    val firstname: String = "",
+    val lastname: String = "",
+    val fullname: String = "",
+    val email: String = "",
+    val photoUrl: String = ""
+
+) : Serializable {
+
+    fun getComputedFullName() = fullname.ifEmpty {
+        listOf(firstname, lastname)
+            .filter { it.isNotBlank() }
+            .joinToString(" ")
+    }
+}

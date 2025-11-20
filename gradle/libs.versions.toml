@@ -24,6 +24,7 @@ googlemapsAndroid = "2.13.0"
 googlemapsSdk = "19.2.0"
 accompanist = "0.32.0"
 cameraX = "1.5.1"
+#secrets-gradle = "2.0.1"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -72,7 +73,6 @@ androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycl
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraX" }
 androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraX" }
 
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 googleservices = { id = "com.google.gms.google-services", version.ref = "googleservices" }
@@ -81,3 +81,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+#secrets-gradle = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets-gradle"}

@@ -1,5 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.detail
 
+import android.util.Size
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,11 +28,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.google.firebase.BuildConfig
 import com.oliviermarteaux.a054_eventorias.R
-import com.oliviermarteaux.localshared.composables.SharedGoogleMap
+import com.oliviermarteaux.apikeys.GOOGLE_MAPS_API_KEY
 import com.oliviermarteaux.localshared.composables.SharedGoogleMapFromCoords
-import com.oliviermarteaux.localshared.composables.SharedGoogleMapFromString
 import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.composables.StaticGoogleMap
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
@@ -154,17 +156,23 @@ fun DetailAddressCard(post: Post) {
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
+            StaticGoogleMap(
+                address = post.address.fullAddress,
+                zoom = 10,
+                size = Size(80,80),
+                mapApiKey = GOOGLE_MAPS_API_KEY,
+            )
+//            SharedGoogleMapFromCoords(
+//                modifier = Modifier
+//                    .size(200.dp)
+//                    .clip(MaterialTheme.shapes.small)
+//            )
 //            SharedGoogleMapFromString(
 //                address = post.address.fullAddress ,
 //                modifier = Modifier
 //                    .size(80.dp)
 //                    .clip(MaterialTheme.shapes.small)
 //            )
-            SharedGoogleMapFromCoords(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(MaterialTheme.shapes.small)
-            )
         }
     }
 }

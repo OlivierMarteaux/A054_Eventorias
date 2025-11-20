@@ -15,6 +15,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,8 +36,14 @@ fun SharedGoogleMapFromString(
 
     LaunchedEffect(address) {
         latLng = getLatLngFromAddress(context, address)
+    }
+
+    LaunchedEffect(latLng) {
+//        latLng?.let {
+//            cameraPositionState.animate(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(it, 15f))
+//        }
         latLng?.let {
-            cameraPositionState.position = CameraPosition.fromLatLngZoom(it, 15f)
+            cameraPositionState.animate(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(it, 15f))
         }
     }
 
@@ -50,7 +58,14 @@ fun SharedGoogleMapFromString(
             rotationGesturesEnabled = false
         ),
         properties = MapProperties(isMyLocationEnabled = false)
-    )
+    ) {
+        latLng?.let {
+            Marker(
+                state = MarkerState(position = it),
+                title = address
+            )
+        }
+    }
 }
 
 private suspend fun getLatLngFromAddress(context: Context, address: String): LatLng? {

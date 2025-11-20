@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.localshared.composables.SharedGoogleMap
+import com.oliviermarteaux.localshared.composables.SharedGoogleMapFromCoords
+import com.oliviermarteaux.localshared.composables.SharedGoogleMapFromString
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.shared.composables.IconSource
@@ -148,13 +150,17 @@ fun DetailAddressCard(post: Post) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "${post.address.street}, ${post.address.district},"
-                            + "${post.address.city}, ${post.address.zipCode}, "
-                            + post.address.country,
+                    text = post.address.fullAddress,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-            SharedGoogleMap(
+//            SharedGoogleMapFromString(
+//                address = post.address.fullAddress ,
+//                modifier = Modifier
+//                    .size(80.dp)
+//                    .clip(MaterialTheme.shapes.small)
+//            )
+            SharedGoogleMapFromCoords(
                 modifier = Modifier
                     .size(80.dp)
                     .clip(MaterialTheme.shapes.small)

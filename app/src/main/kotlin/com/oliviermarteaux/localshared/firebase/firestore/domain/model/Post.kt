@@ -78,7 +78,6 @@ data class Post(
     val address: Address = Address(),
 
     ) : Serializable {
-
     // --- Compose-friendly getters ---
     val localeDate: LocalDate?
         get() = date?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()

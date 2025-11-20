@@ -128,7 +128,7 @@ fun SharedOutlinedTextField(
     bottomPadding: Dp = 0.dp,
     errorText: String? = null,
     /*on value change*/
-    onValueChange: (String) -> Unit,
+    onValueChange: (String) -> Unit = {},
 ){
     SupportingText(
         supportingText = supportingText,

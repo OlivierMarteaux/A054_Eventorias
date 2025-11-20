@@ -50,4 +50,6 @@
     <string name="hh_mm">HH : MM</string>
     <string name="ok">OK</string>
     <string name="camera">Camera</string>
+    <string name="name">Name</string>
+    <string name="notifications">Notifications</string>
 </resources>

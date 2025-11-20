@@ -13,6 +13,8 @@ fun FirebaseUser.toUser(): User {
         id = uid,
         firstname = displayName?.substringBefore(" ") ?: "",
         lastname = displayName?.substringAfter(" ") ?: "",
-        email = email ?: ""
+        fullname = displayName ?: "",
+        email = email ?: "",
+        photoUrl = photoUrl?.toString() ?: ""
     )
 }

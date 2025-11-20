@@ -118,7 +118,9 @@ fun SharedNavGraph(
 //        }
         /*_ ACCOUNT SCREEN ###########################################################################*/
         composable(route = Screen.Account.route) {
-            AccountScreen()
+            AccountScreen(
+                navController = navHostController
+            )
         }
         /*_ ADD POST SCREEN ##########################################################################*/
         composable(

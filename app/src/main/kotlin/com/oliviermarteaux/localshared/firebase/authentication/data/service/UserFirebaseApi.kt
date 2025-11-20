@@ -104,7 +104,9 @@ class UserFirebaseApi @Inject constructor(private val context: Context): UserApi
                 "id" to uid,
                 "firstname" to newUser.firstname,
                 "lastname" to newUser.lastname,
-                "email" to newUser.email
+                "fullname" to newUser.fullname,
+                "email" to newUser.email,
+                "photoUrl" to newUser.photoUrl
             )
             firestore.collection("users").document(uid)
                 .set(userData).await()
@@ -121,7 +123,7 @@ class UserFirebaseApi @Inject constructor(private val context: Context): UserApi
     private suspend fun updateFirebaseUserProfile(newUser: NewUser, firebaseUser: FirebaseUser) =
         try {
             val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(with(newUser) { "$firstname $lastname" })
+                .setDisplayName(with(newUser) { getComputedFullName() })
                 .build()
             firebaseUser.updateProfile(profileUpdates).await()
         } catch (e: Exception) {

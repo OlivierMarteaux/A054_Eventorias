@@ -1,9 +1,12 @@
-package com.openclassrooms.hexagonal.games.di
+package com.oliviermarteaux.a054_eventorias.di
 
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
-import com.oliviermarteaux.localshared.cameraX.CameraRepository
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import com.oliviermarteaux.localshared.firebase.authentication.data.service.UserApi
 import com.oliviermarteaux.localshared.firebase.authentication.data.service.UserFirebaseApi
 import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostFirebaseRepository
@@ -74,20 +77,20 @@ class AppModule {
   fun provideNotificationManager(app: Application): NotificationManager =
     app.getSystemService(NotificationManager::class.java)
 
-//  /**
-//   * Provides a singleton instance of [DataStore] for [Preferences].
-//   *
-//   * @param context The application context.
-//   * @return A singleton instance of [DataStore] for user preferences.
-//   */
-//  @Provides
-//  @Singleton
-//  fun providePreferencesDataStore(
-//    @ApplicationContext context: Context
-//  ): DataStore<Preferences> =
-//    PreferenceDataStoreFactory.create {
-//      context.preferencesDataStoreFile("user_preferences")
-//    }
+  /**
+   * Provides a singleton instance of [DataStore] for [Preferences].
+   *
+   * @param context The application context.
+   * @return A singleton instance of [DataStore] for user preferences.
+   */
+  @Provides
+  @Singleton
+  fun providePreferencesDataStore(
+      @ApplicationContext context: Context
+  ): DataStore<Preferences> =
+      PreferenceDataStoreFactory.create {
+          context.preferencesDataStoreFile("user_preferences")
+      }
 
   /**
    * Provides a singleton instance of [Logger].

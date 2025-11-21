@@ -5,12 +5,9 @@ import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import androidx.camera.core.ImageCapture
-import coil3.util.CoilUtils.result
-import com.oliviermarteaux.localshared.utils.LogRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 
 fun takePicture(context: Context, imageCapture: ImageCapture, onImageCapture: (String) -> Unit){
     val outputDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!

@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 
 /**
  * A composable function that logs the current navigation route to Logcat.
@@ -27,8 +27,10 @@ import androidx.navigation.compose.rememberNavController
  * - Logs the output with tag `"OM_TAG"` at info level.
  */
 @Composable
-fun LogRoute(){
-    val navController = rememberNavController()
+fun LogRoutes(
+    navController: NavController
+){
+
     // Observe current backstack entry
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     LaunchedEffect(currentBackStackEntry) {

@@ -182,7 +182,22 @@ class UserFirebaseApi @Inject constructor(private val context: Context): UserApi
             firebaseAuth.signInWithCredential(firebaseCredential)
             // Sign in success, return the signed-in user
             Log.d("OM_TAG", "UserFirebaseApi::signInWithGoogle: signInWithCredential:success")
-            val user = firebaseAuth.currentUser?.toUser()
+            val firebaseUser = firebaseAuth.currentUser
+            val user = firebaseUser?.toUser()
+//                // Add new user to Firestore
+//                val uid = user?.id ?: ""
+//                val newUser = NewUser(
+//                    firstname = user?.firstname ?: "",
+//                    lastname = user?.lastname ?: "",
+//                    fullname = user?.fullname ?: "",
+//                    email = user?.email ?: "",
+//                    photoUrl = user?.photoUrl ?: "",
+//                )
+//                addNewUserToFirestore(newUser, uid)
+//                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+//                    val token = task.result
+//                    firestore.collection("users").document(firebaseUser?.uid ?:"").update("fcmToken", token)
+//                }
             user
         } else {
             Log.e("OM_TAG", "UserFirebaseApi::signInWithGoogle: Credential is not of type Google ID!")

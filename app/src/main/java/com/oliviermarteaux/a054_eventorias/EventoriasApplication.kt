@@ -52,7 +52,7 @@ class EventoriasApplication : Application(), SingletonImageLoader.Factory {
 ////                notifManager = getSystemService(NotificationManager::class.java)
 ////            )
 //            //_ Firebase cloud messaging: subscribe to Firebase topic (Mandatory to receive notifs)
-//            subscribeToFcmNotificationTopic()
+            subscribeToFcmNotificationTopic()
 
             // manage application exceptions
         } catch (e: Exception) {

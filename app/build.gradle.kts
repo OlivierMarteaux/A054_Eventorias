@@ -158,6 +158,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx) // usage of lifecycleScope
 
+    //_ Preferences DataStore
+    implementation(libs.datastore.preferences)
+
     //_ Firebase
     implementation(platform(libs.firebase.bom)) // Bom
     implementation(libs.firebase.analytics)  // Google Analytics

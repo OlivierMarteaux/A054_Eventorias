@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
@@ -74,6 +76,8 @@ fun LoginScreen(
 ){
     with (loginViewModel) {
         SharedScaffold(
+            title = stringResource(R.string.sign_in),
+            onBackClick = onBackClick,
             modifier = modifier,
         ) { innerPadding ->
             ImageScaffold(
@@ -178,6 +182,7 @@ private fun LoginBody(
                 SharedButton(
                     onClick = { if (isOnline) checkEmail(newUser.email) else showNetworkErrorToast() },
                     text = stringResource(R.string.next),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp),
                     enabled = newUser.email.run { isValidEmail() && isNotEmpty() }
                 )
             }
@@ -224,7 +229,9 @@ private fun LoginBody(
                 SharedButton(
                     onClick = { createAccount(newUser) { navigateToHomeScreen() } },
                     text = stringResource(R.string.save),
-                    modifier = Modifier.padding(vertical = SharedPadding.xl)
+                    modifier = Modifier
+                        .padding(vertical = SharedPadding.xl, horizontal = 60.dp)
+                        .fillMaxWidth()
                 )
             }
         }

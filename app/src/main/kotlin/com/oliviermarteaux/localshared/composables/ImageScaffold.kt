@@ -56,7 +56,8 @@ fun ImageScaffold(
             Column(
                 modifier = Modifier
                     .weight(2f)
-                    .padding(horizontal = formPortraitHorizontalPadding)
+                    .padding(horizontal = formPortraitHorizontalPadding),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 content()
             }
@@ -74,9 +75,11 @@ fun ImageScaffold(
                 modifier = imageModifier.weight(1f)
             )
             Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .weight(2f)
-                    .padding(start =  horizontalPadding, top =  32.dp, bottom =  24.dp)
+                    .padding(innerPadding)
+                    .padding(start =  horizontalPadding, bottom =  24.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 content()

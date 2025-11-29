@@ -43,6 +43,7 @@ fun SplashScreen(
         ) { innerPadding ->
             ImageScaffold(
                 image = painterResource(id = logoDrawableRes),
+                modifier = Modifier.consumeWindowInsets(innerPadding),
                 innerPadding = innerPadding,
                 horizontalPadding = 85.dp,
                 formPortraitHorizontalPadding = 85.dp,

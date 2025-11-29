@@ -1,5 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.theme
 
+import android.R.id.primary
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,12 +10,16 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
+    primaryContainer = Color(0xFFD0021B),
     secondary = PurpleGrey80,
     tertiary = Pink80,
+    surfaceContainerLow = Color(0xFF49454F),
+    onPrimaryContainer = Color(0xFFFFFFFF),
 )
 
 private val LightColorScheme = lightColorScheme(

@@ -1,39 +1,50 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
+import android.R.attr.text
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.oliviermarteaux.a054_eventorias.R
-import com.oliviermarteaux.localshared.ui.navigation.Screen
 import com.oliviermarteaux.localshared.composables.SharedBottomAppBar
 import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.composables.SharedSearchBar
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.localshared.ui.navigation.Screen
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
+import com.oliviermarteaux.shared.composables.SharedAsyncImage
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.composables.texts.TextTitleMedium
@@ -67,12 +78,15 @@ fun HomeScreen(
     with(homeViewModel) {
         SharedScaffold(
             title = stringResource(Screen.Home.titleRes),
+            // top app bar
+            topAppBarModifier = Modifier.padding(horizontal = SharedPadding.medium),
             // search bar
             onSearchIconClick = ::showSearchBar,
             searchBarVisible = searchBarVisible,
             query = query,
             onQueryChange = { updateQuery(it) ; filterPosts(it)},
             onSearchBarIconClick = {clearQuery(); hideSearchBar()},
+            searchBarModifier = Modifier.padding(horizontal = SharedPadding.small),
             // sort menu
             onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
             onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
@@ -111,11 +125,17 @@ fun HomeScreen(
                         HomeFeedList(
                             modifier = modifier
                                 .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
-                                .fillMaxSize()
+                                .fillMaxWidth()
                                 .padding(contentPadding)
-                                .padding(horizontal = SharedPadding.medium),
+                                .padding(horizontal = SharedPadding.xl),
                             posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
                             navigateToDetailScreen = navigateToDetailScreen,
+                            searchBarVisible = searchBarVisible,
+                            query = query,
+                            updateQuery = { updateQuery(it) },
+                            filterPosts = { filterPosts(it) },
+                            clearQuery = { clearQuery() },
+                            hideSearchBar = ::hideSearchBar
                         )
                     }
                 }
@@ -144,15 +164,21 @@ private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
     navigateToDetailScreen: (Post) -> Unit,
+    searchBarVisible: Boolean = false,
+    query: String = "",
+    updateQuery: (String) -> Unit,
+    filterPosts: (String) -> Unit,
+    clearQuery: () -> Unit,
+    hideSearchBar: () -> Unit
 ) {
     Column (modifier = modifier ) {
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(SharedPadding.small),
         ) {
             items(posts) { post ->
                 HomeFeedCell(
                     post = post,
-                    onPostClick = navigateToDetailScreen
+                    navigateToDetailScreen = navigateToDetailScreen
                 )
             }
         }
@@ -168,43 +194,38 @@ private fun HomeFeedList(
 @Composable
 private fun HomeFeedCell(
     post: Post,
-    onPostClick: (Post) -> Unit,
+    navigateToDetailScreen: (Post) -> Unit,
 ) {
     ElevatedCard(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
-        modifier = Modifier.fillMaxWidth(),
-        onClick = {
-            onPostClick(post)
-        }) {
-        Column(
-            modifier = Modifier.padding(SharedPadding.medium),
-        ) {
-            TextTitleSmall(
-                text = stringResource(
-                    id = R.string.by_x_y,
-                    post.author?.firstname ?: "",
-                    post.author?.lastname ?: ""
-                ),
-                modifier = Modifier.padding(bottom = SharedPadding.xs)
+        modifier = Modifier.fillMaxWidth().height(80.dp),
+        onClick = { navigateToDetailScreen(post) }
+    ) {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+        ){
+            SharedAsyncImage(
+                photoUri = post.author?.photoUrl,
+                modifier = Modifier
+                    .padding(start = SharedPadding.large)
+                    .size(40.dp)
+                    .clip(shape = CircleShape)
             )
-            TextTitleMedium(text = post.title)
-            Spacer(Modifier.padding(SharedPadding.small))
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(SharedPadding.large),
+            ) {
+                TextTitleMedium(text = post.title)
+                Spacer(Modifier.padding(SharedPadding.xs))
+
+                TextTitleSmall(text = post.localeDateString)
+            }
             if (!post.photoUrl.isNullOrEmpty()) {
                 SharedCardAsyncImage(
                     photoUri = post.photoUrl,
-                    modifier = Modifier
-                        .padding(bottom = SharedPadding.xs)
-                        .heightIn(max = 200.dp),
                     imageModifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(ratio = 16 / 9f),
-                )
-            }
-            if (!post.description.isNullOrEmpty()) {
-                Spacer(Modifier.padding(SharedPadding.small))
-                Text(
-                    text = post.description,
-                    style = MaterialTheme.typography.bodyMedium
+                        .aspectRatio(ratio = 136/80f),
                 )
             }
         }

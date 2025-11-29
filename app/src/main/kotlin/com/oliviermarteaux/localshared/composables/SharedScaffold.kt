@@ -3,6 +3,8 @@ package com.oliviermarteaux.localshared.composables
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -151,6 +153,8 @@ fun SharedScaffold(
     fabContentColor: Color = contentColorFor(fabContainerColor),
     fabInteractionSource: MutableInteractionSource? = null,
     fabContentDescription: String = "",
+    fabModifier: Modifier = Modifier,
+    fabIconTint: Color = contentColorFor(fabContainerColor),
     //_ bottom bar
     bottomBar: @Composable () -> Unit = {},
     //_ content
@@ -158,12 +162,16 @@ fun SharedScaffold(
 ){
     var menuDisplayed by rememberSaveable { mutableStateOf(false) }
     var sortOptionsDisplayed by rememberSaveable { mutableStateOf(false) }
+    var searchBarDisplayed by rememberSaveable { mutableStateOf(false) }
+
     fun showMenu(){ menuDisplayed = true }
     fun hideMenu(){ menuDisplayed = false }
     fun showSortOptions(){ sortOptionsDisplayed = true }
     fun hideSortOptions(){ sortOptionsDisplayed = false }
+    fun showSearchBar(){ searchBarDisplayed = true }
+    fun hideSearchBar(){ searchBarDisplayed = false }
 
-    val topAppBarModifierWithSearchBar = onSearchIconClick?.let { topAppBarModifier.height(110.dp) }?:topAppBarModifier
+    val topAppBarModifierWithSearchBar = onSearchIconClick?.let { topAppBarModifier.height(118.dp) }?:topAppBarModifier
 
     Scaffold(
         modifier = modifier,
@@ -205,7 +213,8 @@ fun SharedScaffold(
                                 onQueryChange = onQueryChange,
                                 modifier = searchBarModifier
                                     .focusRequester(searchBarFocusRequester)
-                                    .width(250.dp)
+                                    .fillMaxWidth()
+//                                    .width(300.dp)
                                     .alignBy { it.measuredHeight / 2 },
                                 onSearch =  { keyboardController?.hide() },
                                 onIconClick = onSearchBarIconClick
@@ -272,8 +281,7 @@ fun SharedScaffold(
             onFabClick?.let {
                 FloatingActionButton(
                     onClick = { if (fabEnabled) onFabClick() },
-                    modifier = modifier
-                        .padding(bottom = 20.dp, end = 20.dp)
+                    modifier = fabModifier
                         .semantics { contentDescription = fabContentDescription },
                     shape = fabShape,
                     containerColor = fabContainerColor,
@@ -283,6 +291,7 @@ fun SharedScaffold(
                 ) {
                     SharedIcon(
                         icon = IconSource.VectorIcon(Icons.Filled.Add),
+                        tint = fabIconTint
                     )
                 }
             }

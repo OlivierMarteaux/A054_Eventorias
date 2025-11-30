@@ -53,6 +53,6 @@
     <string name="name">Name</string>
     <string name="notifications">Notifications</string>
     <string name="error">Erreur</string>
-    <string name="an_error_as_occurred_please_try_again_later">"\nUne erreur s\'est produite,\nmerci de réessayer plus tard\n"</string>
+    <string name="an_error_as_occurred_please_try_again_later">"Une erreur s\'est produite,\nmerci de réessayer plus tard"</string>
     <string name="try_again">Réessayer</string>
 </resources>

@@ -53,6 +53,6 @@
     <string name="name">Name</string>
     <string name="notifications">Notifications</string>
     <string name="error">Error</string>
-    <string name="an_error_as_occurred_please_try_again_later">"\nAn error as occurred,\nplease try again later\n"</string>
+    <string name="an_error_as_occurred_please_try_again_later">"An error as occurred,\nplease try again later"</string>
     <string name="try_again">Try again</string>
 </resources>

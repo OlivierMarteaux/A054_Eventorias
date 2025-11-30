@@ -52,6 +52,7 @@ class AddViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            cameraRepository.photoUrl = null
             snapshotFlow { cameraRepository.photoUrl }
                 .stateIn ( scope = viewModelScope )
                 .collect {

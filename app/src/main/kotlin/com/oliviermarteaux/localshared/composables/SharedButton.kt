@@ -113,8 +113,10 @@ fun SharedButton(
         contentPadding = contentPadding,
         interactionSource = interactionSource,
     ) {
+        val horizontalArrangement = icon?.let{ Arrangement.Start }?:Arrangement.Center
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = horizontalArrangement,
             modifier = Modifier.fillMaxWidth(),
         ) {
             icon?.let {

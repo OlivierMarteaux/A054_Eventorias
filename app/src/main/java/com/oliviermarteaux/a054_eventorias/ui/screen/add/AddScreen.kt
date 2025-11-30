@@ -1,9 +1,9 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.add
 
-import android.R.attr.text
+import android.R.attr.label
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.widget.DatePicker
+import android.content.res.Configuration
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.clickable
@@ -11,50 +11,47 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachFile
-import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.outlined.CameraAlt
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.localshared.composables.SharedButton
-import com.oliviermarteaux.localshared.composables.SharedOutlinedTextField
+import com.oliviermarteaux.localshared.composables.SharedDateTextField
 import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.composables.SharedTextField
+import com.oliviermarteaux.localshared.composables.SharedTimeTextField
 import com.oliviermarteaux.localshared.composables.extensions.SpacerXl
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
+import com.oliviermarteaux.localshared.ui.theme.SharedSize
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
 import com.oliviermarteaux.shared.composables.SharedIconButton
 import com.oliviermarteaux.shared.composables.sharedImagePicker
 import java.util.Calendar
-import java.util.Date
 
 @Composable
 fun AddScreen(
@@ -98,13 +95,18 @@ fun AddScreenBody(
     navigateBack: () -> Unit,
     paddingValues: PaddingValues,
 ) {
+    val configuration = LocalConfiguration.current
+    val orientation = configuration.orientation
+    val isLandscape = orientation == Configuration.ORIENTATION_LANDSCAPE
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
             .padding(bottom = SharedPadding.xxl)
-            .padding(horizontal = SharedPadding.xl),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = SharedPadding.xl)
+            .let { if (isLandscape) it.verticalScroll(rememberScrollState()) else it},
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AddScreenTextForm(
             post = post,
@@ -124,8 +126,10 @@ fun AddScreenBody(
                 updatePostPhoto = updatePostPhoto,
                 navigateToCamera = navigateToCamera
             )
+            SpacerXl()
 
             post.photoUrl?.let { AddScreenImagePreview(it) }
+            SpacerXl()
 
             AddScreenSaveButton(
                 onClick = addPost
@@ -143,32 +147,9 @@ fun AddScreenTextForm(
     updatePostTime: (String) -> Unit,
     updatePostAddress: (String) -> Unit,
 ){
-    val context = LocalContext.current
-    val calendar = Calendar.getInstance()
-
-    // Date Picker
-    val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
-    val datePickerDialog = DatePickerDialog(
-        context,
-        { _, selectedYear, selectedMonth, selectedDayOfMonth ->
-            updatePostDate("$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear")
-        }, year, month, day
-    )
-
-    // Time Picker
-    val hour = calendar.get(Calendar.HOUR_OF_DAY)
-    val minute = calendar.get(Calendar.MINUTE)
-    val timePickerDialog = TimePickerDialog(
-        context,
-        { _, selectedHour, selectedMinute ->
-            updatePostTime("$selectedHour:$selectedMinute")
-        }, hour, minute, true
-    )
-
     with(post) {
-        SharedOutlinedTextField(
+        //_ Event title
+        SharedTextField(
             value = title,
             onValueChange = { updatePostTitle(it) },
             label = stringResource(R.string.new_event),
@@ -178,7 +159,8 @@ fun AddScreenTextForm(
             bottomPadding = SharedPadding.xl
         )
 
-        SharedOutlinedTextField(
+        //_ Event description
+        SharedTextField(
             value = description,
             onValueChange = { updatePostDescription(it) },
             label = stringResource(R.string.tap_here_to_enter_your_description),
@@ -192,34 +174,22 @@ fun AddScreenTextForm(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(SharedPadding.large)
         ) {
-            SharedOutlinedTextField(
-                value = localeDateString,
-                onValueChange = { },
-                label = stringResource(R.string.date),
-                placeholder = stringResource(R.string.mm_dd_yyyy),
-                modifier = Modifier.weight(1f),
-                textFieldModifier = Modifier.clickable { datePickerDialog.show() },
-                isError = localeDateString.isEmpty(),
-                errorText = "Please enter a date",
-                enabled = false,
-                bottomPadding = SharedPadding.xl
+            //_ date
+            SharedDateTextField(
+                date = localeDateString,
+                onDateChange = { updatePostDate(it) },
+                modifier = Modifier.weight(weight = 1f, fill = true),
             )
-
-            SharedOutlinedTextField(
-                value = localeTimeString,
-                onValueChange = { },
-                label = stringResource(R.string.time),
-                placeholder = stringResource(R.string.hh_mm),
-                modifier = Modifier.weight(1f),
-                textFieldModifier = Modifier.clickable { datePickerDialog.show() },
-                isError = localeTimeString.isEmpty(),
-                errorText = "Please enter a time",
-                enabled = false,
-                bottomPadding = SharedPadding.xl
+            //_ time
+            SharedTimeTextField(
+                time = localeTimeString,
+                onTimeChange = { updatePostTime(it) },
+                modifier = Modifier.weight(weight = 1f, fill = true),
             )
         }
 
-        SharedOutlinedTextField(
+        //_ address
+        SharedTextField(
             value = address.street,
             onValueChange = { updatePostAddress(it) },
             label = stringResource(R.string.address),
@@ -227,7 +197,8 @@ fun AddScreenTextForm(
             textFieldModifier = Modifier.fillMaxWidth(),
             isError = address.street.isEmpty(),
             errorText = "Please enter an address",
-            bottomPadding = SharedPadding.xxl
+            bottomPadding = SharedPadding.xxl,
+            imeAction = ImeAction.Done
         )
     }
 }
@@ -254,7 +225,8 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
         icon = IconSource.VectorIcon(Icons.Default.AttachFile),
         shape = MaterialTheme.shapes.large,
         tint = White,
-        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red)
+        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red),
+        modifier = Modifier.size(SharedSize.medium)
     ) { imagePickerLauncher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly)) }
 }
 
@@ -266,6 +238,7 @@ fun CameraPhotoPickButton(onClick: () -> Unit) {
         tint = Black,
         colors = IconButtonDefaults.iconButtonColors(containerColor = White),
         onClick = onClick,
+        modifier = Modifier.size(SharedSize.medium)
     )
 }
 
@@ -273,7 +246,7 @@ fun CameraPhotoPickButton(onClick: () -> Unit) {
 fun AddScreenImagePreview(photoUrl: String){
     SharedCardAsyncImage(
         photoUri = photoUrl,
-        imageModifier = Modifier.size(200.dp)
+        imageModifier = Modifier.size(SharedSize.xxl)
     )
 }
 
@@ -287,7 +260,7 @@ fun AddScreenSaveButton(
         shape = MaterialTheme.shapes.extraSmall,
         modifier = Modifier
             .fillMaxWidth()
-            .height(52.dp),
+            .height(SharedSize.medium),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
         textColor = White
     )

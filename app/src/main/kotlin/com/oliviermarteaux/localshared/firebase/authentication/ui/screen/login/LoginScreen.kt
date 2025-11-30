@@ -207,6 +207,7 @@ private fun LoginBody(
                     modifier = Modifier
                         .focusRequester(firstNameFocusRequester)
                         .fillMaxWidth(),
+                    imeAction = ImeAction.Next
                 )
                 SharedOutlinedTextField(
                     value = newUser.lastname,
@@ -216,6 +217,7 @@ private fun LoginBody(
                     errorText = stringResource(R.string.please_enter_a_last_name),
                     bottomPadding = SharedPadding.xl,
                     modifier = Modifier.fillMaxWidth(),
+                    imeAction = ImeAction.Next,
                 )
                 SharedOutlinedPassword(
                     value = newUser.password,
@@ -224,7 +226,8 @@ private fun LoginBody(
                     errorText = stringResource(R.string.password_is_not_strong_enough_use_at_least_6_characters_and_a_mix_of_letters_numbers_and_a_special_character),
                     passwordSetting = true,
                     modifier = Modifier.fillMaxWidth(),
-                    bottomPadding = SharedPadding.xxl
+                    bottomPadding = SharedPadding.xxl,
+                    imeAction = ImeAction.Done,
                 )
                 SharedButton(
                     onClick = { createAccount(newUser) { navigateToHomeScreen() } },

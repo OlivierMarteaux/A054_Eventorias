@@ -46,7 +46,7 @@ fun SharedDateTextField(
         isError = date.isEmpty(),
         errorText = "Please enter a date",
         enabled = false,
-        bottomPadding = SharedPadding.xl,
+        bottomPadding = SharedPadding.large,
         colors = TextFieldDefaults.colors(
             disabledTextColor = if (date.isEmpty()){MaterialTheme.colorScheme.error} else LocalContentColor.current.copy(alpha = 1f),
             disabledLabelColor = if (date.isEmpty()){MaterialTheme.colorScheme.error} else LocalContentColor.current.copy(alpha = 1f),

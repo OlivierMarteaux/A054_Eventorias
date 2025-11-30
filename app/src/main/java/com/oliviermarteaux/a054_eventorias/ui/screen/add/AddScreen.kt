@@ -1,12 +1,8 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.add
 
-import android.R.attr.label
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.res.Configuration
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,9 +19,7 @@ import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,17 +27,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.localshared.composables.SharedButton
 import com.oliviermarteaux.localshared.composables.SharedDateTextField
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.composables.SharedTextField
 import com.oliviermarteaux.localshared.composables.SharedTimeTextField
-import com.oliviermarteaux.localshared.composables.extensions.SpacerXl
+import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 import com.oliviermarteaux.localshared.ui.theme.SharedSize
@@ -51,7 +45,6 @@ import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
 import com.oliviermarteaux.shared.composables.SharedIconButton
 import com.oliviermarteaux.shared.composables.sharedImagePicker
-import java.util.Calendar
 
 @Composable
 fun AddScreen(
@@ -104,7 +97,7 @@ fun AddScreenBody(
             .fillMaxSize()
             .padding(paddingValues)
             .padding(bottom = SharedPadding.xxl)
-            .padding(horizontal = SharedPadding.xl)
+            .padding(horizontal = SharedPadding.large)
             .let { if (isLandscape) it.verticalScroll(rememberScrollState()) else it},
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -156,7 +149,7 @@ fun AddScreenTextForm(
             textFieldModifier = Modifier.fillMaxWidth(),
             isError = title.isEmpty(),
             errorText = stringResource(R.string.please_enter_a_title),
-            bottomPadding = SharedPadding.xl
+            bottomPadding = SharedPadding.large
         )
 
         //_ Event description
@@ -167,12 +160,12 @@ fun AddScreenTextForm(
             textFieldModifier = Modifier.fillMaxWidth(),
             isError = description.isEmpty(),
             errorText = stringResource(R.string.please_enter_a_description),
-            bottomPadding = SharedPadding.xl
+            bottomPadding = SharedPadding.large
         )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(SharedPadding.large)
+            horizontalArrangement = Arrangement.spacedBy(SharedPadding.medium)
         ) {
             //_ date
             SharedDateTextField(
@@ -209,7 +202,7 @@ fun AddScreenPhotoPickButtonsCard(
     navigateToCamera: ((String) -> Unit) -> Unit
 ){
     Row(
-        horizontalArrangement = Arrangement.spacedBy(SharedPadding.large)
+        horizontalArrangement = Arrangement.spacedBy(SharedPadding.medium)
     ) {
         CameraPhotoPickButton { navigateToCamera { photoShot -> updatePostPhoto(photoShot) } }
 
@@ -261,7 +254,7 @@ fun AddScreenSaveButton(
         modifier = Modifier
             .fillMaxWidth()
             .height(SharedSize.medium),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+        colors = ButtonDefaults.buttonColors(containerColor = Red40),
         textColor = White
     )
 }

@@ -1,5 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.account
 
+import android.R.attr.text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,10 +21,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
+import com.oliviermarteaux.a054_eventorias.ui.theme.White
 import com.oliviermarteaux.localshared.composables.SharedBottomAppBar
-import com.oliviermarteaux.localshared.composables.SharedOutlinedTextField
 import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.composables.SharedTextField
+import com.oliviermarteaux.localshared.composables.spacer.SpacerLarge
+import com.oliviermarteaux.localshared.composables.spacer.SpacerSmall
+import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
+import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 
 @Composable
 fun AccountScreen(
@@ -33,6 +41,7 @@ fun AccountScreen(
         SharedScaffold(
             title = "User profile",
             avatarUrl = user.photoUrl,
+            topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
             bottomBar = { SharedBottomAppBar(navController = navController) }
         ) { paddingValues ->
             AccountScreenBody(
@@ -42,7 +51,7 @@ fun AccountScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(16.dp)
+                    .padding(horizontal = SharedPadding.large),
             )
         }
     }
@@ -58,35 +67,38 @@ fun AccountScreenBody(
     Column(
         modifier = modifier
     ) {
-        SharedOutlinedTextField(
+        SharedTextField(
             value = user.getComputedFullName(),
             label = stringResource(R.string.name),
-            modifier = Modifier.fillMaxWidth(),
+            textFieldModifier = Modifier.fillMaxWidth(),
             readOnly = true
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        SpacerLarge()
 
-        SharedOutlinedTextField(
+        SharedTextField(
             value = user.email,
             label = stringResource(R.string.email),
-            modifier = Modifier.fillMaxWidth(),
+            textFieldModifier = Modifier.fillMaxWidth(),
             readOnly = true
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        SpacerXl()
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            Switch(
+                checked = notificationState,
+                onCheckedChange = { toggleNotifications() },
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = White,
+                    checkedTrackColor = Red40,
+                )
+            )
+            SpacerSmall()
             Text(
                 text = stringResource(R.string.notifications),
                 style = MaterialTheme.typography.bodyLarge
-            )
-
-            Switch(
-                checked = notificationState,
-                onCheckedChange = { toggleNotifications() }
             )
         }
     }

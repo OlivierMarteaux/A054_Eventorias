@@ -1,5 +1,6 @@
 package com.oliviermarteaux.localshared.composables
 
+import android.R.attr.end
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -191,6 +192,7 @@ fun SharedScaffold(
                         SharedAsyncImage(
                             photoUri = avatarUrl,
                             modifier = Modifier
+                                .padding(end = SharedPadding.small)
                                 .size(48.dp)
                                 .clip(shape = CircleShape)
                         )

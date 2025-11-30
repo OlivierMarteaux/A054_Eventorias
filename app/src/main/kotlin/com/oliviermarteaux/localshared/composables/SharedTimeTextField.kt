@@ -46,7 +46,7 @@ fun SharedTimeTextField(
         isError = time.isEmpty(),
         errorText = "Please enter a time",
         enabled = false,
-        bottomPadding = SharedPadding.xl,
+        bottomPadding = SharedPadding.large,
         colors = TextFieldDefaults.colors(
             disabledTextColor = if (time.isEmpty()){MaterialTheme.colorScheme.error} else LocalContentColor.current.copy(alpha = 1f),
             disabledLabelColor = if (time.isEmpty()){MaterialTheme.colorScheme.error} else LocalContentColor.current.copy(alpha = 1f),

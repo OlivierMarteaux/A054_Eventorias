@@ -13,6 +13,7 @@ import com.oliviermarteaux.localshared.firebase.firestore.utils.uploadSamplePost
 import com.oliviermarteaux.shared.ui.ListUiState
 import com.oliviermarteaux.shared.utils.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -80,7 +81,7 @@ class HomeViewModel @Inject constructor(
     fun loadPosts() {
         viewModelScope.launch {
             homeUiState = ListUiState.Loading
-//      delay(3000) // simulate network delay for Loading state evidence
+            delay(3000) // simulate network delay for Loading state evidence
             postRepository.posts.collect { result ->
                 result
                     .onSuccess {

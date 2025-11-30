@@ -1,9 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.detail
 
-import android.R.attr.contentDescription
 import android.content.res.Configuration
-import android.util.Size
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,14 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.google.firebase.BuildConfig
-import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.apikeys.GOOGLE_MAPS_API_KEY
-import com.oliviermarteaux.localshared.composables.SharedGoogleMapFromCoords
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.composables.StaticGoogleMap
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
@@ -65,8 +57,8 @@ fun DetailScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(horizontal = SharedPadding.xl)
-                    .padding(bottom = SharedPadding.xl)
+                    .padding(horizontal = SharedPadding.large)
+                    .padding(bottom = SharedPadding.large)
             )
         }
     }
@@ -89,10 +81,10 @@ fun DetailBody(
                 post = post,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(SharedPadding.xl))
+            Spacer(modifier = Modifier.height(SharedPadding.large))
 
             DetailScheduleAndAuthorCard(post)
-            Spacer(modifier = Modifier.height(SharedPadding.xl))
+            Spacer(modifier = Modifier.height(SharedPadding.large))
 
             DetailDescriptionCard(post)
             Spacer(modifier = Modifier.height(SharedPadding.xxl))
@@ -115,7 +107,7 @@ fun DetailBody(
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ){
                 DetailScheduleAndAuthorCard(post)
-                Spacer(modifier = Modifier.height(SharedPadding.xl))
+                Spacer(modifier = Modifier.height(SharedPadding.large))
 
                 DetailDescriptionCard(post)
                 Spacer(modifier = Modifier.height(SharedPadding.xxl))
@@ -203,7 +195,7 @@ fun DetailAddressCard(post: Post) {
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.weight(3/5f)
         )
-        Spacer(Modifier.width(SharedPadding.xl))
+        Spacer(Modifier.width(SharedPadding.large))
         StaticGoogleMap(
             address = post.address.fullAddress,
             zoom = 16,

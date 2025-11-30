@@ -1,6 +1,7 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.detail
 
 import android.R.attr.contentDescription
+import android.content.res.Configuration
 import android.util.Size
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Schedule
@@ -28,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -62,6 +66,7 @@ fun DetailScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(horizontal = SharedPadding.xl)
+                    .padding(bottom = SharedPadding.xl)
             )
         }
     }
@@ -73,30 +78,62 @@ fun DetailBody(
     post: Post,
     modifier: Modifier
 ) {
-    Column(
-        modifier = modifier
-    ) {
-        DetailImageCard(post)
-        Spacer(modifier = Modifier.height(SharedPadding.xl))
+    val configuration = LocalConfiguration.current
+    val orientation = configuration.orientation
 
-        DetailScheduleAndAuthorCard(post)
-        Spacer(modifier = Modifier.height(SharedPadding.xl))
+    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        Column(
+            modifier = modifier
+        ) {
+            DetailImageCard(
+                post = post,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(SharedPadding.xl))
 
-        DetailDescriptionCard(post)
-        Spacer(modifier = Modifier.height(SharedPadding.xxl))
+            DetailScheduleAndAuthorCard(post)
+            Spacer(modifier = Modifier.height(SharedPadding.xl))
 
-        DetailAddressCard(post)
+            DetailDescriptionCard(post)
+            Spacer(modifier = Modifier.height(SharedPadding.xxl))
+
+            DetailAddressCard(post)
+        }
+    } else {
+        Row(
+            modifier = modifier
+        ) {
+            Column() {
+                DetailImageCard(
+                    post = post,
+                    modifier = Modifier.fillMaxHeight()
+                )
+            }
+            Spacer(modifier = Modifier.width(SharedPadding.xxl))
+
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ){
+                DetailScheduleAndAuthorCard(post)
+                Spacer(modifier = Modifier.height(SharedPadding.xl))
+
+                DetailDescriptionCard(post)
+                Spacer(modifier = Modifier.height(SharedPadding.xxl))
+
+                DetailAddressCard(post)
+            }
+        }
     }
 }
 
 @Composable
 fun DetailImageCard(
-    post: Post
+    post: Post,
+    modifier: Modifier = Modifier
 ) {
     SharedAsyncImage(
         photoUri = post.photoUrl,
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .aspectRatio(1f)
             .clip(MaterialTheme.shapes.medium),
         contentScale = ContentScale.Crop

@@ -96,11 +96,11 @@ fun HomeScreen(
             // fab button
             onFabClick = {
                 // for initial posts populating purpose
-//                 uploadSamplePosts(context)
-                checkUserState(
-                    onUserLogged = navigateToAddScreen,
-                    onNoUserLogged = ::showAuthErrorToast
-                )
+                uploadSamplePosts(context)
+//                checkUserState(
+//                    onUserLogged = navigateToAddScreen,
+//                    onNoUserLogged = ::showAuthErrorToast
+//                )
             }
         ) { contentPadding ->
             LaunchedEffect(homeUiState) {

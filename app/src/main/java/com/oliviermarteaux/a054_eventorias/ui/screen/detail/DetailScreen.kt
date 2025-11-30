@@ -1,5 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.detail
 
+import android.R.attr.contentDescription
 import android.util.Size
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -7,11 +8,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
@@ -37,7 +41,9 @@ import com.oliviermarteaux.localshared.composables.StaticGoogleMap
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
-import com.oliviermarteaux.shared.composables.SharedIcon
+import com.oliviermarteaux.localshared.composables.SharedIcon
+import com.oliviermarteaux.localshared.ui.theme.SharedPadding
+import com.oliviermarteaux.shared.ui.theme.SharedSize
 
 @Composable
 fun DetailScreen(
@@ -51,7 +57,11 @@ fun DetailScreen(
         ) { paddingValues ->
             DetailBody(
                 paddingValues = paddingValues,
-                post = post
+                post = post,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = SharedPadding.xl)
             )
         }
     }
@@ -60,17 +70,21 @@ fun DetailScreen(
 @Composable
 fun DetailBody(
     paddingValues: PaddingValues,
-    post: Post
+    post: Post,
+    modifier: Modifier
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
-            .padding(16.dp)
+        modifier = modifier
     ) {
         DetailImageCard(post)
+        Spacer(modifier = Modifier.height(SharedPadding.xl))
+
         DetailScheduleAndAuthorCard(post)
+        Spacer(modifier = Modifier.height(SharedPadding.xl))
+
         DetailDescriptionCard(post)
+        Spacer(modifier = Modifier.height(SharedPadding.xxl))
+
         DetailAddressCard(post)
     }
 }
@@ -83,11 +97,10 @@ fun DetailImageCard(
         photoUri = post.photoUrl,
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .aspectRatio(1f)
             .clip(MaterialTheme.shapes.medium),
         contentScale = ContentScale.Crop
     )
-    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Composable
@@ -95,13 +108,16 @@ fun DetailScheduleAndAuthorCard(post: Post) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().height(60.dp)
     ) {
-        Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        Column (
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxHeight()
+        ) {
+            Row (verticalAlignment = Alignment.CenterVertically) {
                 SharedIcon(
                     icon = IconSource.VectorIcon(Icons.Default.CalendarToday),
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(SharedSize.extraSmall)
                 )
                 Text(
                     text = post.localeDateString,
@@ -109,11 +125,11 @@ fun DetailScheduleAndAuthorCard(post: Post) {
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
+
             Row(verticalAlignment = Alignment.CenterVertically) {
                 SharedIcon(
                     icon = IconSource.VectorIcon(Icons.Default.Schedule),
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(SharedSize.extraSmall)
                 )
                 Text(
                     text = post.localeTimeString,
@@ -122,15 +138,11 @@ fun DetailScheduleAndAuthorCard(post: Post) {
                 )
             }
         }
-        Image(
-            painter = painterResource(id = R.drawable.martyna_siddeswara),
-            contentDescription = "Organizer",
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
+        SharedAsyncImage(
+            photoUri = post.author?.photoUrl,
+            modifier = Modifier.clip(CircleShape).fillMaxHeight()
         )
     }
-    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Composable
@@ -140,28 +152,30 @@ fun DetailDescriptionCard(post: Post) {
         style = MaterialTheme.typography.bodyMedium,
         textAlign = TextAlign.Justify
     )
-    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Composable
 fun DetailAddressCard(post: Post) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = post.address.fullAddress,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-            StaticGoogleMap(
-                address = post.address.fullAddress,
-                zoom = 10,
-                size = Size(80,80),
-                mapApiKey = GOOGLE_MAPS_API_KEY,
-            )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = post.address.fullAddress,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(3/5f)
+        )
+        Spacer(Modifier.width(SharedPadding.xl))
+        StaticGoogleMap(
+            address = post.address.fullAddress,
+            zoom = 16,
+            mapApiKey = GOOGLE_MAPS_API_KEY,
+            modifier = Modifier
+                .weight(2/5f)
+                .aspectRatio(149/72f)
+                .clip(MaterialTheme.shapes.medium)
+        )
 //            SharedGoogleMapFromCoords(
 //                modifier = Modifier
 //                    .size(200.dp)
@@ -173,7 +187,6 @@ fun DetailAddressCard(post: Post) {
 //                    .size(80.dp)
 //                    .clip(MaterialTheme.shapes.small)
 //            )
-        }
     }
 }
 

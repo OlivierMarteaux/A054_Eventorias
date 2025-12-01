@@ -85,7 +85,7 @@ class HomeViewModel @Inject constructor(
     fun loadPosts() {
         viewModelScope.launch {
             homeUiState = ListUiState.Loading
-            delay(3000) // simulate network delay for Loading state evidence
+//            delay(1500) // simulate network delay for Loading state evidence
             postRepository.posts.collect { result ->
                 result
                     .onSuccess {
@@ -113,6 +113,7 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
+        setAuthObserverDelay(2000)
 //    throw RuntimeException("Test Crash") // Force a crash
         log.d("HomeFeedViewModel: init")
 

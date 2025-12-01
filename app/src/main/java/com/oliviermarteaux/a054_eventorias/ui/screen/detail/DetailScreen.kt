@@ -38,15 +38,17 @@ import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
 import com.oliviermarteaux.localshared.composables.SharedIcon
+import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.ui.theme.SharedSize
 
 @Composable
 fun DetailScreen(
     onBackClick: () -> Unit,
-    detailViewModel: DetailViewModel = hiltViewModel()
+//    detailViewModel: DetailViewModel = hiltViewModel()
+    postViewModel: PostViewModel
 ) {
-    with(detailViewModel) {
+    with(postViewModel) {
         SharedScaffold(
             title = post.title,
             onBackClick = onBackClick

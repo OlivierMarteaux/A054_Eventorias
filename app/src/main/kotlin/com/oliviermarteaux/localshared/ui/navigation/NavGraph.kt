@@ -1,6 +1,7 @@
 package com.oliviermarteaux.localshared.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,6 +16,8 @@ import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.L
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password.PasswordScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset.ResetScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash.SplashScreen
+import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -29,6 +32,7 @@ fun SharedNavGraph(
     navHostController: NavHostController,
     startDestination: String,
     logoRes: Int = -1,
+    postViewModel: PostViewModel = hiltViewModel()
 ){
     NavHost(
         navController = navHostController,
@@ -86,9 +90,11 @@ fun SharedNavGraph(
         /*_ HOME SCREEN ##############################################################################*/
         composable(route = Screen.Home.route) {
             HomeScreen(
+                postViewModel = postViewModel,
                 navController = navHostController,
                 navigateToDetailScreen = {
-                        post -> navHostController.navigate(Screen.Detail.route + "/${post.id}")
+//                        post -> navHostController.navigate(Screen.Detail.route + "/${post.id}")
+                    navHostController.navigate(Screen.Detail.route)
                 },
                 onSettingsClick = { /*navHostController.navigate(Screen.Settings.route)*/ },
                 navigateToLoginScreen = { /*navHostController.navigate(Screen.Login.route)*/ },
@@ -102,10 +108,11 @@ fun SharedNavGraph(
         }
         /*_ DETAIL SCREEN ###########################################################################*/
         composable(
-            route = Screen.Detail.route + "/{post_id}",
-            arguments = listOf(navArgument("post_id") { type = NavType.StringType })
+            route = Screen.Detail.route/* + "/{post_id}"*/,
+//            arguments = listOf(navArgument("post_id") { type = NavType.StringType })
         ){
             DetailScreen(
+                postViewModel = postViewModel,
                 onBackClick = { navHostController.navigateUp() },
             )
         }

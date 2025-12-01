@@ -1,9 +1,11 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.add
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -41,10 +43,14 @@ import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 import com.oliviermarteaux.localshared.ui.theme.SharedSize
+import com.oliviermarteaux.localshared.ui.theme.ToastPadding
+import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
 import com.oliviermarteaux.shared.composables.SharedIconButton
+import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.composables.sharedImagePicker
+import com.oliviermarteaux.shared.ui.UiState
 
 @Composable
 fun AddScreen(
@@ -57,19 +63,30 @@ fun AddScreen(
             title = stringResource(R.string.creation_of_an_event),
             onBackClick = navigateBack
         ) { paddingValues ->
-            AddScreenBody(
-                post = post,
-                updatePostTitle = ::updatePostTitle,
-                updatePostDescription = ::updatePostDescription,
-                updatePostDate = ::updatePostDate,
-                updatePostTime = ::updatePostTime,
-                updatePostAddress = ::updatePostAddress,
-                updatePostPhoto = ::updatePostPhoto,
-                navigateToCamera = navigateToCamera,
-                addPost = { addPost(navigateBack) },
-                navigateBack = navigateBack,
-                paddingValues = paddingValues,
-            )
+            Box(){
+                AddScreenBody(
+                    post = post,
+                    updatePostTitle = ::updatePostTitle,
+                    updatePostDescription = ::updatePostDescription,
+                    updatePostDate = ::updatePostDate,
+                    updatePostTime = ::updatePostTime,
+                    updatePostAddress = ::updatePostAddress,
+                    updatePostPhoto = ::updatePostPhoto,
+                    navigateToCamera = navigateToCamera,
+                    addPost = { addPost(navigateBack) },
+                    navigateBack = navigateBack,
+                    paddingValues = paddingValues,
+                )
+                if (addPostUiState is UiState.Loading) { CenteredCircularProgressIndicator() }
+                if (networkError) SharedToast(
+                    text = stringResource(R.string.network_error_check_your_internet_connection),
+                    bottomPadding = ToastPadding.medium
+                )
+                if (unknownError) SharedToast(
+                    text = stringResource(R.string.an_unknown_error_occurred),
+                    bottomPadding = ToastPadding.medium
+                )
+            }
         }
     }
 }

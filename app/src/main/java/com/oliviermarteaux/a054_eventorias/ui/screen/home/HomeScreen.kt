@@ -54,8 +54,10 @@ import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.composables.spacer.SpacerLarge
 import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.localshared.ui.navigation.Screen
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
+import com.oliviermarteaux.localshared.ui.theme.ToastPadding
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
@@ -82,7 +84,8 @@ fun HomeScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    navigateToDetailScreen: (Post) -> Unit = {},
+    postViewModel: PostViewModel,
+    navigateToDetailScreen: (/*Post*/) -> Unit = {},
     onSettingsClick: () -> Unit = {},
     navigateToLoginScreen: () -> Unit = {},
     navigateToAccountScreen: () -> Unit = {},
@@ -90,78 +93,83 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     with(homeViewModel) {
-        SharedScaffold(
-            title = stringResource(Screen.Home.titleRes),
-            // top app bar
-            topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
-            // search bar
-            onSearchIconClick = ::showSearchBar,
-            searchBarVisible = searchBarVisible,
-            query = query,
-            onQueryChange = { updateQuery(it) ; filterPosts(it)},
-            onSearchBarIconClick = {clearQuery(); hideSearchBar()},
-            searchBarModifier = Modifier.padding(horizontal = SharedPadding.xs),
-            // sort menu
-            onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
-            onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
-            onSortByDescendingDateClick = { sortPostsBy(SortOption.DATE_DESCENDING) },
-            // bottom app bar
-            bottomBar = { SharedBottomAppBar(navController) },
-            // fab button
-            fabVisible = fabVisible,
-            onFabClick = {
-                // for initial posts populating purpose
+        with (postViewModel) {
+            SharedScaffold(
+                title = stringResource(Screen.Home.titleRes),
+                // top app bar
+                topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
+                // search bar
+                onSearchIconClick = ::showSearchBar,
+                searchBarVisible = searchBarVisible,
+                query = query,
+                onQueryChange = { updateQuery(it); filterPosts(it) },
+                onSearchBarIconClick = { clearQuery(); hideSearchBar() },
+                searchBarModifier = Modifier.padding(horizontal = SharedPadding.xs),
+                // sort menu
+                onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
+                onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
+                onSortByDescendingDateClick = { sortPostsBy(SortOption.DATE_DESCENDING) },
+                // bottom app bar
+                bottomBar = { SharedBottomAppBar(navController) },
+                // fab button
+                fabVisible = fabVisible,
+                onFabClick = {
+                    // for initial posts populating purpose
 //                uploadSamplePosts(context)
-                checkUserState(
-                    onUserLogged = navigateToAddScreen,
-                    onNoUserLogged = ::showAuthErrorToast
-                )
-            }
-        ) { contentPadding ->
-            LaunchedEffect(homeUiState) {
-                Log.i(
-                    "OM_TAG",
-                    "HomeFeedViewModel: LaunchedEffect: homeFeedUiState = $homeUiState"
-                )
-            }
-            Box {
-                //_ UiState management: Empty, Error, Loading, Success
-                when (homeUiState) {
-                    is ListUiState.Loading -> CenteredCircularProgressIndicator()
-                    is ListUiState.Empty -> SharedToast(stringResource(R.string.no_posts))
-                    is ListUiState.Error -> {
-                        ErrorScreen(
-                            modifier = modifier,
-                            contentPadding = contentPadding,
-                            loadPosts = ::loadPosts
-                        )
-                    }
-                    is ListUiState.Success -> {
-                        HomeFeedList(
-                            modifier = modifier
-                                .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
-                                .fillMaxWidth()
-                                .padding(contentPadding)
-                                .padding(horizontal = SharedPadding.large),
-                            posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
-                            navigateToDetailScreen = navigateToDetailScreen,
-                            searchBarVisible = searchBarVisible,
-                            query = query,
-                            updateQuery = { updateQuery(it) },
-                            filterPosts = { filterPosts(it) },
-                            clearQuery = { clearQuery() },
-                            hideSearchBar = ::hideSearchBar
-                        )
-                    }
+                    checkUserState(
+                        onUserLogged = navigateToAddScreen,
+                        onNoUserLogged = ::showAuthErrorToast
+                    )
                 }
-                if (authError) SharedToast(
-                    text = stringResource(R.string.an_account_is_mandatory_to_add_a_post),
-                    bottomPadding = 120
-                )
-                if (networkError) SharedToast(
-                    text = stringResource(R.string.network_error_check_your_internet_connection),
-                    bottomPadding = 160
-                )
+            ) { contentPadding ->
+                LaunchedEffect(homeUiState) {
+                    Log.i(
+                        "OM_TAG",
+                        "HomeFeedViewModel: LaunchedEffect: homeFeedUiState = $homeUiState"
+                    )
+                }
+                Box {
+                    //_ UiState management: Empty, Error, Loading, Success
+                    when (homeUiState) {
+                        is ListUiState.Loading -> CenteredCircularProgressIndicator()
+                        is ListUiState.Empty -> SharedToast(stringResource(R.string.no_posts))
+                        is ListUiState.Error -> {
+                            ErrorScreen(
+                                modifier = modifier,
+                                contentPadding = contentPadding,
+                                loadPosts = ::loadPosts
+                            )
+                        }
+
+                        is ListUiState.Success -> {
+                            HomeFeedList(
+                                modifier = modifier
+                                    .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
+                                    .fillMaxWidth()
+                                    .padding(contentPadding)
+                                    .padding(horizontal = SharedPadding.large),
+                                posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
+                                navigateToDetailScreen = navigateToDetailScreen,
+                                searchBarVisible = searchBarVisible,
+                                query = query,
+                                updateQuery = { updateQuery(it) },
+                                filterPosts = { filterPosts(it) },
+                                clearQuery = { clearQuery() },
+                                hideSearchBar = ::hideSearchBar,
+                                selectPost = ::selectPost
+
+                            )
+                        }
+                    }
+                    if (authError) SharedToast(
+                        text = stringResource(R.string.an_account_is_mandatory_to_add_a_post),
+                        bottomPadding = ToastPadding.high
+                    )
+                    if (networkError) SharedToast(
+                        text = stringResource(R.string.network_error_check_your_internet_connection),
+                        bottomPadding = ToastPadding.veryHigh
+                    )
+                }
             }
         }
     }
@@ -178,13 +186,14 @@ fun HomeScreen(
 private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
-    navigateToDetailScreen: (Post) -> Unit,
+    navigateToDetailScreen: (/*Post*/) -> Unit,
     searchBarVisible: Boolean = false,
     query: String = "",
     updateQuery: (String) -> Unit,
     filterPosts: (String) -> Unit,
     clearQuery: () -> Unit,
-    hideSearchBar: () -> Unit
+    hideSearchBar: () -> Unit,
+    selectPost: (Post) -> Unit
 ) {
     Column (modifier = modifier ) {
         LazyColumn(
@@ -193,7 +202,8 @@ private fun HomeFeedList(
             items(posts) { post ->
                 HomeFeedCell(
                     post = post,
-                    navigateToDetailScreen = navigateToDetailScreen
+                    navigateToDetailScreen = navigateToDetailScreen,
+                    selectPost = selectPost
                 )
             }
         }
@@ -209,14 +219,18 @@ private fun HomeFeedList(
 @Composable
 private fun HomeFeedCell(
     post: Post,
-    navigateToDetailScreen: (Post) -> Unit,
+    navigateToDetailScreen: (/*Post*/) -> Unit,
+    selectPost: (Post) -> Unit
 ) {
     ElevatedCard(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp),
-        onClick = { navigateToDetailScreen(post) }
+        onClick = {
+            selectPost(post)
+            navigateToDetailScreen(/*post*/)
+        }
     ) {
         Row (
             verticalAlignment = Alignment.CenterVertically,

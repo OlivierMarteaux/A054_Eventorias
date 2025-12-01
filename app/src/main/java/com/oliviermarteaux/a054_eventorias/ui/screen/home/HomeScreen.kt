@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -26,6 +27,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -128,44 +130,12 @@ fun HomeScreen(
                     is ListUiState.Loading -> CenteredCircularProgressIndicator()
                     is ListUiState.Empty -> SharedToast(stringResource(R.string.no_posts))
                     is ListUiState.Error -> {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                            modifier = modifier
-                                .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
-                                .fillMaxSize()
-                                .padding(contentPadding)
-                                .padding(horizontal = 126.dp),
-                        ){
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .size(64.dp)
-                                    .background(color = Grey40, shape = CircleShape)
-                            ) {
-                                SharedIcon(
-                                    icon = IconSource.VectorIcon(Icons.Filled.PriorityHigh),
-                                    modifier = Modifier.size(32.dp),
-                                    tint = White,
-                                )
-                            }
-                            SpacerLarge()
-                            TextTitleMedium(text = stringResource(R.string.error))
-                            TextTitleSmall(
-                                text = stringResource(R.string.an_error_as_occurred_please_try_again_later),
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.height(35.dp))
-                            SharedButton(
-                                text = stringResource(R.string.try_again),
-                                onClick = ::loadPosts,
-                                shape = MaterialTheme.shapes.extraSmall,
-                                colors = ButtonDefaults.buttonColors(containerColor = Red40),
-                                textColor = White
-                            )
-                        }
+                        ErrorScreen(
+                            modifier = modifier,
+                            contentPadding = contentPadding,
+                            loadPosts = ::loadPosts
+                        )
                     }
-
                     is ListUiState.Success -> {
                         HomeFeedList(
                             modifier = modifier
@@ -276,5 +246,49 @@ private fun HomeFeedCell(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ErrorScreen(
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues,
+    loadPosts: () -> Unit
+){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
+            .fillMaxSize()
+            .padding(contentPadding)
+            .padding(horizontal = 126.dp),
+    ){
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(64.dp)
+                .background(color = Grey40, shape = CircleShape)
+        ) {
+            SharedIcon(
+                icon = IconSource.VectorIcon(Icons.Filled.PriorityHigh),
+                modifier = Modifier.size(32.dp),
+                tint = White,
+            )
+        }
+        SpacerLarge()
+        TextTitleMedium(text = stringResource(R.string.error))
+        TextTitleSmall(
+            text = stringResource(R.string.an_error_as_occurred_please_try_again_later),
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(35.dp))
+        SharedButton(
+            text = stringResource(R.string.try_again),
+            onClick = loadPosts,
+            shape = MaterialTheme.shapes.extraSmall,
+            colors = ButtonDefaults.buttonColors(containerColor = Red40),
+            textColor = White
+        )
     }
 }

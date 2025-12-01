@@ -148,6 +148,7 @@ fun SharedScaffold(
     menuItem2Title: String = "",
     //_ fab function
     onFabClick: (() -> Unit)? = null,
+    fabVisible: Boolean = true,
     fabEnabled: Boolean = true,
     fabShape: Shape =  FloatingActionButtonDefaults.shape,
     fabContainerColor: Color =  FloatingActionButtonDefaults.containerColor,
@@ -281,20 +282,22 @@ fun SharedScaffold(
         bottomBar = bottomBar,
         floatingActionButton = {
             onFabClick?.let {
-                FloatingActionButton(
-                    onClick = { if (fabEnabled) onFabClick() },
-                    modifier = fabModifier
-                        .semantics { contentDescription = fabContentDescription },
-                    shape = fabShape,
-                    containerColor = fabContainerColor,
-                    contentColor = fabContentColor,
-                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(10.dp),
-                    interactionSource = fabInteractionSource
-                ) {
-                    SharedIcon(
-                        icon = IconSource.VectorIcon(Icons.Filled.Add),
-                        tint = fabIconTint
-                    )
+                if (fabVisible){
+                    FloatingActionButton(
+                        onClick = { if (fabEnabled) onFabClick() },
+                        modifier = fabModifier
+                            .semantics { contentDescription = fabContentDescription },
+                        shape = fabShape,
+                        containerColor = fabContainerColor,
+                        contentColor = fabContentColor,
+                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(10.dp),
+                        interactionSource = fabInteractionSource
+                    ) {
+                        SharedIcon(
+                            icon = IconSource.VectorIcon(Icons.Filled.Add),
+                            tint = fabIconTint
+                        )
+                    }
                 }
             }
         },

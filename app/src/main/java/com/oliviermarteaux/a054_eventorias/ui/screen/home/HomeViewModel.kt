@@ -50,6 +50,10 @@ class HomeViewModel @Inject constructor(
 
     var query: String by mutableStateOf("")
         private set
+
+    var fabVisible: Boolean by mutableStateOf(false)
+        private set
+
     fun updateQuery(newQuery: String) {
         query = newQuery
     }
@@ -85,6 +89,7 @@ class HomeViewModel @Inject constructor(
             postRepository.posts.collect { result ->
                 result
                     .onSuccess {
+                        fabVisible = true
                         posts = it
                         filteredPosts = it
                         homeUiState =
@@ -93,6 +98,7 @@ class HomeViewModel @Inject constructor(
                     }
                     .onFailure { e ->
                         homeUiState = ListUiState.Error(e)
+                        fabVisible = false
                     }
             }
         }

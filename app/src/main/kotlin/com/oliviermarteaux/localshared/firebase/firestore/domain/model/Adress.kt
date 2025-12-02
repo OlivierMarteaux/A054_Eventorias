@@ -10,6 +10,14 @@ data class Address(
     val country: String = ""
 ): Serializable{
 
+    // Explicit no-arg constructor for Firebase deserialization --> needed for minification
+    constructor() : this(
+        street = "",
+        district = "",
+        city = "",
+        zipCode = "",
+        country = ""
+    )
     var fullAddress: String = ""
         get() = field.ifEmpty { computeFullAddress() }
 

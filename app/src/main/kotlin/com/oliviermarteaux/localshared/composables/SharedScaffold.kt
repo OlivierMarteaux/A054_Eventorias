@@ -1,9 +1,18 @@
 package com.oliviermarteaux.localshared.composables
 
 import android.R.attr.end
+import android.R.attr.navigationIcon
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,6 +48,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
@@ -124,6 +134,7 @@ import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
 @Composable
 fun SharedScaffold(
     modifier: Modifier = Modifier,
+    //_ topAppBar
     title: String = "",
     topAppBarModifier: Modifier = Modifier,
     trailingIcon: IconSource? = null,
@@ -131,7 +142,7 @@ fun SharedScaffold(
     onBackClick: (() -> Unit)? = null,
     //_ search function
     onSearchIconClick: (() -> Unit)? = null,
-    searchBarVisible: Boolean = false,
+    isSearchVisible: Boolean = false,
     query: String = "",
     onQueryChange: (String) -> Unit = {},
 //    onSearchClick: (() -> Unit)? = null,
@@ -173,14 +184,27 @@ fun SharedScaffold(
     fun showSearchBar(){ searchBarDisplayed = true }
     fun hideSearchBar(){ searchBarDisplayed = false }
 
-    val topAppBarModifierWithSearchBar = onSearchIconClick?.let { topAppBarModifier.height(118.dp) }?:topAppBarModifier
+//    val topAppBarModifierWithSearchBar = onSearchIconClick?.let { topAppBarModifier.height(118.dp) }?:topAppBarModifier
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { TextTitleLarge(title) },
-                modifier = topAppBarModifierWithSearchBar,
+                title = {
+                    Box(
+                        modifier = Modifier.fillMaxHeight(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AnimatedVisibility(
+                            visible = !isSearchVisible,
+                            enter = expandHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow)),
+                            exit = shrinkHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow))
+                        ) {
+                            TextTitleLarge(title)
+                        }
+                    }
+                },
+                modifier = topAppBarModifier.height(150.dp),
                 navigationIcon = {
                     onBackClick?.let {
                         SharedIconButton(
@@ -207,7 +231,12 @@ fun SharedScaffold(
                         )
                     }
                     onSearchIconClick?.let {
-                        if (searchBarVisible){
+                        AnimatedVisibility(
+                            visible = isSearchVisible,
+                            modifier = Modifier.weight(1f),
+//                            enter = expandHorizontally(animationSpec = tween(10000)),
+//                            exit = shrinkHorizontally(animationSpec = tween(10000))
+                        ) {
                             val searchBarFocusRequester = remember { FocusRequester() }
                             LaunchedEffect(Unit) { searchBarFocusRequester.requestFocus() }
                             val keyboardController = LocalSoftwareKeyboardController.current
@@ -216,13 +245,14 @@ fun SharedScaffold(
                                 onQueryChange = onQueryChange,
                                 modifier = searchBarModifier
                                     .focusRequester(searchBarFocusRequester)
-                                    .fillMaxWidth()
+                                    .fillMaxWidth(),
 //                                    .width(300.dp)
-                                    .alignBy { it.measuredHeight / 2 },
+//                                    .alignBy { it.measuredHeight / 2 },
                                 onSearch =  { keyboardController?.hide() },
                                 onIconClick = onSearchBarIconClick
                             )
-                        } else {
+                        }
+                        if (!isSearchVisible) {
                             SharedIconButton(
                                 icon = IconSource.VectorIcon(Icons.Default.Search),
                             ) { onSearchIconClick() }

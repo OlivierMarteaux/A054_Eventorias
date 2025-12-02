@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.common.math.LinearTransformation.horizontal
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
@@ -100,11 +101,11 @@ fun HomeScreen(
                 topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
                 // search bar
                 onSearchIconClick = ::showSearchBar,
-                searchBarVisible = searchBarVisible,
+                isSearchVisible = searchBarVisible,
                 query = query,
                 onQueryChange = { updateQuery(it); filterPosts(it) },
                 onSearchBarIconClick = { clearQuery(); hideSearchBar() },
-                searchBarModifier = Modifier.padding(horizontal = SharedPadding.xs),
+//                searchBarModifier = Modifier.padding(horizontal = SharedPadding.xs),
                 // sort menu
                 onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
                 onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },

@@ -65,7 +65,7 @@ android {
             enableAndroidTestCoverage = true
             enableUnitTestCoverage = true
             // Optional: only if you want to test minification earlier
-            isMinifyEnabled = true
+//            isMinifyEnabled = true
         }
     }
 

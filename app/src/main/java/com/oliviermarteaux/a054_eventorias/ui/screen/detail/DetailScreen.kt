@@ -171,7 +171,7 @@ fun DetailScheduleAndAuthorCard(post: Post) {
         }
         SharedAsyncImage(
             photoUri = post.author?.photoUrl,
-            modifier = Modifier.clip(CircleShape).fillMaxHeight()
+            modifier = Modifier.clip(CircleShape).fillMaxHeight().aspectRatio(1f)
         )
     }
 }

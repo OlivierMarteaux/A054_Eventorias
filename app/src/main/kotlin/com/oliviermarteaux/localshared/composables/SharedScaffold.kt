@@ -204,7 +204,7 @@ fun SharedScaffold(
                         }
                     }
                 },
-                modifier = topAppBarModifier.height(150.dp),
+                modifier = topAppBarModifier.height(125.dp),
                 navigationIcon = {
                     onBackClick?.let {
                         SharedIconButton(
@@ -233,7 +233,9 @@ fun SharedScaffold(
                     onSearchIconClick?.let {
                         AnimatedVisibility(
                             visible = isSearchVisible,
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(start = SharedPadding.small),
 //                            enter = expandHorizontally(animationSpec = tween(10000)),
 //                            exit = shrinkHorizontally(animationSpec = tween(10000))
                         ) {

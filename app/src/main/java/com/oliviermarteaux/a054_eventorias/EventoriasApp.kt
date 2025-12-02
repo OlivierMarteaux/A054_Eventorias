@@ -1,5 +1,6 @@
 package com.oliviermarteaux.a054_eventorias
 
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.oliviermarteaux.localshared.composables.startup.RequestCameraPermission
@@ -18,10 +19,16 @@ fun EventoriasApp(){
     RequestMapsPermission()
     RequestCameraPermission()
     RequestNotificationPermission()
-    DismissKeyboardOnTapOutside { SharedNavGraph(
-        navHostController = navController,
-        startDestination = Screen.Splash.route,
-        logoRes = R.drawable.eventorias_logo
-    ) }
+
+    Surface(){
+        DismissKeyboardOnTapOutside {
+            SharedNavGraph(
+                navHostController = navController,
+                startDestination = Screen.Splash.route,
+                logoRes = R.drawable.eventorias_logo
+            )
+        }
+    }
+
     LogRoutes(navController)
 }

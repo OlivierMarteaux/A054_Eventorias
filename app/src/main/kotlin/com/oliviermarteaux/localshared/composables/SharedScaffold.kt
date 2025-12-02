@@ -2,6 +2,7 @@ package com.oliviermarteaux.localshared.composables
 
 import android.R.attr.end
 import android.R.attr.navigationIcon
+import android.R.attr.onClick
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -34,6 +35,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
@@ -57,11 +59,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.composables.extensions.cdSemantics
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
+import com.oliviermarteaux.localshared.ui.theme.SharedSize
 import com.oliviermarteaux.localshared.utils.hideKeyboard
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
@@ -136,6 +141,7 @@ fun SharedScaffold(
     modifier: Modifier = Modifier,
     //_ topAppBar
     title: String = "",
+    screenContentDescription: String = "",
     topAppBarModifier: Modifier = Modifier,
     trailingIcon: IconSource? = null,
     avatarUrl: String? = null,
@@ -168,6 +174,8 @@ fun SharedScaffold(
     fabContentDescription: String = "",
     fabModifier: Modifier = Modifier,
     fabIconTint: Color = contentColorFor(fabContainerColor),
+    //_ access fab button
+    accessFabButton: Boolean? = null,
     //_ bottom bar
     bottomBar: @Composable () -> Unit = {},
     //_ content
@@ -200,7 +208,14 @@ fun SharedScaffold(
                             enter = expandHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow)),
                             exit = shrinkHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow))
                         ) {
-                            TextTitleLarge(title)
+                            TextTitleLarge(
+                                text = title,
+                                modifier = modifier.clearAndSetSemantics(
+                                    properties = {
+                                        contentDescription = screenContentDescription
+                                    }
+                                )
+                            )
                         }
                     }
                 },
@@ -255,14 +270,20 @@ fun SharedScaffold(
                             )
                         }
                         if (!isSearchVisible) {
+                            val cdSearchButton =
+                                stringResource(R.string.search_button_double_tap_to_open_the_search_bar)
                             SharedIconButton(
                                 icon = IconSource.VectorIcon(Icons.Default.Search),
+                                modifier = Modifier.cdSemantics(cdSearchButton)
                             ) { onSearchIconClick() }
                         }
                     }
                     onSortByTitleClick?.let{
+                        val cdSortButton =
+                            stringResource(R.string.sort_button_double_tap_to_open_the_sort_menu)
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.Default.SwapVert),
+                            modifier = Modifier.cdSemantics(cdSortButton)
                         ){ showSortOptions() }
                         DropdownMenu(
                             expanded = sortOptionsDisplayed,
@@ -307,6 +328,24 @@ fun SharedScaffold(
                                 )
                             }
                         }
+                    }
+                    accessFabButton?.let{
+                        SharedIconButton(
+                            icon = IconSource.VectorIcon(Icons.Filled.Add),
+                            tint = fabIconTint,
+                            colors = IconButtonColors(
+                                containerColor = fabContainerColor,
+                                contentColor = fabContentColor,
+                                disabledContainerColor = fabContainerColor,
+                                disabledContentColor = fabContentColor
+                            ),
+                            shape = fabShape,
+                            modifier = Modifier
+                                .padding(end = SharedPadding.xs)
+                                .cdSemantics(fabContentDescription)
+                                .size(SharedSize.xs),
+                            onClick = onFabClick?:{}
+                        )
                     }
                 }
             )

@@ -56,4 +56,11 @@
     <string name="an_error_as_occurred_please_try_again_later">"Une erreur s\'est produite,\nmerci de réessayer plus tard"</string>
     <string name="try_again">Réessayer</string>
     <string name="user_is_disconnected">User is disconnected</string>
+    <string name="please_wait_server_connection_in_progress">Please wait, server connection in progress</string>
+    <string name="you_are_on_the_home_screen_here_you_can_browse_all_the_incoming_events">
+        Vous êtes sur l\'écran d\'accueil. Ici vous pouvez parcourir tous les évènements en attente
+    </string>
+    <string name="search_button_double_tap_to_open_the_search_bar">Bouton recherche. Appuyer deux fois pour ouvrir la barre de recherche</string>
+    <string name="sort_button_double_tap_to_open_the_sort_menu">Bouton tri. Appuyer deux fois pour ouvrir le menu de tri</string>
+    <string name="add_button_double_tap_to_add_a_new_event">Bouton Ajout. Appuyer deux fois pour ajouter un nouvel évènement</string>
 </resources>

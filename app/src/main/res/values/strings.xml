@@ -56,4 +56,9 @@
     <string name="an_error_as_occurred_please_try_again_later">"An error as occurred,\nplease try again later"</string>
     <string name="try_again">Try again</string>
     <string name="user_is_disconnected">User is disconnected</string>
+    <string name="please_wait_server_connection_in_progress">Please wait, server connection in progress</string>
+    <string name="you_are_on_the_home_screen_here_you_can_browse_all_the_incoming_events">You are on the home screen. Here you can browse all the incoming events</string>
+    <string name="search_button_double_tap_to_open_the_search_bar">Search button. Double tap to open the search bar</string>
+    <string name="sort_button_double_tap_to_open_the_sort_menu">Sort button. double tap to open the sort menu</string>
+    <string name="add_button_double_tap_to_add_a_new_event">Add button. Double tap to add a new event</string>
 </resources>

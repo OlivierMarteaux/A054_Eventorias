@@ -1,9 +1,13 @@
 // functions/index.js
 
-const { onDocumentCreated, onDocumentDeleted } = require("firebase-functions/v2/firestore");
+const {
+  onDocumentCreated,
+  onDocumentDeleted,
+} = require("firebase-functions/v2/firestore");
+
 const {initializeApp} = require("firebase-admin/app");
 const {getMessaging} = require("firebase-admin/messaging");
-const { getStorage } = require("firebase-admin/storage");
+const {getStorage} = require("firebase-admin/storage");
 
 // Initialize Firebase Admin SDK
 initializeApp();
@@ -44,30 +48,29 @@ exports.sendNotificationOnPostCreated = onDocumentCreated(
  * Deletes the image associated with a post when the document is deleted.
  */
 exports.deletePostImage = onDocumentDeleted(
-  "posts/{postId}",
-  async (event) => {
-    const data = event.data?.data();
+    "posts/{postId}",
+    async (event) => {
+      const data = event.data.data();
+      if (!data) return;
 
-    if (!data) return;
+      const photoUrl = data.photoUrl;
+      if (!photoUrl) return;
 
-    const photoUrl = data.photoUrl;
-    if (!photoUrl) return;
+      try {
+        const bucket = getStorage().bucket();
 
-    try {
-      const bucket = getStorage().bucket();
+        // Convert the full URL to Storage path
+        const decodedUrl = decodeURIComponent(photoUrl);
+        const splitIndex = decodedUrl.indexOf("/o/") + 3;
+        const filePath = decodedUrl.substring(splitIndex).split("?")[0];
 
-      // Convert the full URL to Storage path
-      const decodedUrl = decodeURIComponent(photoUrl);
-      const splitIndex = decodedUrl.indexOf("/o/") + 3;
-      const filePath = decodedUrl.substring(splitIndex).split("?")[0];
+        console.log("Deleting file:", filePath);
 
-      console.log("Deleting file:", filePath);
+        await bucket.file(filePath).delete();
 
-      await bucket.file(filePath).delete();
-
-      console.log("File deleted successfully.");
-    } catch (error) {
-      console.error("Error deleting file:", error);
-    }
-  }
+        console.log("File deleted successfully.");
+      } catch (error) {
+        console.error("Error deleting file:", error);
+      }
+    },
 );

@@ -83,14 +83,7 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    fun disconnectForTest(){
-        viewModelScope.launch {
-            userRepository.signOut()
-        }
-    }
-
     init {
-//        disconnectForTest()
         userUiState = UiState.Loading
         getCurrentUser()
         getNotifState()

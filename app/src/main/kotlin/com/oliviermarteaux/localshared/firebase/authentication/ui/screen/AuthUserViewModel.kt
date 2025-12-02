@@ -85,15 +85,22 @@ abstract class AuthUserViewModel(
      */
     fun showAuthErrorToast() = viewModelScope.launch { showToastFlag { authError = it } }
 
-    private var authObserverDelay: Long = 0
-    fun setAuthObserverDelay(delay: Long){
-        authObserverDelay = delay
+    //_ test functions
+    fun disconnectForTest(){
+        viewModelScope.launch {
+            userRepository.signOut()
+        }
     }
 
+    //_ auth observers
+    private var authObserverDelay: Long = 0
+    protected fun setAuthObserverDelay(delay: Long){
+        authObserverDelay = delay
+    }
     /**
      * Observes the online state of the device.
      */
-    fun observeOnlineState(){
+    private fun observeOnlineState(){
         viewModelScope.launch {
             delay(200)
             delay(authObserverDelay)

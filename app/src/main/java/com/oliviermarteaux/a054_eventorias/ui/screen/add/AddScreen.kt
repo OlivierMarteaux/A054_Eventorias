@@ -237,7 +237,9 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
         tint = White,
         colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red),
         modifier = Modifier.size(SharedSize.medium)
-    ) { imagePickerLauncher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly)) }
+    ) {
+        imagePickerLauncher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+    }
 }
 
 @Composable

@@ -2,16 +2,22 @@ package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.composables.IconScaffold
@@ -23,6 +29,8 @@ import com.oliviermarteaux.shared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.extensions.isValidEmail
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.composables.ImageScaffold
+import com.oliviermarteaux.shared.ui.theme.SharedSize
 
 /**
  * A screen for resetting the user's password.
@@ -49,15 +57,12 @@ fun ResetScreen(
             Box {
                 ResetBody(
                     email = email,
-                    modifier = modifier
-                        .padding(contentPadding)
-                        .padding(horizontal = SharedPadding.xl)
-                        .fillMaxSize()
-                    ,
                     onEmailChange = ::onEmailChange,
                     sendPasswordResetEmail = ::sendPasswordResetEmail,
                     alertDialog = alertDialog,
                     navigateToLoginScreen = navigateToLoginScreen,
+                    contentPadding = contentPadding,
+                    logoDrawableRes = R.drawable.eventorias_logo
                 )
                 if(unknownError) SharedToast(text = stringResource(R.string.an_unknown_error_occurred))
                 if(networkError) SharedToast(
@@ -82,20 +87,26 @@ fun ResetScreen(
 @Composable
 private fun ResetBody(
     email: String,
-    modifier: Modifier = Modifier,
     onEmailChange: (String) -> Unit,
     sendPasswordResetEmail: (String) -> Unit,
     alertDialog: Boolean,
     navigateToLoginScreen: () -> Unit,
+    contentPadding: PaddingValues,
+    logoDrawableRes: Int
 ) {
-    IconScaffold(
-        icon = IconSource.PainterIcon(painterResource(R.drawable.eventorias_logo)),
-        modifier = modifier
+    ImageScaffold(
+        image = painterResource(id = logoDrawableRes),
+        imageModifier = Modifier.fillMaxWidth(),
+        horizontalPadding = 85.dp,
+        formPortraitHorizontalPadding = 24.dp,
+        innerPadding = contentPadding,
     ){
         Text(
             text = stringResource(R.string.receive_instructions_to_this_email_that_explain_how_to_reset_your_password),
             textAlign = TextAlign.Center
         )
+        Spacer(Modifier.height(SharedPadding.medium))
+
         SharedOutlinedEmail(
             value = email,
             onValueChange = { onEmailChange(it) },
@@ -108,7 +119,13 @@ private fun ResetBody(
                 else -> null
             }
         )
-        SharedButton(text = stringResource(R.string.send)) { sendPasswordResetEmail(email) }
+        Spacer(Modifier.height(SharedPadding.medium))
+
+        SharedButton(
+            text = stringResource(R.string.send),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp)
+        ) { sendPasswordResetEmail(email) }
+        Spacer(Modifier.height(SharedPadding.medium))
     }
     AnimatedVisibility(alertDialog) {
         SharedAlertDialog(

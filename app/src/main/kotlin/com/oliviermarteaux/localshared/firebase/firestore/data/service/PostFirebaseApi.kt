@@ -70,13 +70,22 @@ class PostFirebaseApi: PostApi {
         val localPhotoUrl = post.photoUrl
         Log.d("OM_TAG", "PostFirebaseApi: addPost: localPhotoUrl = $localPhotoUrl")
 
+        // for demo posts upload only
+//        val localAvatarUrl = post.author?.photoUrl
+//        val firebaseAvatarUrl = if (!localAvatarUrl.isNullOrEmpty()) {
+//            uploadImageToStorage(localAvatarUrl.toUri())
+//        } else ""
+
         val firebasePhotoUrl = if (!localPhotoUrl.isNullOrEmpty()) {
             uploadImageToStorage(localPhotoUrl.toUri())
         } else ""
         Log.d("OM_TAG", "PostFirebaseApi: addPost: firebasePhotoUrl = $firebasePhotoUrl")
 
         //_ Add post to Firestore posts collection with updated image url
-        val updatedPost = post.copy(photoUrl = firebasePhotoUrl)
+        val updatedPost = post.copy(
+            photoUrl = firebasePhotoUrl,
+//            author = post.author?.copy(photoUrl = firebaseAvatarUrl) // for demo posts only
+        )
         postsCollection.add(updatedPost).await()
 
         Log.d("OM_TAG", "PostFirebaseApi: addPost: success")

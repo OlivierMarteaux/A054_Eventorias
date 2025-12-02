@@ -44,14 +44,15 @@ class AddViewModel @Inject constructor(
     var addPostUiState: UiState<Unit> by mutableStateOf(UiState.Idle)
         private set
 
-    var post: Post by mutableStateOf(Post(photoUrl = cameraRepository.photoUrl))
+    var post: Post by mutableStateOf(Post())
         private set
 
-    var photoUrl by mutableStateOf(cameraRepository.photoUrl)
+    var photoUrl: String? by mutableStateOf(null)
         private set
 
     init {
         viewModelScope.launch {
+            cameraRepository.photoUrl = null
             snapshotFlow { cameraRepository.photoUrl }
                 .stateIn ( scope = viewModelScope )
                 .collect {
@@ -90,5 +91,5 @@ class AddViewModel @Inject constructor(
             addPostUiState = UiState.Idle
         }
     }
-    init { post.copy(photoUrl = cameraRepository.photoUrl) }
+//    init { post.copy(photoUrl = null) }
 }

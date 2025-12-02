@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.delay
 
 /**
  * An abstract view model that provides authentication and user state management.
@@ -84,11 +85,25 @@ abstract class AuthUserViewModel(
      */
     fun showAuthErrorToast() = viewModelScope.launch { showToastFlag { authError = it } }
 
+    //_ test functions
+    fun disconnectForTest(){
+        viewModelScope.launch {
+            userRepository.signOut()
+        }
+    }
+
+    //_ auth observers
+    private var authObserverDelay: Long = 0
+    protected fun setAuthObserverDelay(delay: Long){
+        authObserverDelay = delay
+    }
     /**
      * Observes the online state of the device.
      */
-    fun observeOnlineState(){
+    private fun observeOnlineState(){
         viewModelScope.launch {
+            delay(200)
+            delay(authObserverDelay)
             isOnlineFlow.collect{
                 isOnline = it
                 log.v("AuthUserViewModel: checkOnlineState(): online state is $it")
@@ -101,8 +116,11 @@ abstract class AuthUserViewModel(
      */
     private fun observeUserState() {
         viewModelScope.launch {
+            delay(200)
+            delay(authObserverDelay)
             userRepository.userAuthState.collect { user ->
                 currentUser = user?.toUser()
+                currentUser?:showAuthErrorToast()
                 log.v("AuthUserViewModel: observeUserState(): current user is ${currentUser?.email?:"not connected"}")
             }
         }

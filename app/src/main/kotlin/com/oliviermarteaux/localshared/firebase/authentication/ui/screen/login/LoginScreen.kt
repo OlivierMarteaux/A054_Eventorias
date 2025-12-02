@@ -1,32 +1,48 @@
 package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login
 
+import android.R.attr.onClick
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.google.common.math.LinearTransformation.horizontal
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.NewUser
 import com.oliviermarteaux.shared.ui.theme.SharedPadding
-import com.oliviermarteaux.shared.composables.IconScaffold
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedButton
 import com.oliviermarteaux.shared.composables.SharedOutlinedEmail
@@ -36,6 +52,8 @@ import com.oliviermarteaux.shared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.extensions.isValidEmail
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.composables.ImageScaffold
+import com.oliviermarteaux.shared.composables.IconScaffold
 
 /**
  * A screen for logging in or creating an account.
@@ -58,40 +76,47 @@ fun LoginScreen(
 ){
     with (loginViewModel) {
         SharedScaffold(
-            modifier = modifier,
             title = stringResource(R.string.sign_in),
             onBackClick = onBackClick,
-        ) { contentPadding ->
-            Box {
-                LoginBody(
-                    logoDrawableRes = logoDrawableRes,
-                    newUser = newUser,
-                    emailExist = emailExist,
-                    isOnline = isOnline,
-                    modifier = modifier
-                        .padding(contentPadding)
-                        .padding(horizontal = SharedPadding.xl)
-                        .fillMaxSize(),
-                    onEmailChange = ::onEmailChange,
-                    onFirstNameChange = ::onFirstNameChange,
-                    onLastNameChange = ::onLastNameChange,
-                    onPasswordChange = ::onPasswordChange,
-                    createAccount = ::createAccount,
-                    checkEmail = ::checkEmail,
-                    navigateToHomeScreen = navigateToHomeScreen,
-                    navigateToPasswordScreen = navigateToPasswordScreen,
-                    showNetworkErrorToast = ::showNetworkErrorToast,
-                    onEmailExist = ::onEmailExist,
-                )
-                if(unknownError) SharedToast(text = stringResource(R.string.an_unknown_error_occurred))
-                if(networkError) SharedToast(
-                    text = stringResource(R.string.network_error_check_your_internet_connection),
-                    bottomPadding = 120
-                )
-                if(accountCreationError) SharedToast(
-                    text = stringResource(R.string.email_account_registration_unsuccessful),
-                    bottomPadding = 160
-                )
+            modifier = modifier,
+        ) { innerPadding ->
+            ImageScaffold(
+                image = painterResource(id = logoDrawableRes),
+                innerPadding = innerPadding,
+                imageModifier = Modifier.fillMaxWidth(),
+                horizontalPadding = 85.dp,
+                formPortraitHorizontalPadding = 24.dp
+            ) {
+                Box {
+                    LoginBody(
+                        logoDrawableRes = logoDrawableRes,
+                        newUser = newUser,
+                        emailExist = emailExist,
+                        isOnline = isOnline,
+                        modifier = modifier
+                            .padding(horizontal = SharedPadding.xl)
+                            .fillMaxSize(),
+                        onEmailChange = ::onEmailChange,
+                        onFirstNameChange = ::onFirstNameChange,
+                        onLastNameChange = ::onLastNameChange,
+                        onPasswordChange = ::onPasswordChange,
+                        createAccount = ::createAccount,
+                        checkEmail = ::checkEmail,
+                        navigateToHomeScreen = navigateToHomeScreen,
+                        navigateToPasswordScreen = navigateToPasswordScreen,
+                        showNetworkErrorToast = ::showNetworkErrorToast,
+                        onEmailExist = ::onEmailExist,
+                    )
+                    if (unknownError) SharedToast(text = stringResource(R.string.an_unknown_error_occurred))
+                    if (networkError) SharedToast(
+                        text = stringResource(R.string.network_error_check_your_internet_connection),
+                        bottomPadding = 120
+                    )
+                    if (accountCreationError) SharedToast(
+                        text = stringResource(R.string.email_account_registration_unsuccessful),
+                        bottomPadding = 160
+                    )
+                }
             }
         }
     }
@@ -133,21 +158,18 @@ private fun LoginBody(
     showNetworkErrorToast: () -> Unit,
     onEmailExist: (() -> Unit)-> Unit,
 ){
-    var verticalArrangement: Arrangement.Vertical by remember { mutableStateOf(Arrangement.SpaceEvenly) }
-    var scaffoldModifier: Modifier by remember { mutableStateOf(modifier) }
 
-    IconScaffold(
-        icon = IconSource.PainterIcon(painterResource(logoDrawableRes)),
-        modifier = scaffoldModifier,
-        verticalArrangement = verticalArrangement,
-    ){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.windowInsetsPadding(WindowInsets(0,0,0,0))
+    ) {
         SharedOutlinedEmail(
             value = newUser.email,
             onValueChange = { onEmailChange(it) },
             label = stringResource(R.string.email),
             imeAction = ImeAction.Done,
             modifier = Modifier.fillMaxWidth(),
-            bottomPadding = SharedPadding.xxl,
+            bottomPadding = SharedPadding.xl,
             errorText = when {
                 newUser.email.isEmpty() -> stringResource(R.string.enter_your_email_address_to_continue)
                 !newUser.email.isValidEmail() -> stringResource(R.string.incorrect_email_address)
@@ -156,30 +178,36 @@ private fun LoginBody(
         )
         when {
             emailExist == null -> {
+                Spacer(modifier = Modifier.height(SharedPadding.xl))
                 SharedButton(
                     onClick = { if (isOnline) checkEmail(newUser.email) else showNetworkErrorToast() },
                     text = stringResource(R.string.next),
-                    enabled = newUser.email.run {isValidEmail() && isNotEmpty()}
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp),
+                    enabled = newUser.email.run { isValidEmail() && isNotEmpty() }
                 )
             }
-            emailExist -> { onEmailExist{navigateToPasswordScreen(newUser.email) } }
+
+            emailExist -> {
+                onEmailExist { navigateToPasswordScreen(newUser.email) }
+            }
+
             !emailExist -> {
-                verticalArrangement = Arrangement.Top
-                scaffoldModifier = modifier
-                    .verticalScroll(rememberScrollState())
-//                    .imePadding()
+
                 val firstNameFocusRequester = remember { FocusRequester() }
+
                 LaunchedEffect(Unit) { firstNameFocusRequester.requestFocus() }
+
                 SharedOutlinedTextField(
                     value = newUser.firstname,
                     onValueChange = { onFirstNameChange(it) },
                     label = stringResource(R.string.first_name),
                     isError = newUser.firstname.isEmpty(),
                     errorText = stringResource(R.string.please_enter_a_first_name),
-                    bottomPadding = SharedPadding.xxl,
+                    bottomPadding = SharedPadding.xl,
                     modifier = Modifier
                         .focusRequester(firstNameFocusRequester)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    imeAction = ImeAction.Next
                 )
                 SharedOutlinedTextField(
                     value = newUser.lastname,
@@ -187,8 +215,9 @@ private fun LoginBody(
                     label = stringResource(R.string.last_name),
                     isError = newUser.lastname.isEmpty(),
                     errorText = stringResource(R.string.please_enter_a_last_name),
-                    bottomPadding = SharedPadding.xxl,
-                    modifier = Modifier.fillMaxWidth()
+                    bottomPadding = SharedPadding.xl,
+                    modifier = Modifier.fillMaxWidth(),
+                    imeAction = ImeAction.Next,
                 )
                 SharedOutlinedPassword(
                     value = newUser.password,
@@ -197,14 +226,16 @@ private fun LoginBody(
                     errorText = stringResource(R.string.password_is_not_strong_enough_use_at_least_6_characters_and_a_mix_of_letters_numbers_and_a_special_character),
                     passwordSetting = true,
                     modifier = Modifier.fillMaxWidth(),
-                    bottomPadding = SharedPadding.xxl
+                    bottomPadding = SharedPadding.xxl,
+                    imeAction = ImeAction.Done,
                 )
                 SharedButton(
-                    onClick = { createAccount(newUser){navigateToHomeScreen()} },
+                    onClick = { createAccount(newUser) { navigateToHomeScreen() } },
                     text = stringResource(R.string.save),
-                    modifier = Modifier.padding(vertical = SharedPadding.xxl)
+                    modifier = Modifier
+                        .padding(vertical = SharedPadding.xl, horizontal = 60.dp)
+                        .fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.size(300.dp))
             }
         }
     }

@@ -1,17 +1,23 @@
 package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password
 
+import android.R.attr.text
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.composables.IconScaffold
@@ -21,6 +27,7 @@ import com.oliviermarteaux.shared.composables.SharedOutlinedPassword
 import com.oliviermarteaux.shared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.composables.ImageScaffold
 
 /**
  * A screen for entering a password to sign in.
@@ -52,10 +59,7 @@ fun PasswordScreen(
                     logoDrawableRes = logoDrawableRes,
                     email = email,
                     password = password,
-                    modifier = modifier
-                        .padding(contentPadding)
-                        .padding(horizontal = SharedPadding.xl)
-                        .fillMaxSize(),
+                    contentPadding = contentPadding,
                     onPasswordChange = ::onPasswordChange,
                     navigateToHomeScreen = navigateToHomeScreen,
                     navigateToPasswordResetScreen = navigateToPasswordResetScreen,
@@ -91,20 +95,25 @@ private fun PasswordBody(
     logoDrawableRes: Int,
     email: String,
     password: String,
-    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues,
     onPasswordChange: (String) -> Unit,
     navigateToHomeScreen: () -> Unit,
     navigateToPasswordResetScreen: (String) -> Unit,
     signIn: (String, () -> Unit) -> Unit
 ) {
-    IconScaffold(
-        icon = IconSource.PainterIcon(painterResource(logoDrawableRes)),
-        modifier = modifier
+    ImageScaffold(
+        image = painterResource(id = logoDrawableRes),
+        imageModifier = Modifier.fillMaxWidth(),
+        horizontalPadding = 85.dp,
+        formPortraitHorizontalPadding = 24.dp,
+        innerPadding = contentPadding,
     ){
         Text(
             text = stringResource(R.string.welcome_back_you_ve_already_used_to_sign_in_enter_your_password_for_that_account, email),
             textAlign = TextAlign.Center,
         )
+        Spacer(modifier = Modifier.height(SharedPadding.medium))
+
         SharedOutlinedPassword(
             value = password,
             onValueChange = { onPasswordChange(it) },
@@ -112,7 +121,17 @@ private fun PasswordBody(
             imeAction = ImeAction.Done,
             modifier = Modifier.fillMaxWidth()
         )
-        SharedButton(text = stringResource(R.string.trouble_signing_in)){ navigateToPasswordResetScreen(email) }
-        SharedButton(text = stringResource(R.string.sign_in)){ signIn(password) { navigateToHomeScreen() } }
+        Spacer(modifier = Modifier.height(SharedPadding.medium))
+
+        SharedButton(
+            text = stringResource(R.string.trouble_signing_in),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp)
+        ){ navigateToPasswordResetScreen(email) }
+        Spacer(modifier = Modifier.height(SharedPadding.medium))
+
+        SharedButton(
+            text = stringResource(R.string.sign_in),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp)
+            ){ signIn(password) { navigateToHomeScreen() } }
     }
 }

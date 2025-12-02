@@ -13,6 +13,7 @@ import com.oliviermarteaux.localshared.firebase.firestore.utils.uploadSamplePost
 import com.oliviermarteaux.shared.ui.ListUiState
 import com.oliviermarteaux.shared.utils.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -49,6 +50,10 @@ class HomeViewModel @Inject constructor(
 
     var query: String by mutableStateOf("")
         private set
+
+    var fabVisible: Boolean by mutableStateOf(false)
+        private set
+
     fun updateQuery(newQuery: String) {
         query = newQuery
     }
@@ -80,10 +85,11 @@ class HomeViewModel @Inject constructor(
     fun loadPosts() {
         viewModelScope.launch {
             homeUiState = ListUiState.Loading
-//      delay(3000) // simulate network delay for Loading state evidence
+//            delay(1500) // simulate network delay for Loading state evidence
             postRepository.posts.collect { result ->
                 result
                     .onSuccess {
+                        fabVisible = true
                         posts = it
                         filteredPosts = it
                         homeUiState =
@@ -92,6 +98,7 @@ class HomeViewModel @Inject constructor(
                     }
                     .onFailure { e ->
                         homeUiState = ListUiState.Error(e)
+                        fabVisible = false
                     }
             }
         }
@@ -106,6 +113,7 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
+        setAuthObserverDelay(2000)
 //    throw RuntimeException("Test Crash") // Force a crash
         log.d("HomeFeedViewModel: init")
 

@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
@@ -26,23 +27,22 @@ import javax.inject.Inject
  * @param log The logger.
  * @param isOnlineFlow A flow that emits the current internet connection status.
  */
-@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+//    savedStateHandle: SavedStateHandle,
     private val postRepository: PostRepository,
-    private val userRepository: UserRepository,
-    private val log: Logger,
-    private val isOnlineFlow: Flow<Boolean>
-) : AuthUserViewModel(
+//    private val userRepository: UserRepository,
+//    private val log: Logger,
+//    private val isOnlineFlow: Flow<Boolean>
+): ViewModel()/* : AuthUserViewModel(
     userRepository = userRepository,
     isOnlineFlow = isOnlineFlow,
     log = log,
-) {
+) */{
     /**
      * The ID of the post to display.
      */
-    private val postId: String = checkNotNull(savedStateHandle["post_id"])
+//    private val postId: String = checkNotNull(savedStateHandle["post_id"])
 
     /**
      * The post to display.
@@ -53,19 +53,23 @@ class DetailViewModel @Inject constructor(
     /**
      * Gets the post from the repository.
      */
-    suspend fun getPost(){
-        postRepository.posts.collect { result ->
-            result.fold(
-                onSuccess = { posts ->
-                    post = posts.find { it.id == postId } !!
-                    log.d("DetailViewModel getPost(): $post")
-                },
-                onFailure = { e ->
-                    log.e("DetailViewModel: getPost(): error: $e.message")
-                }
-            )
-        }
-    }
+//    suspend fun getPost(){
+//        postRepository.posts.collect { result ->
+//            result.fold(
+//                onSuccess = { posts ->
+//                    post = posts.find { it.id == postId } !!
+//                    log.d("DetailViewModel getPost(): $post")
+//                },
+//                onFailure = { e ->
+//                    log.e("DetailViewModel: getPost(): error: $e.message")
+//                }
+//            )
+//        }
+//    }
+//    fun getPost() {
+//        post = postRepository.selectedPost?: Post()
+//    }
 
-    init { viewModelScope.launch { getPost() } }
+//    init { getPost() }
+//    init { getPost() }
 }

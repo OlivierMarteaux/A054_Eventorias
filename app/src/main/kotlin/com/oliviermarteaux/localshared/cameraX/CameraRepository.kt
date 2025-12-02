@@ -9,5 +9,5 @@ import androidx.compose.runtime.setValue
 @Singleton
 class CameraRepository @Inject constructor() {
 
-    var photoUrl: String by mutableStateOf("")
+    var photoUrl: String? by mutableStateOf(null)
 }

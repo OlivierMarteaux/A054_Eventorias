@@ -1,5 +1,6 @@
 package com.oliviermarteaux.localshared.firebase.authentication.domain.model
 
+import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Address
 import java.io.Serializable
 import kotlin.text.ifEmpty
 
@@ -18,6 +19,16 @@ data class User(
     val photoUrl: String = ""
 
 ) : Serializable {
+
+    // Explicit no-arg constructor for Firebase deserialization --> needed for minification
+    constructor() : this(
+        id = "",
+        firstname = "",
+        lastname = "",
+        fullname = "",
+        email = "",
+        photoUrl = ""
+    )
 
     fun getComputedFullName() = fullname.ifEmpty {
         listOf(firstname, lastname)

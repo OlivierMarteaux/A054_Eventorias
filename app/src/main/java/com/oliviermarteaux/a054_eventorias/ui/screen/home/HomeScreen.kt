@@ -1,39 +1,67 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.PriorityHigh
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.common.math.LinearTransformation.horizontal
 import com.oliviermarteaux.a054_eventorias.R
-import com.oliviermarteaux.localshared.ui.navigation.Screen
+import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
+import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.localshared.composables.SharedBottomAppBar
+import com.oliviermarteaux.localshared.composables.SharedButton
+import com.oliviermarteaux.localshared.composables.SharedIcon
 import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.composables.spacer.SpacerLarge
+import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
+import com.oliviermarteaux.localshared.ui.navigation.Screen
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
+import com.oliviermarteaux.localshared.ui.theme.ToastPadding
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
+import com.oliviermarteaux.shared.composables.IconSource
+import com.oliviermarteaux.shared.composables.SharedAsyncImage
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.composables.texts.TextTitleMedium
@@ -57,7 +85,8 @@ fun HomeScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    navigateToDetailScreen: (Post) -> Unit = {},
+    postViewModel: PostViewModel,
+    navigateToDetailScreen: (/*Post*/) -> Unit = {},
     onSettingsClick: () -> Unit = {},
     navigateToLoginScreen: () -> Unit = {},
     navigateToAccountScreen: () -> Unit = {},
@@ -65,68 +94,83 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     with(homeViewModel) {
-        SharedScaffold(
-            title = stringResource(Screen.Home.titleRes),
-            // search bar
-            onSearchIconClick = ::showSearchBar,
-            searchBarVisible = searchBarVisible,
-            query = query,
-            onQueryChange = { updateQuery(it) ; filterPosts(it)},
-            onSearchBarIconClick = {clearQuery(); hideSearchBar()},
-            // sort menu
-            onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
-            onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
-            onSortByDescendingDateClick = { sortPostsBy(SortOption.DATE_DESCENDING) },
-            // bottom app bar
-            bottomBar = { SharedBottomAppBar(navController) },
-            // fab button
-            onFabClick = {
-                // for initial posts populating purpose
-//                 uploadSamplePosts(context)
-                checkUserState(
-                    onUserLogged = navigateToAddScreen,
-                    onNoUserLogged = ::showAuthErrorToast
-                )
-            }
-        ) { contentPadding ->
-            LaunchedEffect(homeUiState) {
-                Log.i(
-                    "OM_TAG",
-                    "HomeFeedViewModel: LaunchedEffect: homeFeedUiState = $homeUiState"
-                )
-            }
-            Box {
-                //_ UiState management: Empty, Error, Loading, Success
-                when (homeUiState) {
-                    is ListUiState.Loading -> CenteredCircularProgressIndicator()
-                    is ListUiState.Empty -> SharedToast(stringResource(R.string.no_posts))
-                    is ListUiState.Error -> {
-                        SharedToast(
-                            text = stringResource(R.string.an_unknown_error_occurred),
-                            bottomPadding = 200
-                        )
-                    }
-
-                    is ListUiState.Success -> {
-                        HomeFeedList(
-                            modifier = modifier
-                                .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
-                                .fillMaxSize()
-                                .padding(contentPadding)
-                                .padding(horizontal = SharedPadding.medium),
-                            posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
-                            navigateToDetailScreen = navigateToDetailScreen,
-                        )
-                    }
+        with (postViewModel) {
+            SharedScaffold(
+                title = stringResource(Screen.Home.titleRes),
+                // top app bar
+                topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
+                // search bar
+                onSearchIconClick = ::showSearchBar,
+                isSearchVisible = searchBarVisible,
+                query = query,
+                onQueryChange = { updateQuery(it); filterPosts(query) },
+                onSearchBarIconClick = { clearQuery(); hideSearchBar() },
+//                searchBarModifier = Modifier.padding(horizontal = SharedPadding.xs),
+                // sort menu
+                onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
+                onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
+                onSortByDescendingDateClick = { sortPostsBy(SortOption.DATE_DESCENDING) },
+                // bottom app bar
+                bottomBar = { SharedBottomAppBar(navController) },
+                // fab button
+                fabVisible = fabVisible,
+                onFabClick = {
+                    // for initial posts populating purpose
+//                uploadSamplePosts(context)
+                    checkUserState(
+                        onUserLogged = navigateToAddScreen,
+                        onNoUserLogged = ::showAuthErrorToast
+                    )
                 }
-                if (authError) SharedToast(
-                    text = stringResource(R.string.an_account_is_mandatory_to_add_a_post),
-                    bottomPadding = 120
-                )
-                if (networkError) SharedToast(
-                    text = stringResource(R.string.network_error_check_your_internet_connection),
-                    bottomPadding = 160
-                )
+            ) { contentPadding ->
+                LaunchedEffect(homeUiState) {
+                    Log.i(
+                        "OM_TAG",
+                        "HomeFeedViewModel: LaunchedEffect: homeFeedUiState = $homeUiState"
+                    )
+                }
+                Box {
+                    //_ UiState management: Empty, Error, Loading, Success
+                    when (homeUiState) {
+                        is ListUiState.Loading -> CenteredCircularProgressIndicator()
+                        is ListUiState.Empty -> SharedToast(stringResource(R.string.no_posts))
+                        is ListUiState.Error -> {
+                            ErrorScreen(
+                                modifier = modifier,
+                                contentPadding = contentPadding,
+                                loadPosts = ::loadPosts
+                            )
+                        }
+
+                        is ListUiState.Success -> {
+                            HomeFeedList(
+                                modifier = modifier
+                                    .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
+                                    .fillMaxWidth()
+                                    .padding(contentPadding)
+                                    .padding(horizontal = SharedPadding.large),
+                                posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
+                                navigateToDetailScreen = navigateToDetailScreen,
+                                searchBarVisible = searchBarVisible,
+                                query = query,
+                                updateQuery = { updateQuery(it) },
+                                filterPosts = { filterPosts(it) },
+                                clearQuery = { clearQuery() },
+                                hideSearchBar = ::hideSearchBar,
+                                selectPost = ::selectPost
+
+                            )
+                        }
+                    }
+                    if (authError) SharedToast(
+                        text = stringResource(R.string.an_account_is_mandatory_to_add_a_post),
+                        bottomPadding = ToastPadding.high
+                    )
+                    if (networkError) SharedToast(
+                        text = stringResource(R.string.network_error_check_your_internet_connection),
+                        bottomPadding = ToastPadding.veryHigh
+                    )
+                }
             }
         }
     }
@@ -143,16 +187,24 @@ fun HomeScreen(
 private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
-    navigateToDetailScreen: (Post) -> Unit,
+    navigateToDetailScreen: (/*Post*/) -> Unit,
+    searchBarVisible: Boolean = false,
+    query: String = "",
+    updateQuery: (String) -> Unit,
+    filterPosts: (String) -> Unit,
+    clearQuery: () -> Unit,
+    hideSearchBar: () -> Unit,
+    selectPost: (Post) -> Unit
 ) {
     Column (modifier = modifier ) {
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(SharedPadding.xs),
         ) {
             items(posts) { post ->
                 HomeFeedCell(
                     post = post,
-                    onPostClick = navigateToDetailScreen
+                    navigateToDetailScreen = navigateToDetailScreen,
+                    selectPost = selectPost
                 )
             }
         }
@@ -168,45 +220,90 @@ private fun HomeFeedList(
 @Composable
 private fun HomeFeedCell(
     post: Post,
-    onPostClick: (Post) -> Unit,
+    navigateToDetailScreen: (/*Post*/) -> Unit,
+    selectPost: (Post) -> Unit
 ) {
     ElevatedCard(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp),
         onClick = {
-            onPostClick(post)
-        }) {
-        Column(
-            modifier = Modifier.padding(SharedPadding.medium),
-        ) {
-            TextTitleSmall(
-                text = stringResource(
-                    id = R.string.by_x_y,
-                    post.author?.firstname ?: "",
-                    post.author?.lastname ?: ""
-                ),
-                modifier = Modifier.padding(bottom = SharedPadding.xs)
+            selectPost(post)
+            navigateToDetailScreen(/*post*/)
+        }
+    ) {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+        ){
+            SharedAsyncImage(
+                photoUri = post.author?.photoUrl,
+                modifier = Modifier
+                    .padding(start = SharedPadding.medium)
+                    .size(40.dp)
+                    .clip(shape = CircleShape)
             )
-            TextTitleMedium(text = post.title)
-            Spacer(Modifier.padding(SharedPadding.small))
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(SharedPadding.medium),
+            ) {
+                TextTitleMedium(text = post.title)
+                Spacer(Modifier.padding(SharedPadding.xxs))
+
+                TextTitleSmall(text = post.localeDateString)
+            }
             if (!post.photoUrl.isNullOrEmpty()) {
                 SharedCardAsyncImage(
                     photoUri = post.photoUrl,
-                    modifier = Modifier
-                        .padding(bottom = SharedPadding.xs)
-                        .heightIn(max = 200.dp),
                     imageModifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(ratio = 16 / 9f),
-                )
-            }
-            if (!post.description.isNullOrEmpty()) {
-                Spacer(Modifier.padding(SharedPadding.small))
-                Text(
-                    text = post.description,
-                    style = MaterialTheme.typography.bodyMedium
+                        .aspectRatio(ratio = 136/80f),
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ErrorScreen(
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues,
+    loadPosts: () -> Unit
+){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
+            .fillMaxSize()
+            .padding(contentPadding)
+            .padding(horizontal = 126.dp),
+    ){
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(64.dp)
+                .background(color = Grey40, shape = CircleShape)
+        ) {
+            SharedIcon(
+                icon = IconSource.VectorIcon(Icons.Filled.PriorityHigh),
+                modifier = Modifier.size(32.dp),
+                tint = White,
+            )
+        }
+        SpacerLarge()
+        TextTitleMedium(text = stringResource(R.string.error))
+        TextTitleSmall(
+            text = stringResource(R.string.an_error_as_occurred_please_try_again_later),
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(35.dp))
+        SharedButton(
+            text = stringResource(R.string.try_again),
+            onClick = loadPosts,
+            shape = MaterialTheme.shapes.extraSmall,
+            colors = ButtonDefaults.buttonColors(containerColor = Red40),
+            textColor = White
+        )
     }
 }

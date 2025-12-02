@@ -10,10 +10,12 @@ import com.oliviermarteaux.localshared.firebase.authentication.data.repository.U
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.localshared.firebase.messaging.SharedMessagingService
+import com.oliviermarteaux.localshared.ui.UiState
 import com.oliviermarteaux.shared.datastore.NotificationPreferencesRepository
 import com.oliviermarteaux.shared.utils.CoroutineDispatcherProvider
 import com.oliviermarteaux.shared.utils.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,6 +36,8 @@ class AccountViewModel @Inject constructor(
         private set
     var notificationState: Boolean by mutableStateOf(true)
         private set
+
+    var userUiState: UiState<User> by mutableStateOf(UiState.Loading)
 
     /**
      * Toggles the notification preference.
@@ -65,17 +69,22 @@ class AccountViewModel @Inject constructor(
      */
     private fun getCurrentUser(){
         viewModelScope.launch {
+//            delay(1500) // for test
             snapshotFlow { currentUser }
                 .collect { currentUser ->
-                    if (currentUser != null) {
+                    try {
+                        userUiState = UiState.Success(currentUser!!)
                         user = currentUser
                         log.d("AccountViewModel: user updated to ${currentUser.email}")
+                    } catch (e: Exception){
+                        userUiState = UiState.Error(e)
                     }
                 }
         }
     }
 
     init {
+        userUiState = UiState.Loading
         getCurrentUser()
         getNotifState()
     }

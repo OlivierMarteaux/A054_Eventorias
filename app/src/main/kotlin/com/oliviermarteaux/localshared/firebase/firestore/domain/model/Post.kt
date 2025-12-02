@@ -78,6 +78,21 @@ data class Post(
     val address: Address = Address(),
 
     ) : Serializable {
+
+    // Explicit no-arg constructor for Firebase deserialization --> needed for minification
+    constructor() : this(
+        id = "",
+        title = "",
+        description = "",
+        photoUrl = "",
+        timestamp = 0L,
+        author = null,
+        comments = emptyList(),
+        date = null,
+        time = null,
+        address = Address()
+    )
+
     // --- Compose-friendly getters ---
     val localeDate: LocalDate?
         get() = date?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()

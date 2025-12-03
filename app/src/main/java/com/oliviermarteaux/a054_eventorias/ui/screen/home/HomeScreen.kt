@@ -119,7 +119,7 @@ fun HomeScreen(
                 isSearchVisible = searchBarVisible,
                 query = query,
                 onQueryChange = { updateQuery(it); filterPosts(query) },
-                onSearchBarIconClick = { clearQuery(); hideSearchBar() },
+                onSearchBarIconClick = ::clearQuery,
 //                searchBarModifier = Modifier.padding(horizontal = SharedPadding.xs),
                 // sort menu
                 onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },

@@ -102,11 +102,13 @@ fun HomeScreen(
     navigateToAccountScreen: () -> Unit = {},
     navigateToAddScreen: () -> Unit = {}
 ) {
-    val cdHomeScreen =
-        stringResource(R.string.you_are_on_the_home_screen_here_you_can_browse_all_the_incoming_events)
     with(homeViewModel) {
         with (postViewModel) {
+
+            val cdHomeScreen =
+                stringResource(R.string.you_are_on_the_home_screen_here_you_can_browse_all_the_incoming_events)
             val cdFabButton = stringResource(R.string.add_button_double_tap_to_add_a_new_event)
+
             SharedScaffold(
                 title = stringResource(Screen.Home.titleRes),
                 screenContentDescription = cdHomeScreen,
@@ -126,8 +128,8 @@ fun HomeScreen(
                 // bottom app bar
                 bottomBar = { SharedBottomAppBar(navController) },
                 // fab button
-                fabVisible = fabVisible && !isTalkBackEnabled(),
-                accessFabButton = isTalkBackEnabled(),
+                fabVisible = fabVisible/* && !isTalkBackEnabled()*/,
+//                accessFabButton = isTalkBackEnabled(),
                 fabContentDescription = cdFabButton,
                 onFabClick = {
                     // for initial posts populating purpose

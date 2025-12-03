@@ -1,5 +1,5 @@
 <resources>
-    <string name="a054_eventorias">A054_Eventorias</string>
+    <string name="a054_eventorias">Eventorias application</string>
     <string name="event_list">Event list</string>
     <string name="email">Email</string>
     <string name="network_error_check_your_internet_connection">Network error, check your internet connection</string>

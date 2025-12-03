@@ -25,9 +25,11 @@ import com.oliviermarteaux.shared.composables.SharedIconButton
 fun SharedSearchBar(
     query: String,
     modifier: Modifier = Modifier,
+    inputFieldModifier: Modifier = Modifier,
     onQueryChange: (String) -> Unit,
     searchLabel: String = "",
     onSearch: (String) -> Unit = {},
+    searchBarIcon: IconSource = IconSource.VectorIcon(Icons.Filled.Search),
     onIconClick: () -> Unit = {}
 ){
     val onActiveChange = { _: Boolean ->}
@@ -41,11 +43,12 @@ fun SharedSearchBar(
                 onExpandedChange = onActiveChange,
                 placeholder = { Text(searchLabel) },
                 trailingIcon = { SharedIconButton(
-                    icon = IconSource.VectorIcon(Icons.Filled.Search),
+                    icon = searchBarIcon,
                     contentDescription = searchLabel,
                     onClick = onIconClick
                 ) },
                 colors = inputFieldColors(),
+                modifier = inputFieldModifier
             )
         },
         expanded = false,

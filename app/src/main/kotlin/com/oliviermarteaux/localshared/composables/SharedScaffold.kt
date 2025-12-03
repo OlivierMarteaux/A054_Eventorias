@@ -1,17 +1,17 @@
 package com.oliviermarteaux.localshared.composables
 
-import android.R.attr.end
-import android.R.attr.navigationIcon
+import android.R.attr.contentDescription
+import android.R.attr.label
 import android.R.attr.onClick
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,12 +19,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -34,13 +31,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -61,19 +53,21 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.onLongClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.google.common.base.StandardSystemProperty
 import com.oliviermarteaux.a054_eventorias.R
-import com.oliviermarteaux.localshared.composables.extensions.cdSemantics
+import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
-import com.oliviermarteaux.localshared.ui.theme.SharedSize
-import com.oliviermarteaux.localshared.utils.hideKeyboard
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
 import com.oliviermarteaux.shared.composables.SharedIcon
 import com.oliviermarteaux.shared.composables.SharedIconButton
 import com.oliviermarteaux.shared.composables.texts.TextTitleLarge
 import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
+import java.time.temporal.TemporalQueries.zone
 
 /**
  * A reusable scaffold composable with a top app bar, optional floating action button (FAB),
@@ -260,7 +254,16 @@ fun SharedScaffold(
                             SharedSearchBar(
                                 query = query,
                                 onQueryChange = onQueryChange,
+                                inputFieldModifier = Modifier
+                                    .clearAndSetSemantics {
+                                        contentDescription = "zone de texte"
+                                        onClick ("close the search bar"){
+                                            hideSearchBar()
+                                            true
+                                        }
+                                    },
                                 modifier = searchBarModifier
+
                                     .focusRequester(searchBarFocusRequester)
                                     .fillMaxWidth(),
 //                                    .width(300.dp)
@@ -274,7 +277,7 @@ fun SharedScaffold(
                                 stringResource(R.string.search_button_double_tap_to_open_the_search_bar)
                             SharedIconButton(
                                 icon = IconSource.VectorIcon(Icons.Default.Search),
-                                modifier = Modifier.cdSemantics(cdSearchButton)
+                                modifier = Modifier.cdButtonSemantics(cdSearchButton)
                             ) { onSearchIconClick() }
                         }
                     }
@@ -283,7 +286,7 @@ fun SharedScaffold(
                             stringResource(R.string.sort_button_double_tap_to_open_the_sort_menu)
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.Default.SwapVert),
-                            modifier = Modifier.cdSemantics(cdSortButton)
+                            modifier = Modifier.cdButtonSemantics(cdSortButton)
                         ){ showSortOptions() }
                         DropdownMenu(
                             expanded = sortOptionsDisplayed,
@@ -329,24 +332,24 @@ fun SharedScaffold(
                             }
                         }
                     }
-                    accessFabButton?.let{
-                        SharedIconButton(
-                            icon = IconSource.VectorIcon(Icons.Filled.Add),
-                            tint = fabIconTint,
-                            colors = IconButtonColors(
-                                containerColor = fabContainerColor,
-                                contentColor = fabContentColor,
-                                disabledContainerColor = fabContainerColor,
-                                disabledContentColor = fabContentColor
-                            ),
-                            shape = fabShape,
-                            modifier = Modifier
-                                .padding(end = SharedPadding.xs)
-                                .cdSemantics(fabContentDescription)
-                                .size(SharedSize.xs),
-                            onClick = onFabClick?:{}
-                        )
-                    }
+//                    accessFabButton?.let{
+//                        SharedIconButton(
+//                            icon = IconSource.VectorIcon(Icons.Filled.Add),
+//                            tint = fabIconTint,
+//                            colors = IconButtonColors(
+//                                containerColor = fabContainerColor,
+//                                contentColor = fabContentColor,
+//                                disabledContainerColor = fabContainerColor,
+//                                disabledContentColor = fabContentColor
+//                            ),
+//                            shape = fabShape,
+//                            modifier = Modifier
+//                                .padding(end = SharedPadding.xs)
+//                                .cdSemantics(fabContentDescription)
+//                                .size(SharedSize.xs),
+//                            onClick = onFabClick?:{}
+//                        )
+//                    }
                 }
             )
         },
@@ -357,7 +360,7 @@ fun SharedScaffold(
                     FloatingActionButton(
                         onClick = { if (fabEnabled) onFabClick() },
                         modifier = fabModifier
-                            .semantics { contentDescription = fabContentDescription },
+                            .cdButtonSemantics(fabContentDescription),
                         shape = fabShape,
                         containerColor = fabContainerColor,
                         contentColor = fabContentColor,

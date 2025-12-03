@@ -1,7 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.add
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +36,7 @@ import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.localshared.composables.SharedButton
 import com.oliviermarteaux.localshared.composables.SharedDateTextField
 import com.oliviermarteaux.localshared.composables.SharedScaffold
-import com.oliviermarteaux.localshared.composables.SharedTextField
+import com.oliviermarteaux.localshared.composables.SharedFilledTextField
 import com.oliviermarteaux.localshared.composables.SharedTimeTextField
 import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
@@ -159,7 +158,7 @@ fun AddScreenTextForm(
 ){
     with(post) {
         //_ Event title
-        SharedTextField(
+        SharedFilledTextField(
             value = title,
             onValueChange = { updatePostTitle(it) },
             label = stringResource(R.string.new_event),
@@ -170,7 +169,7 @@ fun AddScreenTextForm(
         )
 
         //_ Event description
-        SharedTextField(
+        SharedFilledTextField(
             value = description,
             onValueChange = { updatePostDescription(it) },
             label = stringResource(R.string.tap_here_to_enter_your_description),
@@ -199,7 +198,7 @@ fun AddScreenTextForm(
         }
 
         //_ address
-        SharedTextField(
+        SharedFilledTextField(
             value = address.street,
             onValueChange = { updatePostAddress(it) },
             label = stringResource(R.string.address),

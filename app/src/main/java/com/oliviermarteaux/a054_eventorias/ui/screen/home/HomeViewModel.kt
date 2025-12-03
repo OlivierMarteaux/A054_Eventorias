@@ -67,6 +67,10 @@ class HomeViewModel @Inject constructor(
     fun showSearchBar() { searchBarVisible = true }
     fun hideSearchBar() { searchBarVisible = false }
 
+    fun toggleSearchBar(){
+        searchBarVisible = !searchBarVisible
+    }
+
     fun filterPosts(query: String) {
         filteredPosts = posts.filter { post ->
             listOfNotNull(post.title, post.author?.firstname, post.author?.lastname)

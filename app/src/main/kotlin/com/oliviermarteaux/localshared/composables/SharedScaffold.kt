@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SwapVert
@@ -51,10 +52,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.onLongClick
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.google.common.base.StandardSystemProperty
@@ -250,36 +253,26 @@ fun SharedScaffold(
                         ) {
                             val searchBarFocusRequester = remember { FocusRequester() }
                             LaunchedEffect(Unit) { searchBarFocusRequester.requestFocus() }
+                            val hideSearchBarActionLabel = "Double tap to hide the search bar"
                             val keyboardController = LocalSoftwareKeyboardController.current
                             SharedSearchBar(
                                 query = query,
                                 onQueryChange = onQueryChange,
-                                inputFieldModifier = Modifier
-                                    .clearAndSetSemantics {
-                                        contentDescription = "zone de texte"
-                                        onClick ("close the search bar"){
-                                            hideSearchBar()
-                                            true
-                                        }
-                                    },
                                 modifier = searchBarModifier
-
                                     .focusRequester(searchBarFocusRequester)
                                     .fillMaxWidth(),
-//                                    .width(300.dp)
-//                                    .alignBy { it.measuredHeight / 2 },
                                 onSearch =  { keyboardController?.hide() },
-                                onIconClick = onSearchBarIconClick
+                                searchBarIcon = IconSource.VectorIcon(Icons.Default.Clear),
+                                searchLabel = "Rechercher un évenement",
+                                onSearchBarIconClick = onSearchBarIconClick
                             )
                         }
-                        if (!isSearchVisible) {
-                            val cdSearchButton =
-                                stringResource(R.string.search_button_double_tap_to_open_the_search_bar)
-                            SharedIconButton(
-                                icon = IconSource.VectorIcon(Icons.Default.Search),
-                                modifier = Modifier.cdButtonSemantics(cdSearchButton)
-                            ) { onSearchIconClick() }
-                        }
+                        val cdSearchButton =
+                            stringResource(R.string.search_button_double_tap_to_open_the_search_bar)
+                        SharedIconButton(
+                            icon = IconSource.VectorIcon(Icons.Default.Search),
+                            modifier = Modifier.cdButtonSemantics(cdSearchButton)
+                        ) { onSearchIconClick() }
                     }
                     onSortByTitleClick?.let{
                         val cdSortButton =

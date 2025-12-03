@@ -34,7 +34,7 @@ fun SharedTimeTextField(
         }, hour, minute, true
     )
 
-    SharedTextField(
+    SharedFilledTextField(
         value = time,
         onValueChange = { },
         label = stringResource(R.string.time),

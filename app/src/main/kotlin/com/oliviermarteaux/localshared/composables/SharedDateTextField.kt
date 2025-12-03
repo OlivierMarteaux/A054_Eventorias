@@ -34,7 +34,7 @@ fun SharedDateTextField(
             onDateChange("$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear")
         }, year, month, day
     )
-    SharedTextField(
+    SharedFilledTextField(
         value = date,
         onValueChange = { },
         label = stringResource(R.string.date),

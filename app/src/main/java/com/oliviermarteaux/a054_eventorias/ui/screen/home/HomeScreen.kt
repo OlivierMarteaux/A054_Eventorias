@@ -115,7 +115,7 @@ fun HomeScreen(
                 // top app bar
                 topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
                 // search bar
-                onSearchIconClick = ::showSearchBar,
+                onSearchIconClick = ::toggleSearchBar,
                 isSearchVisible = searchBarVisible,
                 query = query,
                 onQueryChange = { updateQuery(it); filterPosts(query) },

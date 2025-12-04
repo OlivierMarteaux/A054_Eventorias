@@ -44,7 +44,7 @@ fun SharedDateTextField(
             .fillMaxWidth()
             .clickable { datePickerDialog.show() },
         isError = date.isEmpty(),
-        errorText = "Please enter a date",
+        errorText = stringResource(R.string.please_enter_a_date),
         enabled = false,
         bottomPadding = SharedPadding.large,
         colors = TextFieldDefaults.colors(

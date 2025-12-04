@@ -208,7 +208,7 @@ fun AddScreenTextForm(
             placeholder = stringResource(R.string.enter_full_address),
             textFieldModifier = Modifier.fillMaxWidth(),
             isError = address.street.isEmpty(),
-            errorText = "Please enter an address",
+            errorText = stringResource(R.string.please_enter_an_address),
             bottomPadding = SharedPadding.xxl,
             imeAction = ImeAction.Done
         )

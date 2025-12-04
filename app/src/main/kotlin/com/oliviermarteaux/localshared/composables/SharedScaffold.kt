@@ -1,15 +1,10 @@
 package com.oliviermarteaux.localshared.composables
 
-import android.R.attr.contentDescription
-import android.R.attr.label
-import android.R.attr.onClick
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -52,15 +47,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.onClick
-import androidx.compose.ui.semantics.onLongClick
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.google.common.base.StandardSystemProperty
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
@@ -70,7 +59,6 @@ import com.oliviermarteaux.shared.composables.SharedIcon
 import com.oliviermarteaux.shared.composables.SharedIconButton
 import com.oliviermarteaux.shared.composables.texts.TextTitleLarge
 import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
-import java.time.temporal.TemporalQueries.zone
 
 /**
  * A reusable scaffold composable with a top app bar, optional floating action button (FAB),
@@ -144,13 +132,11 @@ fun SharedScaffold(
     avatarUrl: String? = null,
     onBackClick: (() -> Unit)? = null,
     //_ search function
-//    onSearchIconClick: (() -> Unit)? = null,
-//    isSearchVisible: Boolean = false,
     query: String = "",
     onQueryChange: ((String) -> Unit)? = {},
-//    onSearchClick: (() -> Unit)? = null,
     onSearchBarIconClick: (() -> Unit) = {},
     searchBarModifier: Modifier = Modifier,
+    searchLabel: String = "",
     //_ sort function
     onSortByTitleClick: (() -> Unit)? = null,
     onSortByAscendingDateClick: (() -> Unit)? = null,
@@ -186,11 +172,7 @@ fun SharedScaffold(
     fun hideMenu(){ menuDisplayed = false }
     fun showSortOptions(){ sortOptionsDisplayed = true }
     fun hideSortOptions(){ sortOptionsDisplayed = false }
-    fun showSearchBar(){ searchBarDisplayed = true }
-    fun hideSearchBar(){ searchBarDisplayed = false }
     fun toggleSearchBar(){ searchBarDisplayed = !searchBarDisplayed }
-
-//    val topAppBarModifierWithSearchBar = onSearchIconClick?.let { topAppBarModifier.height(118.dp) }?:topAppBarModifier
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -203,8 +185,8 @@ fun SharedScaffold(
                     ) {
                         AnimatedVisibility(
                             visible = !searchBarDisplayed,
-                            enter = expandHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow)),
-                            exit = shrinkHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow))
+                            enter = expandHorizontally(),
+                            exit = shrinkHorizontally()
                         ) {
                             TextTitleLarge(
                                 text = title,
@@ -249,13 +231,13 @@ fun SharedScaffold(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = SharedPadding.small),
-//                            enter = expandHorizontally(animationSpec = tween(10000)),
-//                            exit = shrinkHorizontally(animationSpec = tween(10000))
+//                            enter = expandHorizontally(),
+//                            exit = shrinkHorizontally()
                         ) {
                             val searchBarFocusRequester = remember { FocusRequester() }
                             LaunchedEffect(Unit) { searchBarFocusRequester.requestFocus() }
-                            val hideSearchBarActionLabel = "Double tap to hide the search bar"
                             val keyboardController = LocalSoftwareKeyboardController.current
+
                             SharedSearchBar(
                                 query = query,
                                 onQueryChange = onQueryChange,
@@ -264,7 +246,7 @@ fun SharedScaffold(
                                     .fillMaxWidth(),
                                 onSearch =  { keyboardController?.hide() },
                                 searchBarIcon = IconSource.VectorIcon(Icons.Default.Clear),
-                                searchLabel = "Rechercher un évenement",
+                                searchLabel = searchLabel,
                                 onSearchBarIconClick = onSearchBarIconClick
                             )
                         }

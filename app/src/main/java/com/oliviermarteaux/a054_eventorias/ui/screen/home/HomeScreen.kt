@@ -115,12 +115,10 @@ fun HomeScreen(
                 // top app bar
                 topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
                 // search bar
-//                onSearchIconClick = ::toggleSearchBar,
-//                isSearchVisible = searchBarVisible,
                 query = query,
                 onQueryChange = { updateQuery(it); filterPosts(query) },
                 onSearchBarIconClick = ::clearQuery,
-//                searchBarModifier = Modifier.padding(horizontal = SharedPadding.xs),
+                searchLabel = stringResource(R.string.look_for_an_event),
                 // sort menu
                 onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
                 onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },

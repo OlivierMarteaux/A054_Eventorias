@@ -1,12 +1,15 @@
 package com.oliviermarteaux.localshared.composables
 
+import android.R.attr.singleLine
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
@@ -18,8 +21,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.google.common.base.StandardSystemProperty
+import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedIconButton
 
@@ -35,7 +47,6 @@ fun SharedSearchBar(
     searchLabel: String = "",
     searchBarIcon: IconSource = IconSource.VectorIcon(Icons.Filled.Search),
     onSearchBarIconClick: () -> Unit = {},
-    searchBarIconContentDescription: String = ""
 ){
     Box(
         contentAlignment = Alignment.CenterStart
@@ -56,6 +67,18 @@ fun SharedSearchBar(
                 value = query,
                 onValueChange = onQueryChange,
                 modifier = textFieldModifier
+                    .width(100.dp)
+                    .semantics {
+                        customActions = listOf(
+                            CustomAccessibilityAction(
+                                label = "Clear text",
+                                action = {
+                                    onSearchBarIconClick()
+                                    true
+                                }
+                            )
+                        )
+                    }
                     .weight(1f),
                 placeholder = searchLabel,
                 singleLine = true,
@@ -65,13 +88,11 @@ fun SharedSearchBar(
                 ),
             )
 
-            // Trailing icon (fully accessible)
+            // Trailing icon (add cdButtonSemantics to make it talkback-accessible)
             SharedIconButton(
                 icon = searchBarIcon,
-                contentDescription = searchBarIconContentDescription,
-                modifier = searchBarIconModifier,
-                onClick = onSearchBarIconClick
-            )
+                modifier = searchBarIconModifier//.cdButtonSemantics("Clear the search bar"),
+            ){onSearchBarIconClick()}
         }
     }
 }

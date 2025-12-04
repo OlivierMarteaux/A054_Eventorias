@@ -82,4 +82,5 @@
     <string name="notification_are_disabled_double_tap_to_enable_it">Les notifications sont désactivées. Appuyer deux fois pour les activer.</string>
     <string name="back_button_double_tap_to_go_back_to_the_previous_screen">Bouton retour. Appuyer deux fois pour revenir à l\'écran précédent.</string>
     <string name="creation_of_a_new_event_fill_in_the_event_data_and_validate_to_create_a_new_event">Création d\'un nouvel évènement. Remplissez les données de l\'évènement et appuyez sur Valider pour le créer.</string>
+    <string name="error_message">Erreur: %1$s</string>
 </resources>

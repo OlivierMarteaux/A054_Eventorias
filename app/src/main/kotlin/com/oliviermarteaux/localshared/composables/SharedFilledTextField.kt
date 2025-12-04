@@ -3,6 +3,7 @@ package com.oliviermarteaux.localshared.composables
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,6 +29,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.oliviermarteaux.a054_eventorias.R
 
 /**
  * A reusable text field with support for labels, icons, error handling, and
@@ -135,10 +143,15 @@ fun SharedFilledTextField(
         bottomPadding = bottomPadding,
         modifier = modifier
     ) {
+        val cdError = if (isError) stringResource(R.string.error_message, errorText?:"") else ""
         TextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = textFieldModifier,
+            modifier = textFieldModifier.clearAndSetSemantics{
+                if (isError) {
+                    stateDescription = cdError
+                }
+            },
             enabled = enabled,
             readOnly = readOnly,
             textStyle = textStyle.copy(textAlign = TextAlign.Start),

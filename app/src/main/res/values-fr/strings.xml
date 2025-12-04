@@ -50,7 +50,7 @@
     <string name="hh_mm">HH : MM</string>
     <string name="ok">OK</string>
     <string name="camera">Camera</string>
-    <string name="name">Name</string>
+    <string name="name">Nom</string>
     <string name="notifications">Notifications</string>
     <string name="error">Erreur</string>
     <string name="an_error_as_occurred_please_try_again_later">"Une erreur s\'est produite,\nmerci de réessayer plus tard"</string>

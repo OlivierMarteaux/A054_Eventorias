@@ -17,3 +17,15 @@ fun Modifier.cdButtonSemantics(
         this.contentDescription = contentDescription
         this.role = Role.Button
     }
+
+//fun Modifier.cdButtonSemantics(
+//    contentDescription: String,
+//    onClick: () -> Unit = {}
+//) = this.clearAndSetSemantics {
+//    this.contentDescription = contentDescription
+//    role = Role.Button
+//    onClick {
+//        onClick()
+//        true
+//    }
+//}

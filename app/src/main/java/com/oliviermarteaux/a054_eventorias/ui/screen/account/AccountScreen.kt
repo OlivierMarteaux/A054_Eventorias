@@ -16,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.hideFromAccessibility
+import androidx.compose.ui.semantics.semantics
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.oliviermarteaux.a054_eventorias.R
@@ -110,17 +112,13 @@ fun AccountScreenBody(
             if (notificationState) stringResource(R.string.notification_are_enabled_double_tap_to_disable_it)
             else stringResource(R.string.notification_are_disabled_double_tap_to_enable_it)
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {}
-                .cdButtonSemantics(
-                    contentDescription = cdNotifications,
-                ),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Switch(
                 checked = notificationState,
                 onCheckedChange = { toggleNotifications() },
+                modifier = Modifier.cdButtonSemantics(cdNotifications),
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = White,
                     checkedTrackColor = Red40,
@@ -129,7 +127,8 @@ fun AccountScreenBody(
             SpacerSmall()
             Text(
                 text = stringResource(R.string.notifications),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.semantics { hideFromAccessibility() }
             )
         }
     }

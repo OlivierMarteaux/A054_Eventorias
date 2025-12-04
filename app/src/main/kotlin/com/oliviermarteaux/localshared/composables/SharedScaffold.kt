@@ -1,8 +1,6 @@
 package com.oliviermarteaux.localshared.composables
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -49,6 +47,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
@@ -132,9 +131,11 @@ fun SharedScaffold(
     avatarUrl: String? = null,
     onBackClick: (() -> Unit)? = null,
     //_ search function
-    query: String = "",
-    onQueryChange: ((String) -> Unit)? = {},
-    onSearchBarIconClick: (() -> Unit) = {},
+    query: TextFieldValue = TextFieldValue(""),
+    searchBarIcon: IconSource = IconSource.VectorIcon(Icons.Default.Clear),
+    searchBarIconSemantics: String = "",
+    onSearchBarIconClick: () -> Unit = {},
+    onQueryChange: ((TextFieldValue) -> Unit)? = {},
     searchBarModifier: Modifier = Modifier,
     searchLabel: String = "",
     //_ sort function
@@ -157,21 +158,20 @@ fun SharedScaffold(
     fabContentDescription: String = "",
     fabModifier: Modifier = Modifier,
     fabIconTint: Color = contentColorFor(fabContainerColor),
-    //_ access fab button
-    accessFabButton: Boolean? = null,
     //_ bottom bar
     bottomBar: @Composable () -> Unit = {},
     //_ content
     content: @Composable (contentPadding: PaddingValues) -> Unit = {},
 ){
     var menuDisplayed by rememberSaveable { mutableStateOf(false) }
-    var sortOptionsDisplayed by rememberSaveable { mutableStateOf(false) }
-    var searchBarDisplayed by rememberSaveable { mutableStateOf(false) }
-
     fun showMenu(){ menuDisplayed = true }
     fun hideMenu(){ menuDisplayed = false }
+
+    var sortOptionsDisplayed by rememberSaveable { mutableStateOf(false) }
     fun showSortOptions(){ sortOptionsDisplayed = true }
     fun hideSortOptions(){ sortOptionsDisplayed = false }
+
+    var searchBarDisplayed by rememberSaveable { mutableStateOf(false) }
     fun toggleSearchBar(){ searchBarDisplayed = !searchBarDisplayed }
 
     Scaffold(
@@ -239,25 +239,25 @@ fun SharedScaffold(
                             val keyboardController = LocalSoftwareKeyboardController.current
 
                             SharedSearchBar(
-                                query = query,
+                                textFieldValue = query,
                                 onQueryChange = onQueryChange,
                                 modifier = searchBarModifier
                                     .focusRequester(searchBarFocusRequester)
                                     .fillMaxWidth(),
-                                onSearch =  { keyboardController?.hide() },
-                                searchBarIcon = IconSource.VectorIcon(Icons.Default.Clear),
+                                onSearch =  { keyboardController?.hide(); toggleSearchBar() },
                                 searchLabel = searchLabel,
-                                onSearchBarIconClick = onSearchBarIconClick
+                                icon = searchBarIcon,
+                                iconSemantics = searchBarIconSemantics,
+                                onIconClick = onSearchBarIconClick,
                             )
                         }
                         val cdSearchButton =
                             stringResource(R.string.search_button_double_tap_to_open_the_search_bar)
-                        SharedIconButton(
+                        if (!searchBarDisplayed) SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.Default.Search),
                             modifier = Modifier.cdButtonSemantics(cdSearchButton)
                         ) {
-                            toggleSearchBar();
-
+                            toggleSearchBar()
                         }
                     }
                     onSortByTitleClick?.let{
@@ -311,24 +311,6 @@ fun SharedScaffold(
                             }
                         }
                     }
-//                    accessFabButton?.let{
-//                        SharedIconButton(
-//                            icon = IconSource.VectorIcon(Icons.Filled.Add),
-//                            tint = fabIconTint,
-//                            colors = IconButtonColors(
-//                                containerColor = fabContainerColor,
-//                                contentColor = fabContentColor,
-//                                disabledContainerColor = fabContainerColor,
-//                                disabledContentColor = fabContentColor
-//                            ),
-//                            shape = fabShape,
-//                            modifier = Modifier
-//                                .padding(end = SharedPadding.xs)
-//                                .cdSemantics(fabContentDescription)
-//                                .size(SharedSize.xs),
-//                            onClick = onFabClick?:{}
-//                        )
-//                    }
                 }
             )
         },

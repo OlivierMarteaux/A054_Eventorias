@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
@@ -48,33 +49,22 @@ class HomeViewModel @Inject constructor(
     var currentSortOption: SortOption? by mutableStateOf(null)
         private set
 
-    var query: String by mutableStateOf("")
-        private set
-
     var fabVisible: Boolean by mutableStateOf(false)
         private set
 
-    fun updateQuery(newQuery: String) {
-        query = newQuery
+    var queryFieldValue: TextFieldValue by mutableStateOf(TextFieldValue(""))
+        private set
+
+    fun clearQuery() {
+        queryFieldValue = TextFieldValue("")
+        filterPosts(queryFieldValue)
     }
-    fun clearQuery(){
-        query = ""
-        filterPosts("")
-    }
 
-//    var searchBarVisible: Boolean by mutableStateOf(false)
-//        private set
-//    fun showSearchBar() { searchBarVisible = true }
-//    fun hideSearchBar() { searchBarVisible = false }
-
-//    fun toggleSearchBar(){
-//        searchBarVisible = !searchBarVisible
-//    }
-
-    fun filterPosts(query: String) {
+    fun filterPosts(query: TextFieldValue) {
+        queryFieldValue = query
         filteredPosts = posts.filter { post ->
             listOfNotNull(post.title, post.author?.firstname, post.author?.lastname)
-                .any { field -> field.contains(query, true) }
+                .any { field -> field.contains(query.text, true) }
         }.sortedWith ( currentSortOption?.comparator?:compareBy { null } )
     }
 

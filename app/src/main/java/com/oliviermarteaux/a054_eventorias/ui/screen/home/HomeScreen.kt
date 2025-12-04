@@ -1,6 +1,5 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
-import androidx.compose.ui.semantics.contentDescription
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,43 +16,34 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.PriorityHigh
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheetDefaults.properties
-import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CollectionInfo
 import androidx.compose.ui.semantics.CollectionItemInfo
 import androidx.compose.ui.semantics.collectionInfo
 import androidx.compose.ui.semantics.collectionItemInfo
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.google.common.collect.Multimaps.index
-import com.google.common.math.LinearTransformation.horizontal
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
@@ -61,9 +51,7 @@ import com.oliviermarteaux.localshared.composables.SharedBottomAppBar
 import com.oliviermarteaux.localshared.composables.SharedButton
 import com.oliviermarteaux.localshared.composables.SharedIcon
 import com.oliviermarteaux.localshared.composables.SharedScaffold
-import com.oliviermarteaux.localshared.composables.accessibility.isTalkBackEnabled
 import com.oliviermarteaux.localshared.composables.spacer.SpacerLarge
-import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.localshared.ui.navigation.Screen
@@ -108,6 +96,7 @@ fun HomeScreen(
             val cdHomeScreen =
                 stringResource(R.string.you_are_on_the_home_screen_here_you_can_browse_all_the_incoming_events)
             val cdFabButton = stringResource(R.string.add_button_double_tap_to_add_a_new_event)
+            val cdCustomAccessibilityActionClear = stringResource(R.string.clear_all_text)
 
             SharedScaffold(
                 title = stringResource(Screen.Home.titleRes),
@@ -115,10 +104,12 @@ fun HomeScreen(
                 // top app bar
                 topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
                 // search bar
-                query = query,
-                onQueryChange = { updateQuery(it); filterPosts(query) },
-                onSearchBarIconClick = ::clearQuery,
+                query = queryFieldValue,
+                onQueryChange = ::filterPosts,
                 searchLabel = stringResource(R.string.look_for_an_event),
+                searchBarIcon = IconSource.VectorIcon(Icons.Default.Clear),
+                searchBarIconSemantics = cdCustomAccessibilityActionClear,
+                onSearchBarIconClick = ::clearQuery,
                 // sort menu
                 onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
                 onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
@@ -126,8 +117,7 @@ fun HomeScreen(
                 // bottom app bar
                 bottomBar = { SharedBottomAppBar(navController) },
                 // fab button
-                fabVisible = fabVisible/* && !isTalkBackEnabled()*/,
-//                accessFabButton = isTalkBackEnabled(),
+                fabVisible = fabVisible,
                 fabContentDescription = cdFabButton,
                 onFabClick = {
                     // for initial posts populating purpose
@@ -172,16 +162,9 @@ fun HomeScreen(
                                     .fillMaxWidth()
                                     .padding(contentPadding)
                                     .padding(horizontal = SharedPadding.large),
-                                posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
+                                posts = filteredPosts,
                                 navigateToDetailScreen = navigateToDetailScreen,
-//                                searchBarVisible = searchBarVisible,
-                                query = query,
-                                updateQuery = { updateQuery(it) },
-                                filterPosts = { filterPosts(it) },
-                                clearQuery = { clearQuery() },
-//                                hideSearchBar = ::hideSearchBar,
-                                selectPost = ::selectPost
-
+                                selectPost = ::selectPost,
                             )
                         }
                     }
@@ -210,14 +193,8 @@ fun HomeScreen(
 private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
-    navigateToDetailScreen: (/*Post*/) -> Unit,
-//    searchBarVisible: Boolean = false,
-    query: String = "",
-    updateQuery: (String) -> Unit,
-    filterPosts: (String) -> Unit,
-    clearQuery: () -> Unit,
-//    hideSearchBar: () -> Unit,
-    selectPost: (Post) -> Unit
+    navigateToDetailScreen: () -> Unit,
+    selectPost: (Post) -> Unit,
 ) {
     Column (modifier = modifier ) {
         LazyColumn(
@@ -247,12 +224,11 @@ private fun HomeFeedList(
  * A composable that displays a single post in the home feed.
  *
  * @param post The post to display.
- * @param onPostClick A function to call when the post is clicked.
  */
 @Composable
 private fun HomeFeedCell(
     post: Post,
-    navigateToDetailScreen: (/*Post*/) -> Unit,
+    navigateToDetailScreen: () -> Unit,
     selectPost: (Post) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -263,7 +239,7 @@ private fun HomeFeedCell(
             .height(80.dp),
         onClick = {
             selectPost(post)
-            navigateToDetailScreen(/*post*/)
+            navigateToDetailScreen()
         }
     ) {
         Row (

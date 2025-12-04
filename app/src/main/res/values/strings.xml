@@ -63,4 +63,22 @@
     <string name="add_button_double_tap_to_add_a_new_event">Add button. Double tap to add a new event</string>
     <string name="look_for_an_event">Look for an event</string>
     <string name="clear_all_text">Clear all text</string>
+    <string name="ascending_title">Ascending title</string>
+    <string name="ascending_date">Ascending date</string>
+    <string name="descending_date">Descending date</string>
+    <string name="ascending_title_double_tap_to_sort_by_ascending_title">Ascending title. Double tap to sort by ascending title</string>
+    <string name="ascending_date_double_tap_to_sort_by_ascending_date">Ascending date. Double tap to sort by ascending date</string>
+    <string name="descending_date_double_tap_to_sort_by_descending_date">Descending date. Double tap to sort by descending date</string>
+    <string name="close_sort_menu_double_tap_to_close_the_menu">Close sort menu. Double tap to close the menu</string>
+    <string name="close_menu">Close menu</string>
+    <string name="events">Events</string>
+    <string name="profile">Profile</string>
+    <string name="you_are_on_this_screen">.You are on this screen.</string>
+    <string name="double_tap_to_navigate_to_screen">.Double tap to navigate to %1$s screen.</string>
+    <string name="profile_screen_here_are_displayed_your_data_and_notifications_settings">Profile Screen. Here are displayed your data and notifications settings.</string>
+    <string name="enabled">enabled</string>
+    <string name="disabled">disabled</string>
+    <string name="notifications_setting_notifications_are_double_tap_to_toggle_notifications">Notifications setting. Notifications are %1$s. Double tap to toggle notifications.</string>
+    <string name="notification_are_enabled_double_tap_to_disable_it">Notification are enabled. Double tap to disable it</string>
+    <string name="notification_are_disabled_double_tap_to_enable_it">Notification are disabled. Double tap to enable it</string>
 </resources>

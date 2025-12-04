@@ -65,4 +65,19 @@
     <string name="add_button_double_tap_to_add_a_new_event">Bouton Ajout. Appuyer deux fois pour ajouter un nouvel évènement</string>
     <string name="look_for_an_event">Rechercher un évènement</string>
     <string name="clear_all_text">Supprimer tout le texte</string>
+    <string name="ascending_title">Titre croissant</string>
+    <string name="ascending_date">Date croissante</string>
+    <string name="descending_date">Date décroissante</string>
+    <string name="ascending_title_double_tap_to_sort_by_ascending_title">Titre croissant. Appuyer deux fois pour trier par titre croissant</string>
+    <string name="ascending_date_double_tap_to_sort_by_ascending_date">Date croissante. Appuyer deux fois pour trier par date croissante</string>
+    <string name="descending_date_double_tap_to_sort_by_descending_date">Date décroissante. Appuyer deux fois pour trier par date décroissante</string>
+    <string name="close_sort_menu_double_tap_to_close_the_menu">Fermer le menu de tri. Appuyer deux fois pour fermer le menu</string>
+    <string name="close_menu">Fermer le menu</string>
+    <string name="events">Evènements</string>
+    <string name="profile">Profil</string>
+    <string name="you_are_on_this_screen">.Vous êtes sur cet écran.</string>
+    <string name="double_tap_to_navigate_to_screen">.Appuyer deux fois pour naviguer vers l\'écran %1$s.</string>
+    <string name="profile_screen_here_are_displayed_your_data_and_notifications_settings">Profile utilisateur. Affichage de vos données et de vos paramètres de notifications.</string>
+    <string name="notification_are_enabled_double_tap_to_disable_it">Les notifications sont activées. Appuyer deux fois pour les désactiver.</string>
+    <string name="notification_are_disabled_double_tap_to_enable_it">Les notifications sont désactivées. Appuyer deux fois pour les activer.</string>
 </resources>

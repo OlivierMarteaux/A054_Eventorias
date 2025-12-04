@@ -1,5 +1,7 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.account
 
+import android.R.attr.contentDescription
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +24,7 @@ import com.oliviermarteaux.a054_eventorias.ui.theme.White
 import com.oliviermarteaux.localshared.composables.SharedBottomAppBar
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.composables.SharedFilledTextField
+import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
 import com.oliviermarteaux.localshared.composables.spacer.SpacerLarge
 import com.oliviermarteaux.localshared.composables.spacer.SpacerSmall
 import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
@@ -37,9 +40,12 @@ fun AccountScreen(
     accountViewModel: AccountViewModel = hiltViewModel(),
     navController: NavController
 ) {
+    val cdProfileScreen =
+        stringResource(R.string.profile_screen_here_are_displayed_your_data_and_notifications_settings)
     with(accountViewModel) {
         SharedScaffold(
-            title = "User profile",
+            title = stringResource(R.string.user_profile),
+            screenContentDescription = cdProfileScreen ,
             avatarUrl = user.photoUrl,
             topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
             bottomBar = { SharedBottomAppBar(navController = navController) }
@@ -100,8 +106,16 @@ fun AccountScreenBody(
         )
         SpacerXl()
 
+        val cdNotifications =
+            if (notificationState) stringResource(R.string.notification_are_enabled_double_tap_to_disable_it)
+            else stringResource(R.string.notification_are_disabled_double_tap_to_enable_it)
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {}
+                .cdButtonSemantics(
+                    contentDescription = cdNotifications,
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Switch(

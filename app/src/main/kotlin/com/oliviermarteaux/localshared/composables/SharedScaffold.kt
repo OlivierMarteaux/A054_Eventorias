@@ -1,5 +1,8 @@
 package com.oliviermarteaux.localshared.composables
 
+import android.R.attr.onClick
+import android.content.Context
+import android.view.accessibility.AccessibilityManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
@@ -46,14 +49,19 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalAccessibilityManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.hideFromAccessibility
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.composables.accessibility.isTalkBackEnabled
 import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.composables.IconSource
@@ -227,6 +235,7 @@ fun SharedScaffold(
                                 .padding(end = SharedPadding.small)
                                 .size(48.dp)
                                 .clip(shape = CircleShape)
+                                .semantics { hideFromAccessibility() }
                         )
                     }
                     trailingIcon?.let {
@@ -283,18 +292,38 @@ fun SharedScaffold(
                             expanded = sortOptionsDisplayed,
                             onDismissRequest = { hideSortOptions() }
                         ) {
+                            val isTalkBackEnabled = isTalkBackEnabled()
+                            val cdAscendingTitle =
+                                stringResource(R.string.ascending_title_double_tap_to_sort_by_ascending_title)
+                            val cdAscendingDate =
+                                stringResource(R.string.ascending_date_double_tap_to_sort_by_ascending_date)
+                            val cdDescendingDate =
+                                stringResource(R.string.descending_date_double_tap_to_sort_by_descending_date)
+                            val cdCloseSortMenu =
+                                stringResource(R.string.close_sort_menu_double_tap_to_close_the_menu)
                             DropdownMenuItem(
-                                text = { TextTitleSmall(text = "Ascending title") },
+                                text = { TextTitleSmall(text = stringResource(R.string.ascending_title)) },
+                                modifier = Modifier.cdButtonSemantics(cdAscendingTitle),
                                 onClick = { onSortByTitleClick() },
                             )
                             onSortByAscendingDateClick?.let { DropdownMenuItem(
-                                text = { TextTitleSmall(text = "Ascending date") },
+                                text = { TextTitleSmall(text = stringResource(R.string.ascending_date)) },
+                                modifier = Modifier.cdButtonSemantics(cdAscendingDate),
                                 onClick = { onSortByAscendingDateClick() },
                             )}
                             onSortByDescendingDateClick?.let { DropdownMenuItem(
-                                text = { TextTitleSmall(text = "Descending date") },
+                                text = { TextTitleSmall(text = stringResource(R.string.descending_date)) },
+                                modifier = Modifier.cdButtonSemantics(cdDescendingDate),
                                 onClick = { onSortByDescendingDateClick() },
                             )}
+                            // Show "Close" ONLY for TalkBack users
+                            if (isTalkBackEnabled) {
+                                DropdownMenuItem(
+                                    text = { TextTitleSmall(text = stringResource(R.string.close_menu)) },
+                                    modifier = Modifier.cdButtonSemantics(cdCloseSortMenu),
+                                    onClick = { hideSortOptions() },
+                                )
+                            }
                         }
                     }
                     onMenuItem1Click?.let{

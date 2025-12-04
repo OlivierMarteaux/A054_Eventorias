@@ -115,8 +115,8 @@ fun HomeScreen(
                 // top app bar
                 topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
                 // search bar
-                onSearchIconClick = ::toggleSearchBar,
-                isSearchVisible = searchBarVisible,
+//                onSearchIconClick = ::toggleSearchBar,
+//                isSearchVisible = searchBarVisible,
                 query = query,
                 onQueryChange = { updateQuery(it); filterPosts(query) },
                 onSearchBarIconClick = ::clearQuery,
@@ -176,12 +176,12 @@ fun HomeScreen(
                                     .padding(horizontal = SharedPadding.large),
                                 posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
                                 navigateToDetailScreen = navigateToDetailScreen,
-                                searchBarVisible = searchBarVisible,
+//                                searchBarVisible = searchBarVisible,
                                 query = query,
                                 updateQuery = { updateQuery(it) },
                                 filterPosts = { filterPosts(it) },
                                 clearQuery = { clearQuery() },
-                                hideSearchBar = ::hideSearchBar,
+//                                hideSearchBar = ::hideSearchBar,
                                 selectPost = ::selectPost
 
                             )
@@ -213,12 +213,12 @@ private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
     navigateToDetailScreen: (/*Post*/) -> Unit,
-    searchBarVisible: Boolean = false,
+//    searchBarVisible: Boolean = false,
     query: String = "",
     updateQuery: (String) -> Unit,
     filterPosts: (String) -> Unit,
     clearQuery: () -> Unit,
-    hideSearchBar: () -> Unit,
+//    hideSearchBar: () -> Unit,
     selectPost: (Post) -> Unit
 ) {
     Column (modifier = modifier ) {

@@ -144,10 +144,10 @@ fun SharedScaffold(
     avatarUrl: String? = null,
     onBackClick: (() -> Unit)? = null,
     //_ search function
-    onSearchIconClick: (() -> Unit)? = null,
-    isSearchVisible: Boolean = false,
+//    onSearchIconClick: (() -> Unit)? = null,
+//    isSearchVisible: Boolean = false,
     query: String = "",
-    onQueryChange: (String) -> Unit = {},
+    onQueryChange: ((String) -> Unit)? = {},
 //    onSearchClick: (() -> Unit)? = null,
     onSearchBarIconClick: (() -> Unit) = {},
     searchBarModifier: Modifier = Modifier,
@@ -188,6 +188,7 @@ fun SharedScaffold(
     fun hideSortOptions(){ sortOptionsDisplayed = false }
     fun showSearchBar(){ searchBarDisplayed = true }
     fun hideSearchBar(){ searchBarDisplayed = false }
+    fun toggleSearchBar(){ searchBarDisplayed = !searchBarDisplayed }
 
 //    val topAppBarModifierWithSearchBar = onSearchIconClick?.let { topAppBarModifier.height(118.dp) }?:topAppBarModifier
 
@@ -201,7 +202,7 @@ fun SharedScaffold(
                         contentAlignment = Alignment.Center
                     ) {
                         AnimatedVisibility(
-                            visible = !isSearchVisible,
+                            visible = !searchBarDisplayed,
                             enter = expandHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow)),
                             exit = shrinkHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow))
                         ) {
@@ -242,9 +243,9 @@ fun SharedScaffold(
                                 .clip(shape = CircleShape)
                         )
                     }
-                    onSearchIconClick?.let {
+                    onQueryChange?.let {
                         AnimatedVisibility(
-                            visible = isSearchVisible,
+                            visible = searchBarDisplayed,
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = SharedPadding.small),
@@ -272,7 +273,10 @@ fun SharedScaffold(
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.Default.Search),
                             modifier = Modifier.cdButtonSemantics(cdSearchButton)
-                        ) { onSearchIconClick() }
+                        ) {
+                            toggleSearchBar();
+
+                        }
                     }
                     onSortByTitleClick?.let{
                         val cdSortButton =

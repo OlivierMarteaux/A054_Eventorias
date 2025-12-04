@@ -62,14 +62,14 @@ class HomeViewModel @Inject constructor(
         filterPosts("")
     }
 
-    var searchBarVisible: Boolean by mutableStateOf(false)
-        private set
-    fun showSearchBar() { searchBarVisible = true }
-    fun hideSearchBar() { searchBarVisible = false }
+//    var searchBarVisible: Boolean by mutableStateOf(false)
+//        private set
+//    fun showSearchBar() { searchBarVisible = true }
+//    fun hideSearchBar() { searchBarVisible = false }
 
-    fun toggleSearchBar(){
-        searchBarVisible = !searchBarVisible
-    }
+//    fun toggleSearchBar(){
+//        searchBarVisible = !searchBarVisible
+//    }
 
     fun filterPosts(query: String) {
         filteredPosts = posts.filter { post ->

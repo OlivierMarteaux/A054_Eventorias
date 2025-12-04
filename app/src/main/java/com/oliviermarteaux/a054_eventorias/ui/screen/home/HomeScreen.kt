@@ -3,6 +3,7 @@ package com.oliviermarteaux.a054_eventorias.ui.screen.home
 import android.R.attr.text
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,11 +32,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CollectionInfo
@@ -71,6 +75,7 @@ import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.composables.texts.TextTitleMedium
 import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
 import com.oliviermarteaux.shared.ui.ListUiState
+import kotlinx.coroutines.delay
 
 /**
  * A screen that displays a feed of posts.
@@ -107,6 +112,18 @@ fun HomeScreen(
             fun showFab(){ fabDisplayed = true }
             fun hideFab(){ fabDisplayed = false }
 
+            val onSearchFocusRequester = remember{ FocusRequester() }
+            var searchResultFocused by mutableStateOf(false)
+            fun focusOnSearchResult(){
+                Log.d("OM_TAG", "HomeScreen: focusOnSearchResult")
+                searchResultFocused = !searchResultFocused
+            }
+            LaunchedEffect(searchResultFocused) {
+                delay(1000)
+                Log.d("OM_TAG", "HomeScreen: LaunchedEffect: searchResultFocused = $searchResultFocused" )
+                onSearchFocusRequester.requestFocus()
+            }
+
             val cdHomeScreen =
                 stringResource(R.string.you_are_on_the_home_screen_here_you_can_browse_all_the_incoming_events)
             val cdFabButton = stringResource(R.string.add_button_double_tap_to_add_a_new_event)
@@ -126,6 +143,7 @@ fun HomeScreen(
                 onSearchBarIconClick = ::clearQuery,
                 toggleSearchBar = ::toggleSearchBar,
                 searchBarDisplayed = searchBarDisplayed,
+                onSearch = { focusOnSearchResult() },
                 // sort menu
                 onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
                 onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
@@ -150,7 +168,9 @@ fun HomeScreen(
                         "HomeFeedViewModel: LaunchedEffect: homeFeedUiState = $homeUiState"
                     )
                 }
-                Box {
+                Box(
+                    modifier = Modifier
+                ) {
                     //_ UiState management: Empty, Error, Loading, Success
                     val cdLoadingState =
                         stringResource(R.string.please_wait_server_connection_in_progress)
@@ -182,6 +202,8 @@ fun HomeScreen(
                             showFab()
                             HomeFeedList(
                                 modifier = modifier
+                                    .focusRequester(onSearchFocusRequester)
+                                    .focusable()
                                     .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
                                     .fillMaxWidth()
                                     .padding(contentPadding)

@@ -144,6 +144,7 @@ fun SharedScaffold(
     searchLabel: String = "",
     searchBarDisplayed: Boolean = false,
     toggleSearchBar: () -> Unit = {},
+    onSearch: () -> Unit = {},
     //_ sort function
     onSortByTitleClick: (() -> Unit)? = null,
     onSortByAscendingDateClick: (() -> Unit)? = null,
@@ -255,7 +256,7 @@ fun SharedScaffold(
                                 modifier = searchBarModifier
                                     .focusRequester(searchBarFocusRequester)
                                     .fillMaxWidth(),
-                                onSearch =  { focusManager.moveFocus(FocusDirection.Down); keyboardController?.hide(); toggleSearchBar() },
+                                onSearch =  { onSearch(); keyboardController?.hide(); toggleSearchBar() },
                                 searchLabel = searchLabel,
                                 icon = searchBarIcon,
                                 iconSemantics = searchBarIconSemantics,

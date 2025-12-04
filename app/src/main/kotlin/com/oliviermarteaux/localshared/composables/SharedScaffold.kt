@@ -222,8 +222,11 @@ fun SharedScaffold(
                 modifier = topAppBarModifier.height(125.dp),
                 navigationIcon = {
                     onBackClick?.let {
+                        val cdBackButton =
+                            stringResource(R.string.back_button_double_tap_to_go_back_to_the_previous_screen)
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.AutoMirrored.Filled.ArrowBack),
+                            modifier = Modifier.cdButtonSemantics(cdBackButton)
                         ) { onBackClick() }
                     }
                 },

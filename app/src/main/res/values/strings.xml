@@ -81,4 +81,6 @@
     <string name="notifications_setting_notifications_are_double_tap_to_toggle_notifications">Notifications setting. Notifications are %1$s. Double tap to toggle notifications.</string>
     <string name="notification_are_enabled_double_tap_to_disable_it">Notification are enabled. Double tap to disable it</string>
     <string name="notification_are_disabled_double_tap_to_enable_it">Notification are disabled. Double tap to enable it</string>
+    <string name="back_button_double_tap_to_go_back_to_the_previous_screen">Back button. Double tap to go back to the previous screen.</string>
+    <string name="creation_of_a_new_event_fill_in_the_event_data_and_validate_to_create_a_new_event">Creation of a new event. Fill in the event data and validate to create a new event.</string>
 </resources>

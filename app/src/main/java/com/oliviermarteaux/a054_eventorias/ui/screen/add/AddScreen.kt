@@ -58,8 +58,11 @@ fun AddScreen(
     navigateToCamera: ((String) -> Unit) -> Unit
 ) {
     with(addViewModel) {
+        val cdAddScreenTitle =
+            stringResource(R.string.creation_of_a_new_event_fill_in_the_event_data_and_validate_to_create_a_new_event)
         SharedScaffold(
             title = stringResource(R.string.creation_of_an_event),
+            screenContentDescription = cdAddScreenTitle,
             onBackClick = navigateBack
         ) { paddingValues ->
             Box(){

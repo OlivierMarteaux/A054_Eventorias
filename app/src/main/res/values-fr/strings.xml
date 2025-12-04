@@ -40,7 +40,7 @@
     <string name="take_a_photo">Prendre une photo</string>
     <string name="add_a_photo">Ajouter une photo</string>
     <string name="validate">Valider</string>
-    <string name="creation_of_an_event">Creation d\'un évenement</string>
+    <string name="creation_of_an_event">Création d\'un évènement</string>
     <string name="new_event">Nouvel évènement</string>
     <string name="please_enter_a_title">Veuillez saisir un titre</string>
     <string name="tap_here_to_enter_your_description">Cliquez ici pour saisir une description</string>
@@ -80,4 +80,6 @@
     <string name="profile_screen_here_are_displayed_your_data_and_notifications_settings">Profile utilisateur. Affichage de vos données et de vos paramètres de notifications.</string>
     <string name="notification_are_enabled_double_tap_to_disable_it">Les notifications sont activées. Appuyer deux fois pour les désactiver.</string>
     <string name="notification_are_disabled_double_tap_to_enable_it">Les notifications sont désactivées. Appuyer deux fois pour les activer.</string>
+    <string name="back_button_double_tap_to_go_back_to_the_previous_screen">Bouton retour. Appuyer deux fois pour revenir à l\'écran précédent.</string>
+    <string name="creation_of_a_new_event_fill_in_the_event_data_and_validate_to_create_a_new_event">Création d\'un nouvel évènement. Remplissez les données de l\'évènement et appuyez sur Valider pour le créer.</string>
 </resources>

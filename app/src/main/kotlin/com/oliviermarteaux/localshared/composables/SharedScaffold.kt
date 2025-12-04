@@ -3,6 +3,7 @@ package com.oliviermarteaux.localshared.composables
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,10 +40,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -135,9 +139,11 @@ fun SharedScaffold(
     searchBarIcon: IconSource = IconSource.VectorIcon(Icons.Default.Clear),
     searchBarIconSemantics: String = "",
     onSearchBarIconClick: () -> Unit = {},
-    onQueryChange: ((TextFieldValue) -> Unit)? = {},
+    onQueryChange: ((TextFieldValue) -> Unit)? = null,
     searchBarModifier: Modifier = Modifier,
     searchLabel: String = "",
+    searchBarDisplayed: Boolean = false,
+    toggleSearchBar: () -> Unit = {},
     //_ sort function
     onSortByTitleClick: (() -> Unit)? = null,
     onSortByAscendingDateClick: (() -> Unit)? = null,
@@ -171,11 +177,16 @@ fun SharedScaffold(
     fun showSortOptions(){ sortOptionsDisplayed = true }
     fun hideSortOptions(){ sortOptionsDisplayed = false }
 
-    var searchBarDisplayed by rememberSaveable { mutableStateOf(false) }
-    fun toggleSearchBar(){ searchBarDisplayed = !searchBarDisplayed }
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    toggleSearchBar()
+                })
+            }
+            .fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = {
@@ -244,7 +255,7 @@ fun SharedScaffold(
                                 modifier = searchBarModifier
                                     .focusRequester(searchBarFocusRequester)
                                     .fillMaxWidth(),
-                                onSearch =  { keyboardController?.hide(); toggleSearchBar() },
+                                onSearch =  { focusManager.moveFocus(FocusDirection.Down); keyboardController?.hide(); toggleSearchBar() },
                                 searchLabel = searchLabel,
                                 icon = searchBarIcon,
                                 iconSemantics = searchBarIconSemantics,

@@ -28,6 +28,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
@@ -84,7 +89,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
     postViewModel: PostViewModel,
-    navigateToDetailScreen: (/*Post*/) -> Unit = {},
+    navigateToDetailScreen: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     navigateToLoginScreen: () -> Unit = {},
     navigateToAccountScreen: () -> Unit = {},
@@ -92,6 +97,10 @@ fun HomeScreen(
 ) {
     with(homeViewModel) {
         with (postViewModel) {
+
+            var searchBarDisplayed by rememberSaveable { mutableStateOf(false) }
+            fun toggleSearchBar(){ searchBarDisplayed = !searchBarDisplayed }
+            fun hideSearchBar(){ searchBarDisplayed = false }
 
             val cdHomeScreen =
                 stringResource(R.string.you_are_on_the_home_screen_here_you_can_browse_all_the_incoming_events)
@@ -110,6 +119,8 @@ fun HomeScreen(
                 searchBarIcon = IconSource.VectorIcon(Icons.Default.Clear),
                 searchBarIconSemantics = cdCustomAccessibilityActionClear,
                 onSearchBarIconClick = ::clearQuery,
+                toggleSearchBar = ::toggleSearchBar,
+                searchBarDisplayed = searchBarDisplayed,
                 // sort menu
                 onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
                 onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
@@ -123,7 +134,7 @@ fun HomeScreen(
                     // for initial posts populating purpose
 //                uploadSamplePosts(context)
                     checkUserState(
-                        onUserLogged = navigateToAddScreen,
+                        onUserLogged = { hideSearchBar(); navigateToAddScreen() },
                         onNoUserLogged = ::showAuthErrorToast
                     )
                 }
@@ -165,6 +176,7 @@ fun HomeScreen(
                                 posts = filteredPosts,
                                 navigateToDetailScreen = navigateToDetailScreen,
                                 selectPost = ::selectPost,
+                                hideSearchBar = ::hideSearchBar
                             )
                         }
                     }
@@ -195,6 +207,7 @@ private fun HomeFeedList(
     posts: List<Post>,
     navigateToDetailScreen: () -> Unit,
     selectPost: (Post) -> Unit,
+    hideSearchBar: () -> Unit
 ) {
     Column (modifier = modifier ) {
         LazyColumn(
@@ -211,6 +224,7 @@ private fun HomeFeedList(
                     post = post,
                     navigateToDetailScreen = navigateToDetailScreen,
                     selectPost = selectPost,
+                    hideSearchBar = hideSearchBar,
                     modifier = Modifier.semantics {
                         collectionItemInfo = CollectionItemInfo(index, 1, 0, 1)
                     }
@@ -230,6 +244,7 @@ private fun HomeFeedCell(
     post: Post,
     navigateToDetailScreen: () -> Unit,
     selectPost: (Post) -> Unit,
+    hideSearchBar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ElevatedCard(
@@ -238,6 +253,7 @@ private fun HomeFeedCell(
             .fillMaxWidth()
             .height(80.dp),
         onClick = {
+            hideSearchBar()
             selectPost(post)
             navigateToDetailScreen()
         }

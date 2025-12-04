@@ -49,9 +49,6 @@ class HomeViewModel @Inject constructor(
     var currentSortOption: SortOption? by mutableStateOf(null)
         private set
 
-    var fabVisible: Boolean by mutableStateOf(false)
-        private set
-
     var queryFieldValue: TextFieldValue by mutableStateOf(TextFieldValue(""))
         private set
 
@@ -83,7 +80,6 @@ class HomeViewModel @Inject constructor(
             postRepository.posts.collect { result ->
                 result
                     .onSuccess {
-                        fabVisible = true
                         posts = it
                         filteredPosts = it
                         homeUiState =
@@ -92,7 +88,6 @@ class HomeViewModel @Inject constructor(
                     }
                     .onFailure { e ->
                         homeUiState = ListUiState.Error(e)
-                        fabVisible = false
                     }
             }
         }

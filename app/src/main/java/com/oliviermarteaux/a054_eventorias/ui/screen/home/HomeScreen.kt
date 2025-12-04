@@ -1,5 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
+import android.R.attr.text
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -102,6 +103,10 @@ fun HomeScreen(
             fun toggleSearchBar(){ searchBarDisplayed = !searchBarDisplayed }
             fun hideSearchBar(){ searchBarDisplayed = false }
 
+            var fabDisplayed by rememberSaveable { mutableStateOf(false) }
+            fun showFab(){ fabDisplayed = true }
+            fun hideFab(){ fabDisplayed = false }
+
             val cdHomeScreen =
                 stringResource(R.string.you_are_on_the_home_screen_here_you_can_browse_all_the_incoming_events)
             val cdFabButton = stringResource(R.string.add_button_double_tap_to_add_a_new_event)
@@ -128,7 +133,7 @@ fun HomeScreen(
                 // bottom app bar
                 bottomBar = { SharedBottomAppBar(navController) },
                 // fab button
-                fabVisible = fabVisible,
+                fabVisible = fabDisplayed,
                 fabContentDescription = cdFabButton,
                 onFabClick = {
                     // for initial posts populating purpose
@@ -150,15 +155,22 @@ fun HomeScreen(
                     val cdLoadingState =
                         stringResource(R.string.please_wait_server_connection_in_progress)
                     when (homeUiState) {
-                        is ListUiState.Loading -> CenteredCircularProgressIndicator(
-                            modifier = Modifier.semantics(
-                                properties = {
-                                    contentDescription = cdLoadingState
-                                }
+                        is ListUiState.Loading -> {
+                            hideFab()
+                            CenteredCircularProgressIndicator(
+                                modifier = Modifier.semantics(
+                                    properties = {
+                                        contentDescription = cdLoadingState
+                                    }
+                                )
                             )
-                        )
-                        is ListUiState.Empty -> SharedToast(stringResource(R.string.no_posts))
+                        }
+                        is ListUiState.Empty -> {
+                            showFab()
+                            SharedToast(stringResource(R.string.no_posts))
+                        }
                         is ListUiState.Error -> {
+                            hideFab()
                             ErrorScreen(
                                 modifier = modifier,
                                 contentPadding = contentPadding,
@@ -167,6 +179,7 @@ fun HomeScreen(
                         }
 
                         is ListUiState.Success -> {
+                            showFab()
                             HomeFeedList(
                                 modifier = modifier
                                     .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,

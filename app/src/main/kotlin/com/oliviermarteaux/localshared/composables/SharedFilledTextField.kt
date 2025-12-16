@@ -145,17 +145,13 @@ fun SharedFilledTextField(
         bottomPadding = bottomPadding,
         modifier = modifier
     ) {
-        val cdTextField = stringResource(R.string.edit_box, label)
-        val cdError = if (isError) stringResource(R.string.error_message, errorText?:"") else ""
         TextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = textFieldModifier.clearAndSetSemantics(){
-                this.contentDescription = cdTextField
-                this.error(errorText?:"")
-//                if (isError) {
-//                    stateDescription = cdError
-//                }
+            modifier = textFieldModifier.semantics(){
+                if (isError) {
+                    this.error(errorText?:"")
+                }
             },
             enabled = enabled,
             readOnly = readOnly,

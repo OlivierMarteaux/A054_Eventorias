@@ -95,31 +95,31 @@ fun AccountScreenBody(
         modifier = modifier
     ) {
         val cdStateDescription = stringResource(R.string.not_editable)
-        val cdUserName =
-            stringResource(R.string.currently_registered_name_is, user.getComputedFullName())
+//        val cdUserName =
+//            stringResource(R.string.currently_registered_name_is, user.getComputedFullName())
         SharedFilledTextField(
             value = user.getComputedFullName(),
             label = stringResource(R.string.name),
-            contentDescription = cdUserName,
+//            contentDescription = cdUserName,
             textFieldModifier = Modifier
                 .semantics {
-                    stateDescription = cdStateDescription
-                    this.contentDescription = cdUserName
+//                    stateDescription = cdStateDescription
+                    this.contentDescription = cdStateDescription
                 }
                 .fillMaxWidth(),
             readOnly = true
         )
         SpacerLarge()
 
-        val cdUserEmail = stringResource(R.string.currently_registered_email_is, user.email)
+//        val cdUserEmail = stringResource(R.string.currently_registered_email_is, user.email)
         SharedFilledTextField(
             value = user.email,
             label = stringResource(R.string.email),
-            contentDescription = cdUserEmail,
+//            contentDescription = cdUserEmail,
             textFieldModifier = Modifier
                 .semantics {
-                    stateDescription = cdStateDescription
-                    this.contentDescription = cdUserEmail
+//                    stateDescription = cdStateDescription
+                    this.contentDescription = cdStateDescription
                 }
                 .fillMaxWidth(),
             readOnly = true

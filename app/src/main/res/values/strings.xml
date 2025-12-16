@@ -90,4 +90,6 @@
     <string name="edit_box">Edit box. %1$s</string>
     <string name="locale_photo_button_click_here_to_pick_a_photo_from_your_device">Locale photo button. Click here to pick a photo from your device.</string>
     <string name="camera_button_click_here_to_take_a_photo">Camera button. Click here to take a photo.</string>
+    <string name="details_for_the_event_here_you_can_access_event_date_time_description_and_address">Details for the event %1$s. Here you can access event date, time , description and address.</string>
+    <string name="posted_by">Posted by %1$s</string>
 </resources>

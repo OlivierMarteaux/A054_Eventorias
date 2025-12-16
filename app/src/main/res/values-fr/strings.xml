@@ -89,4 +89,6 @@
     <string name="edit_box">Zone d\'édition. %1$s</string>
     <string name="locale_photo_button_click_here_to_pick_a_photo_from_your_device">Bouton image locale. Appuyer deux fois pour choisir une image locale.</string>
     <string name="camera_button_click_here_to_take_a_photo">Bouton appareil photo. Appuyer deux fois pour accéder à l\'appareil photo.</string>
+    <string name="details_for_the_event_here_you_can_access_event_date_time_description_and_address">Détail de l\'évènement %1$s. Ici vous pouvez accéder à la date, l\'heure, la description et l\'adresse de l\'évènement.</string>
+    <string name="posted_by">Publié par %1$s</string>
 </resources>

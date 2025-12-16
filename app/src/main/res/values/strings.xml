@@ -92,4 +92,8 @@
     <string name="camera_button_click_here_to_take_a_photo">Camera button. Click here to take a photo.</string>
     <string name="details_for_the_event_here_you_can_access_event_date_time_description_and_address">Details for the event %1$s. Here you can access event date, time , description and address.</string>
     <string name="posted_by">Posted by %1$s</string>
+    <string name="picture_of_the_event">Picture of the event</string>
+    <string name="currently_registered_name_is">currently registered name is %1$s</string>
+    <string name="currently_registered_email_is">currently registered email is %1$s</string>
+    <string name="not_editable">Not editable</string>
 </resources>

@@ -16,8 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.oliviermarteaux.a054_eventorias.R
@@ -92,18 +94,34 @@ fun AccountScreenBody(
     Column(
         modifier = modifier
     ) {
+        val cdStateDescription = stringResource(R.string.not_editable)
+        val cdUserName =
+            stringResource(R.string.currently_registered_name_is, user.getComputedFullName())
         SharedFilledTextField(
             value = user.getComputedFullName(),
             label = stringResource(R.string.name),
-            textFieldModifier = Modifier.fillMaxWidth(),
+            contentDescription = cdUserName,
+            textFieldModifier = Modifier
+                .semantics {
+                    stateDescription = cdStateDescription
+                    this.contentDescription = cdUserName
+                }
+                .fillMaxWidth(),
             readOnly = true
         )
         SpacerLarge()
 
+        val cdUserEmail = stringResource(R.string.currently_registered_email_is, user.email)
         SharedFilledTextField(
             value = user.email,
             label = stringResource(R.string.email),
-            textFieldModifier = Modifier.fillMaxWidth(),
+            contentDescription = cdUserEmail,
+            textFieldModifier = Modifier
+                .semantics {
+                    stateDescription = cdStateDescription
+                    this.contentDescription = cdUserEmail
+                }
+                .fillMaxWidth(),
             readOnly = true
         )
         SpacerXl()

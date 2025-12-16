@@ -132,7 +132,7 @@ fun DetailImageCard(
     post: Post,
     modifier: Modifier = Modifier
 ) {
-    val cdEventPhoto = "Picture of the event"
+    val cdEventPhoto = stringResource(R.string.picture_of_the_event)
     SharedAsyncImage(
         photoUri = post.photoUrl,
         modifier = modifier

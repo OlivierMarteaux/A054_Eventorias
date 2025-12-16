@@ -23,9 +23,9 @@ import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.composables.IconScaffold
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAlertDialog
-import com.oliviermarteaux.shared.composables.SharedButton
-import com.oliviermarteaux.shared.composables.SharedOutlinedEmail
-import com.oliviermarteaux.shared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.composables.SharedButton
+import com.oliviermarteaux.localshared.composables.SharedOutlinedEmail
+import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.extensions.isValidEmail
 import com.oliviermarteaux.a054_eventorias.R
@@ -112,7 +112,7 @@ private fun ResetBody(
             onValueChange = { onEmailChange(it) },
             label = stringResource(R.string.email),
             imeAction = ImeAction.Done,
-            modifier = Modifier.fillMaxWidth(),
+            textFieldModifier = Modifier.fillMaxWidth(),
             errorText = when {
                 email.isEmpty() -> stringResource(R.string.enter_your_email_address_to_continue)
                 !email.isValidEmail() -> stringResource(R.string.incorrect_email_address)

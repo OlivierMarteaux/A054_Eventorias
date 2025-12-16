@@ -96,4 +96,6 @@
     <string name="currently_registered_name_is">currently registered name is %1$s</string>
     <string name="currently_registered_email_is">currently registered email is %1$s</string>
     <string name="not_editable">Not editable</string>
+    <string name="button_double_tap_to_open_the_password_reset_screen">Button: %1$s. Double tap to open the password reset screen.</string>
+    <string name="button_double_tap_to_sign_in">Button: %1$s. Double tap to sign in.</string>
 </resources>

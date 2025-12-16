@@ -95,4 +95,6 @@
     <string name="currently_registered_name_is">Nom actuellement enregistré: %1$s</string>
     <string name="currently_registered_email_is">E-mail actuellement enregistré: %1$s</string>
     <string name="not_editable">Non modifiable</string>
+    <string name="button_double_tap_to_open_the_password_reset_screen">Bouton: %1$s. Appuyer deux fois pour ouvrir l\'écran de réinitialisation de mot de passe.</string>
+    <string name="button_double_tap_to_sign_in">Bouton: %1$s. Appuyer deux fois pour vous connecter.</string>
 </resources>

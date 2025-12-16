@@ -186,8 +186,6 @@ fun SharedScaffold(
     fun showSortOptions(){ sortOptionsDisplayed = true }
     fun hideSortOptions(){ sortOptionsDisplayed = false }
 
-    val focusManager = LocalFocusManager.current
-
     Scaffold(
         modifier = modifier
             .pointerInput(Unit) {
@@ -212,7 +210,7 @@ fun SharedScaffold(
                                 text = title,
                                 modifier = modifier.clearAndSetSemantics(
                                     properties = {
-                                        contentDescription = screenContentDescription
+                                        contentDescription = screenContentDescription.ifEmpty { title }
                                     }
                                 )
                             )

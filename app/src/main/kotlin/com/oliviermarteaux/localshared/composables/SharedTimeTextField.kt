@@ -34,7 +34,7 @@ fun SharedTimeTextField(
         }, hour, minute, true
     )
 
-    SharedTextField(
+    SharedFilledTextField(
         value = time,
         onValueChange = { },
         label = stringResource(R.string.time),
@@ -44,7 +44,7 @@ fun SharedTimeTextField(
             .fillMaxWidth()
             .clickable { timePickerDialog.show() },
         isError = time.isEmpty(),
-        errorText = "Please enter a time",
+        errorText = stringResource(R.string.please_enter_a_time),
         enabled = false,
         bottomPadding = SharedPadding.large,
         colors = TextFieldDefaults.colors(

@@ -1,16 +1,14 @@
 package com.oliviermarteaux.localshared.composables
 
-import android.R.attr.end
-import android.R.attr.navigationIcon
+import android.R.attr.onClick
+import android.content.Context
+import android.view.accessibility.AccessibilityManager
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,13 +16,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SwapVert
@@ -33,12 +29,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -51,18 +43,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalAccessibilityManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.localshared.composables.accessibility.isTalkBackEnabled
+import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
-import com.oliviermarteaux.localshared.utils.hideKeyboard
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
 import com.oliviermarteaux.shared.composables.SharedIcon
@@ -136,18 +137,22 @@ fun SharedScaffold(
     modifier: Modifier = Modifier,
     //_ topAppBar
     title: String = "",
+    screenContentDescription: String = "",
     topAppBarModifier: Modifier = Modifier,
     trailingIcon: IconSource? = null,
     avatarUrl: String? = null,
     onBackClick: (() -> Unit)? = null,
     //_ search function
-    onSearchIconClick: (() -> Unit)? = null,
-    isSearchVisible: Boolean = false,
-    query: String = "",
-    onQueryChange: (String) -> Unit = {},
-//    onSearchClick: (() -> Unit)? = null,
-    onSearchBarIconClick: (() -> Unit) = {},
+    query: TextFieldValue = TextFieldValue(""),
+    searchBarIcon: IconSource = IconSource.VectorIcon(Icons.Default.Clear),
+    searchBarIconSemantics: String = "",
+    onSearchBarIconClick: () -> Unit = {},
+    onQueryChange: ((TextFieldValue) -> Unit)? = null,
     searchBarModifier: Modifier = Modifier,
+    searchLabel: String = "",
+    searchBarDisplayed: Boolean = false,
+    toggleSearchBar: () -> Unit = {},
+    onSearch: () -> Unit = {},
     //_ sort function
     onSortByTitleClick: (() -> Unit)? = null,
     onSortByAscendingDateClick: (() -> Unit)? = null,
@@ -174,20 +179,21 @@ fun SharedScaffold(
     content: @Composable (contentPadding: PaddingValues) -> Unit = {},
 ){
     var menuDisplayed by rememberSaveable { mutableStateOf(false) }
-    var sortOptionsDisplayed by rememberSaveable { mutableStateOf(false) }
-    var searchBarDisplayed by rememberSaveable { mutableStateOf(false) }
-
     fun showMenu(){ menuDisplayed = true }
     fun hideMenu(){ menuDisplayed = false }
+
+    var sortOptionsDisplayed by rememberSaveable { mutableStateOf(false) }
     fun showSortOptions(){ sortOptionsDisplayed = true }
     fun hideSortOptions(){ sortOptionsDisplayed = false }
-    fun showSearchBar(){ searchBarDisplayed = true }
-    fun hideSearchBar(){ searchBarDisplayed = false }
-
-//    val topAppBarModifierWithSearchBar = onSearchIconClick?.let { topAppBarModifier.height(118.dp) }?:topAppBarModifier
 
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    toggleSearchBar()
+                })
+            }
+            .fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = {
@@ -196,19 +202,29 @@ fun SharedScaffold(
                         contentAlignment = Alignment.Center
                     ) {
                         AnimatedVisibility(
-                            visible = !isSearchVisible,
-                            enter = expandHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow)),
-                            exit = shrinkHorizontally(spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow))
+                            visible = !searchBarDisplayed,
+                            enter = expandHorizontally(),
+                            exit = shrinkHorizontally()
                         ) {
-                            TextTitleLarge(title)
+                            TextTitleLarge(
+                                text = title,
+                                modifier = modifier.clearAndSetSemantics(
+                                    properties = {
+                                        contentDescription = screenContentDescription.ifEmpty { title }
+                                    }
+                                )
+                            )
                         }
                     }
                 },
                 modifier = topAppBarModifier.height(125.dp),
                 navigationIcon = {
                     onBackClick?.let {
+                        val cdBackButton =
+                            stringResource(R.string.back_button_double_tap_to_go_back_to_the_previous_screen)
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.AutoMirrored.Filled.ArrowBack),
+                            modifier = Modifier.cdButtonSemantics(cdBackButton)
                         ) { onBackClick() }
                     }
                 },
@@ -220,6 +236,7 @@ fun SharedScaffold(
                                 .padding(end = SharedPadding.small)
                                 .size(48.dp)
                                 .clip(shape = CircleShape)
+                                .semantics { hideFromAccessibility() }
                         )
                     }
                     trailingIcon?.let {
@@ -230,56 +247,84 @@ fun SharedScaffold(
                                 .clip(shape = CircleShape)
                         )
                     }
-                    onSearchIconClick?.let {
+                    onQueryChange?.let {
                         AnimatedVisibility(
-                            visible = isSearchVisible,
+                            visible = searchBarDisplayed,
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = SharedPadding.small),
-//                            enter = expandHorizontally(animationSpec = tween(10000)),
-//                            exit = shrinkHorizontally(animationSpec = tween(10000))
+//                            enter = expandHorizontally(),
+//                            exit = shrinkHorizontally()
                         ) {
                             val searchBarFocusRequester = remember { FocusRequester() }
                             LaunchedEffect(Unit) { searchBarFocusRequester.requestFocus() }
                             val keyboardController = LocalSoftwareKeyboardController.current
+
                             SharedSearchBar(
-                                query = query,
+                                textFieldValue = query,
                                 onQueryChange = onQueryChange,
                                 modifier = searchBarModifier
                                     .focusRequester(searchBarFocusRequester)
                                     .fillMaxWidth(),
-//                                    .width(300.dp)
-//                                    .alignBy { it.measuredHeight / 2 },
-                                onSearch =  { keyboardController?.hide() },
-                                onIconClick = onSearchBarIconClick
+                                onSearch =  { onSearch(); keyboardController?.hide(); toggleSearchBar() },
+                                searchLabel = searchLabel,
+                                icon = searchBarIcon,
+                                iconSemantics = searchBarIconSemantics,
+                                onIconClick = onSearchBarIconClick,
                             )
                         }
-                        if (!isSearchVisible) {
-                            SharedIconButton(
-                                icon = IconSource.VectorIcon(Icons.Default.Search),
-                            ) { onSearchIconClick() }
+                        val cdSearchButton =
+                            stringResource(R.string.search_button_double_tap_to_open_the_search_bar)
+                        if (!searchBarDisplayed) SharedIconButton(
+                            icon = IconSource.VectorIcon(Icons.Default.Search),
+                            modifier = Modifier.cdButtonSemantics(cdSearchButton)
+                        ) {
+                            toggleSearchBar()
                         }
                     }
                     onSortByTitleClick?.let{
+                        val cdSortButton =
+                            stringResource(R.string.sort_button_double_tap_to_open_the_sort_menu)
                         SharedIconButton(
                             icon = IconSource.VectorIcon(Icons.Default.SwapVert),
+                            modifier = Modifier.cdButtonSemantics(cdSortButton)
                         ){ showSortOptions() }
                         DropdownMenu(
                             expanded = sortOptionsDisplayed,
                             onDismissRequest = { hideSortOptions() }
                         ) {
+                            val isTalkBackEnabled = isTalkBackEnabled()
+                            val cdAscendingTitle =
+                                stringResource(R.string.ascending_title_double_tap_to_sort_by_ascending_title)
+                            val cdAscendingDate =
+                                stringResource(R.string.ascending_date_double_tap_to_sort_by_ascending_date)
+                            val cdDescendingDate =
+                                stringResource(R.string.descending_date_double_tap_to_sort_by_descending_date)
+                            val cdCloseSortMenu =
+                                stringResource(R.string.close_sort_menu_double_tap_to_close_the_menu)
                             DropdownMenuItem(
-                                text = { TextTitleSmall(text = "Ascending title") },
+                                text = { TextTitleSmall(text = stringResource(R.string.ascending_title)) },
+                                modifier = Modifier.cdButtonSemantics(cdAscendingTitle),
                                 onClick = { onSortByTitleClick() },
                             )
                             onSortByAscendingDateClick?.let { DropdownMenuItem(
-                                text = { TextTitleSmall(text = "Ascending date") },
+                                text = { TextTitleSmall(text = stringResource(R.string.ascending_date)) },
+                                modifier = Modifier.cdButtonSemantics(cdAscendingDate),
                                 onClick = { onSortByAscendingDateClick() },
                             )}
                             onSortByDescendingDateClick?.let { DropdownMenuItem(
-                                text = { TextTitleSmall(text = "Descending date") },
+                                text = { TextTitleSmall(text = stringResource(R.string.descending_date)) },
+                                modifier = Modifier.cdButtonSemantics(cdDescendingDate),
                                 onClick = { onSortByDescendingDateClick() },
                             )}
+                            // Show "Close" ONLY for TalkBack users
+                            if (isTalkBackEnabled) {
+                                DropdownMenuItem(
+                                    text = { TextTitleSmall(text = stringResource(R.string.close_menu)) },
+                                    modifier = Modifier.cdButtonSemantics(cdCloseSortMenu),
+                                    onClick = { hideSortOptions() },
+                                )
+                            }
                         }
                     }
                     onMenuItem1Click?.let{
@@ -318,7 +363,7 @@ fun SharedScaffold(
                     FloatingActionButton(
                         onClick = { if (fabEnabled) onFabClick() },
                         modifier = fabModifier
-                            .semantics { contentDescription = fabContentDescription },
+                            .cdButtonSemantics(fabContentDescription),
                         shape = fabShape,
                         containerColor = fabContainerColor,
                         contentColor = fabContentColor,

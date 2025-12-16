@@ -1,7 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.add
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +29,8 @@ import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
@@ -37,7 +38,7 @@ import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.localshared.composables.SharedButton
 import com.oliviermarteaux.localshared.composables.SharedDateTextField
 import com.oliviermarteaux.localshared.composables.SharedScaffold
-import com.oliviermarteaux.localshared.composables.SharedTextField
+import com.oliviermarteaux.localshared.composables.SharedFilledTextField
 import com.oliviermarteaux.localshared.composables.SharedTimeTextField
 import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
@@ -59,8 +60,11 @@ fun AddScreen(
     navigateToCamera: ((String) -> Unit) -> Unit
 ) {
     with(addViewModel) {
+        val cdAddScreenTitle =
+            stringResource(R.string.creation_of_a_new_event_fill_in_the_event_data_and_validate_to_create_a_new_event)
         SharedScaffold(
             title = stringResource(R.string.creation_of_an_event),
+            screenContentDescription = cdAddScreenTitle,
             onBackClick = navigateBack
         ) { paddingValues ->
             Box(){
@@ -159,7 +163,7 @@ fun AddScreenTextForm(
 ){
     with(post) {
         //_ Event title
-        SharedTextField(
+        SharedFilledTextField(
             value = title,
             onValueChange = { updatePostTitle(it) },
             label = stringResource(R.string.new_event),
@@ -170,7 +174,7 @@ fun AddScreenTextForm(
         )
 
         //_ Event description
-        SharedTextField(
+        SharedFilledTextField(
             value = description,
             onValueChange = { updatePostDescription(it) },
             label = stringResource(R.string.tap_here_to_enter_your_description),
@@ -199,14 +203,14 @@ fun AddScreenTextForm(
         }
 
         //_ address
-        SharedTextField(
+        SharedFilledTextField(
             value = address.street,
             onValueChange = { updatePostAddress(it) },
             label = stringResource(R.string.address),
             placeholder = stringResource(R.string.enter_full_address),
             textFieldModifier = Modifier.fillMaxWidth(),
             isError = address.street.isEmpty(),
-            errorText = "Please enter an address",
+            errorText = stringResource(R.string.please_enter_an_address),
             bottomPadding = SharedPadding.xxl,
             imeAction = ImeAction.Done
         )
@@ -229,6 +233,8 @@ fun AddScreenPhotoPickButtonsCard(
 
 @Composable
 fun LocalePhotoPickButton(onClick: (String) -> Unit) {
+    val cdLocalePhotoButton =
+        stringResource(R.string.locale_photo_button_click_here_to_pick_a_photo_from_your_device)
     // Get the ImagePicker launcher
     val imagePickerLauncher = sharedImagePicker { onClick(it.toString()) }
     SharedIconButton(
@@ -236,7 +242,11 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
         shape = MaterialTheme.shapes.large,
         tint = White,
         colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red),
-        modifier = Modifier.size(SharedSize.medium)
+        modifier = Modifier
+            .size(SharedSize.medium)
+            .semantics() {
+                contentDescription = cdLocalePhotoButton
+            }
     ) {
         imagePickerLauncher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
     }
@@ -244,13 +254,18 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
 
 @Composable
 fun CameraPhotoPickButton(onClick: () -> Unit) {
+    val cdCameraButton = stringResource(R.string.camera_button_click_here_to_take_a_photo)
     SharedIconButton(
         icon = IconSource.VectorIcon(Icons.Outlined.CameraAlt),
         shape = MaterialTheme.shapes.large,
         tint = Black,
         colors = IconButtonDefaults.iconButtonColors(containerColor = White),
         onClick = onClick,
-        modifier = Modifier.size(SharedSize.medium)
+        modifier = Modifier
+            .size(SharedSize.medium)
+            .semantics() {
+                contentDescription = cdCameraButton
+            }
     )
 }
 

@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -92,9 +93,9 @@ import androidx.compose.ui.unit.sp
  * @see KeyboardType
  */
 @Composable
-fun SharedTextField(
+fun SharedTextFieldValue(
     //_ text field params
-    value: String,
+    value: TextFieldValue,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -126,7 +127,7 @@ fun SharedTextField(
     imeAction: ImeAction = ImeAction.Next,
     keyboardType: KeyboardType = KeyboardType.Text,
     //_ on value change
-    onValueChange: (String) -> Unit = {},
+    onValueChange: (TextFieldValue) -> Unit = {},
 ){
     TextField(
         value = value,

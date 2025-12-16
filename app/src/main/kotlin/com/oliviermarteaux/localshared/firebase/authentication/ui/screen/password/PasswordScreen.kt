@@ -22,12 +22,13 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.composables.IconScaffold
 import com.oliviermarteaux.shared.composables.IconSource
-import com.oliviermarteaux.shared.composables.SharedButton
+import com.oliviermarteaux.localshared.composables.SharedButton
 import com.oliviermarteaux.shared.composables.SharedOutlinedPassword
-import com.oliviermarteaux.shared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.localshared.composables.ImageScaffold
+import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
 
 /**
  * A screen for entering a password to sign in.
@@ -123,15 +124,28 @@ private fun PasswordBody(
         )
         Spacer(modifier = Modifier.height(SharedPadding.medium))
 
+        val textTroubleSignIn = stringResource(R.string.trouble_signing_in)
+        val cdTroubleSignIn = stringResource(
+            R.string.button_double_tap_to_open_the_password_reset_screen,
+            textTroubleSignIn
+        )
         SharedButton(
-            text = stringResource(R.string.trouble_signing_in),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp)
+            text = textTroubleSignIn,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 60.dp)
+                .cdButtonSemantics(cdTroubleSignIn)
         ){ navigateToPasswordResetScreen(email) }
         Spacer(modifier = Modifier.height(SharedPadding.medium))
 
+        val textSignIn = stringResource(R.string.sign_in)
+        val cdSignIn = stringResource(R.string.button_double_tap_to_sign_in, textSignIn)
         SharedButton(
-            text = stringResource(R.string.sign_in),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp)
+            text = textSignIn,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 60.dp)
+                .cdButtonSemantics(cdSignIn)
             ){ signIn(password) { navigateToHomeScreen() } }
     }
 }

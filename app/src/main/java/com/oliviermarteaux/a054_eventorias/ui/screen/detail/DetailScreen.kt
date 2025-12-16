@@ -28,9 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.apikeys.GOOGLE_MAPS_API_KEY
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.composables.StaticGoogleMap
@@ -49,9 +51,14 @@ fun DetailScreen(
     postViewModel: PostViewModel
 ) {
     with(postViewModel) {
+        val cdDetailScreenTitle = stringResource(
+            R.string.details_for_the_event_here_you_can_access_event_date_time_description_and_address,
+            post.title
+        )
         SharedScaffold(
             title = post.title,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            screenContentDescription = cdDetailScreenTitle
         ) { paddingValues ->
             DetailBody(
                 paddingValues = paddingValues,
@@ -125,12 +132,14 @@ fun DetailImageCard(
     post: Post,
     modifier: Modifier = Modifier
 ) {
+    val cdEventPhoto = stringResource(R.string.picture_of_the_event)
     SharedAsyncImage(
         photoUri = post.photoUrl,
         modifier = modifier
             .aspectRatio(1f)
             .clip(MaterialTheme.shapes.medium),
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Crop,
+        contentDescription = cdEventPhoto
     )
 }
 
@@ -139,7 +148,9 @@ fun DetailScheduleAndAuthorCard(post: Post) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth().height(60.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
     ) {
         Column (
             verticalArrangement = Arrangement.SpaceBetween,
@@ -169,9 +180,14 @@ fun DetailScheduleAndAuthorCard(post: Post) {
                 )
             }
         }
+        val cdAuthorPhoto = stringResource(R.string.posted_by, post.author?.fullname?:"")
         SharedAsyncImage(
             photoUri = post.author?.photoUrl,
-            modifier = Modifier.clip(CircleShape).fillMaxHeight().aspectRatio(1f)
+            contentDescription = cdAuthorPhoto,
+            modifier = Modifier
+                .clip(CircleShape)
+                .fillMaxHeight()
+                .aspectRatio(1f)
         )
     }
 }
@@ -203,8 +219,8 @@ fun DetailAddressCard(post: Post) {
             zoom = 16,
             mapApiKey = GOOGLE_MAPS_API_KEY,
             modifier = Modifier
-                .weight(2/5f)
-                .aspectRatio(149/72f)
+                .weight(2 / 5f)
+                .aspectRatio(149 / 72f)
                 .clip(MaterialTheme.shapes.medium)
         )
 //            SharedGoogleMapFromCoords(

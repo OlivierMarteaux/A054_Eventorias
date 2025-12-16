@@ -1,59 +1,38 @@
 package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login
 
-import android.R.attr.onClick
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.google.common.math.LinearTransformation.horizontal
-import com.oliviermarteaux.localshared.firebase.authentication.domain.model.NewUser
-import com.oliviermarteaux.shared.ui.theme.SharedPadding
-import com.oliviermarteaux.shared.composables.IconSource
-import com.oliviermarteaux.shared.composables.SharedButton
-import com.oliviermarteaux.shared.composables.SharedOutlinedEmail
-import com.oliviermarteaux.shared.composables.SharedOutlinedPassword
-import com.oliviermarteaux.shared.composables.SharedOutlinedTextField
-import com.oliviermarteaux.shared.composables.SharedScaffold
-import com.oliviermarteaux.shared.composables.SharedToast
-import com.oliviermarteaux.shared.extensions.isValidEmail
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.localshared.composables.ImageScaffold
-import com.oliviermarteaux.shared.composables.IconScaffold
+import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.localshared.firebase.authentication.domain.model.NewUser
+import com.oliviermarteaux.shared.composables.SharedButton
+import com.oliviermarteaux.localshared.composables.SharedOutlinedEmail
+import com.oliviermarteaux.shared.composables.SharedOutlinedPassword
+import com.oliviermarteaux.shared.composables.SharedOutlinedTextField
+import com.oliviermarteaux.shared.composables.SharedToast
+import com.oliviermarteaux.shared.extensions.isValidEmail
+import com.oliviermarteaux.shared.ui.theme.SharedPadding
 
 /**
  * A screen for logging in or creating an account.
@@ -168,8 +147,9 @@ private fun LoginBody(
             onValueChange = { onEmailChange(it) },
             label = stringResource(R.string.email),
             imeAction = ImeAction.Done,
-            modifier = Modifier.fillMaxWidth(),
+            textFieldModifier = Modifier.fillMaxWidth(),
             bottomPadding = SharedPadding.xl,
+            isError = newUser.email.isEmpty() || !newUser.email.isValidEmail(),
             errorText = when {
                 newUser.email.isEmpty() -> stringResource(R.string.enter_your_email_address_to_continue)
                 !newUser.email.isValidEmail() -> stringResource(R.string.incorrect_email_address)

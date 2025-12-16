@@ -1,7 +1,9 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
+import android.R.attr.text
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,35 +18,42 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.PriorityHigh
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CollectionInfo
+import androidx.compose.ui.semantics.CollectionItemInfo
+import androidx.compose.ui.semantics.collectionInfo
+import androidx.compose.ui.semantics.collectionItemInfo
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.google.common.math.LinearTransformation.horizontal
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
@@ -53,7 +62,6 @@ import com.oliviermarteaux.localshared.composables.SharedButton
 import com.oliviermarteaux.localshared.composables.SharedIcon
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.composables.spacer.SpacerLarge
-import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.localshared.ui.navigation.Screen
@@ -67,6 +75,7 @@ import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.composables.texts.TextTitleMedium
 import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
 import com.oliviermarteaux.shared.ui.ListUiState
+import kotlinx.coroutines.delay
 
 /**
  * A screen that displays a feed of posts.
@@ -86,26 +95,55 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
     postViewModel: PostViewModel,
-    navigateToDetailScreen: (/*Post*/) -> Unit = {},
+    navigateToDetailScreen: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     navigateToLoginScreen: () -> Unit = {},
     navigateToAccountScreen: () -> Unit = {},
     navigateToAddScreen: () -> Unit = {}
 ) {
-    val context = LocalContext.current
     with(homeViewModel) {
         with (postViewModel) {
+
+            var searchBarDisplayed by rememberSaveable { mutableStateOf(false) }
+            fun toggleSearchBar(){ searchBarDisplayed = !searchBarDisplayed }
+            fun hideSearchBar(){ searchBarDisplayed = false }
+
+            var fabDisplayed by rememberSaveable { mutableStateOf(false) }
+            fun showFab(){ fabDisplayed = true }
+            fun hideFab(){ fabDisplayed = false }
+
+            val onSearchFocusRequester = remember{ FocusRequester() }
+            var searchResultFocused by mutableStateOf(false)
+            fun focusOnSearchResult(){
+                Log.d("OM_TAG", "HomeScreen: focusOnSearchResult")
+                searchResultFocused = !searchResultFocused
+            }
+            LaunchedEffect(searchResultFocused) {
+                delay(1000)
+                Log.d("OM_TAG", "HomeScreen: LaunchedEffect: searchResultFocused = $searchResultFocused" )
+                onSearchFocusRequester.requestFocus()
+            }
+
+            val cdHomeScreen =
+                stringResource(R.string.you_are_on_the_home_screen_here_you_can_browse_all_the_incoming_events)
+            val cdFabButton = stringResource(R.string.add_button_double_tap_to_add_a_new_event)
+            val cdCustomAccessibilityActionClear = stringResource(R.string.clear_all_text)
+
             SharedScaffold(
                 title = stringResource(Screen.Home.titleRes),
+                screenContentDescription = cdHomeScreen,
                 // top app bar
                 topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
                 // search bar
-                onSearchIconClick = ::showSearchBar,
-                isSearchVisible = searchBarVisible,
-                query = query,
-                onQueryChange = { updateQuery(it); filterPosts(query) },
-                onSearchBarIconClick = { clearQuery(); hideSearchBar() },
-//                searchBarModifier = Modifier.padding(horizontal = SharedPadding.xs),
+                query = queryFieldValue,
+                onQueryChange = ::filterPosts,
+                searchLabel = stringResource(R.string.look_for_an_event),
+                searchBarIcon = IconSource.VectorIcon(Icons.Default.Clear),
+                searchBarIconSemantics = cdCustomAccessibilityActionClear,
+                onSearchBarIconClick = ::clearQuery,
+                toggleSearchBar = ::toggleSearchBar,
+                searchBarDisplayed = searchBarDisplayed,
+                onSearch = { focusOnSearchResult() },
                 // sort menu
                 onSortByTitleClick = { sortPostsBy(SortOption.TITLE) },
                 onSortByAscendingDateClick = { sortPostsBy(SortOption.DATE_ASCENDING) },
@@ -113,12 +151,13 @@ fun HomeScreen(
                 // bottom app bar
                 bottomBar = { SharedBottomAppBar(navController) },
                 // fab button
-                fabVisible = fabVisible,
+                fabVisible = fabDisplayed,
+                fabContentDescription = cdFabButton,
                 onFabClick = {
                     // for initial posts populating purpose
 //                uploadSamplePosts(context)
                     checkUserState(
-                        onUserLogged = navigateToAddScreen,
+                        onUserLogged = { hideSearchBar(); navigateToAddScreen() },
                         onNoUserLogged = ::showAuthErrorToast
                     )
                 }
@@ -129,12 +168,29 @@ fun HomeScreen(
                         "HomeFeedViewModel: LaunchedEffect: homeFeedUiState = $homeUiState"
                     )
                 }
-                Box {
+                Box(
+                    modifier = Modifier
+                ) {
                     //_ UiState management: Empty, Error, Loading, Success
+                    val cdLoadingState =
+                        stringResource(R.string.please_wait_server_connection_in_progress)
                     when (homeUiState) {
-                        is ListUiState.Loading -> CenteredCircularProgressIndicator()
-                        is ListUiState.Empty -> SharedToast(stringResource(R.string.no_posts))
+                        is ListUiState.Loading -> {
+                            hideFab()
+                            CenteredCircularProgressIndicator(
+                                modifier = Modifier.semantics(
+                                    properties = {
+                                        contentDescription = cdLoadingState
+                                    }
+                                )
+                            )
+                        }
+                        is ListUiState.Empty -> {
+                            showFab()
+                            SharedToast(stringResource(R.string.no_posts))
+                        }
                         is ListUiState.Error -> {
+                            hideFab()
                             ErrorScreen(
                                 modifier = modifier,
                                 contentPadding = contentPadding,
@@ -143,22 +199,19 @@ fun HomeScreen(
                         }
 
                         is ListUiState.Success -> {
+                            showFab()
                             HomeFeedList(
                                 modifier = modifier
+                                    .focusRequester(onSearchFocusRequester)
+                                    .focusable()
                                     .consumeWindowInsets(contentPadding)   // 👈 prevents double padding,
                                     .fillMaxWidth()
                                     .padding(contentPadding)
                                     .padding(horizontal = SharedPadding.large),
-                                posts = filteredPosts, //(homeUiState as ListUiState.Success<Post>).data,
+                                posts = filteredPosts,
                                 navigateToDetailScreen = navigateToDetailScreen,
-                                searchBarVisible = searchBarVisible,
-                                query = query,
-                                updateQuery = { updateQuery(it) },
-                                filterPosts = { filterPosts(it) },
-                                clearQuery = { clearQuery() },
-                                hideSearchBar = ::hideSearchBar,
-                                selectPost = ::selectPost
-
+                                selectPost = ::selectPost,
+                                hideSearchBar = ::hideSearchBar
                             )
                         }
                     }
@@ -187,24 +240,29 @@ fun HomeScreen(
 private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
-    navigateToDetailScreen: (/*Post*/) -> Unit,
-    searchBarVisible: Boolean = false,
-    query: String = "",
-    updateQuery: (String) -> Unit,
-    filterPosts: (String) -> Unit,
-    clearQuery: () -> Unit,
-    hideSearchBar: () -> Unit,
-    selectPost: (Post) -> Unit
+    navigateToDetailScreen: () -> Unit,
+    selectPost: (Post) -> Unit,
+    hideSearchBar: () -> Unit
 ) {
     Column (modifier = modifier ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(SharedPadding.xs),
+            modifier = Modifier.semantics{
+                collectionInfo = CollectionInfo(
+                    rowCount = posts.size,
+                    columnCount = 1
+                )
+            }
         ) {
-            items(posts) { post ->
+            itemsIndexed(posts) { index, post ->
                 HomeFeedCell(
                     post = post,
                     navigateToDetailScreen = navigateToDetailScreen,
-                    selectPost = selectPost
+                    selectPost = selectPost,
+                    hideSearchBar = hideSearchBar,
+                    modifier = Modifier.semantics {
+                        collectionItemInfo = CollectionItemInfo(index, 1, 0, 1)
+                    }
                 )
             }
         }
@@ -215,22 +273,24 @@ private fun HomeFeedList(
  * A composable that displays a single post in the home feed.
  *
  * @param post The post to display.
- * @param onPostClick A function to call when the post is clicked.
  */
 @Composable
 private fun HomeFeedCell(
     post: Post,
-    navigateToDetailScreen: (/*Post*/) -> Unit,
-    selectPost: (Post) -> Unit
+    navigateToDetailScreen: () -> Unit,
+    selectPost: (Post) -> Unit,
+    hideSearchBar: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     ElevatedCard(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(80.dp),
         onClick = {
+            hideSearchBar()
             selectPost(post)
-            navigateToDetailScreen(/*post*/)
+            navigateToDetailScreen()
         }
     ) {
         Row (

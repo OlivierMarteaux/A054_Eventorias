@@ -1,9 +1,6 @@
 package com.oliviermarteaux.localshared.composables
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
@@ -19,6 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.error
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -26,7 +31,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.oliviermarteaux.a054_eventorias.R
 
 /**
  * A reusable text field with support for labels, icons, error handling, and
@@ -92,10 +97,11 @@ import androidx.compose.ui.unit.sp
  * @see KeyboardType
  */
 @Composable
-fun SharedTextField(
-    //_ text field params
+fun SharedFilledTextField(
+    /*text field params*/
     value: String,
     modifier: Modifier = Modifier,
+    textFieldModifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -105,7 +111,7 @@ fun SharedTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     prefix: @Composable (() -> Unit)? = null,
     suffix: @Composable (() -> Unit)? = null,
-    supportingText: String  = "",
+    supportingText: String ?  = null,
     isError: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -118,42 +124,58 @@ fun SharedTextField(
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,
-        errorIndicatorColor = Color.Transparent,
-        focusedContainerColor = Color.Transparent,
-        unfocusedContainerColor = Color.Transparent,
-        disabledContainerColor = Color.Transparent,
+        errorIndicatorColor = Color.Transparent
     ),
     imeAction: ImeAction = ImeAction.Next,
     keyboardType: KeyboardType = KeyboardType.Text,
-    //_ on value change
+    /* icon params */
+    icon: ImageVector? = null,
+    iconModifier: Modifier = Modifier,
+    contentDescription: String? = null,
+    tint: Color = LocalContentColor.current,
+    bottomPadding: Dp = 0.dp,
+    errorText: String? = null,
+    /*on value change*/
     onValueChange: (String) -> Unit = {},
 ){
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier,
-        enabled = enabled,
-        readOnly = readOnly,
-        textStyle = textStyle.copy(textAlign = TextAlign.Start),
-        label = { Text(label) },
-        placeholder = { Text(placeholder)},
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        prefix = prefix,
-        suffix = suffix,
-        supportingText = { Text(supportingText) },
+    SupportingText(
+        supportingText = supportingText,
+        errorText = errorText,
         isError = isError,
-        visualTransformation = visualTransformation,
-        keyboardActions = keyboardActions,
-        singleLine = singleLine,
-        maxLines = maxLines,
-        minLines = minLines,
-        interactionSource = interactionSource,
-        shape = shape,
-        colors = colors,
-        keyboardOptions = KeyboardOptions(
-            imeAction = imeAction,
-            keyboardType = keyboardType
-        ),
-    )
+        bottomPadding = bottomPadding,
+        modifier = modifier
+    ) {
+        TextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = textFieldModifier.semantics(){
+                if (isError) {
+                    this.error(errorText?:"")
+                }
+            },
+            enabled = enabled,
+            readOnly = readOnly,
+            textStyle = textStyle.copy(textAlign = TextAlign.Start),
+            label = { Text(label) },
+            placeholder = { Text(placeholder)},
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon,
+            prefix = prefix,
+            suffix = suffix,
+            supportingText = null,
+            isError = isError,
+            visualTransformation = visualTransformation,
+            keyboardActions = keyboardActions,
+            singleLine = singleLine,
+            maxLines = maxLines,
+            minLines = minLines,
+            interactionSource = interactionSource,
+            shape = shape,
+            colors = colors,
+            keyboardOptions = KeyboardOptions(
+                imeAction = imeAction,
+                keyboardType = keyboardType
+            ),
+        )
+    }
 }

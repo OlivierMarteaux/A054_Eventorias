@@ -87,4 +87,6 @@
     <string name="please_enter_a_date">Veuillez saisir une date</string>
     <string name="please_enter_a_time">Veuillez saisir une heure</string>
     <string name="edit_box">Zone d\'édition. %1$s</string>
+    <string name="locale_photo_button_click_here_to_pick_a_photo_from_your_device">Bouton image locale. Appuyer deux fois pour choisir une image locale.</string>
+    <string name="camera_button_click_here_to_take_a_photo">Bouton appareil photo. Appuyer deux fois pour accéder à l\'appareil photo.</string>
 </resources>

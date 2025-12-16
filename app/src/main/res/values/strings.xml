@@ -88,4 +88,6 @@
     <string name="please_enter_a_date">Please enter a date</string>
     <string name="please_enter_a_time">Please enter a time</string>
     <string name="edit_box">Edit box. %1$s</string>
+    <string name="locale_photo_button_click_here_to_pick_a_photo_from_your_device">Locale photo button. Click here to pick a photo from your device.</string>
+    <string name="camera_button_click_here_to_take_a_photo">Camera button. Click here to take a photo.</string>
 </resources>

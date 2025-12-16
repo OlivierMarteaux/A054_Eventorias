@@ -29,6 +29,8 @@ import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
@@ -231,6 +233,8 @@ fun AddScreenPhotoPickButtonsCard(
 
 @Composable
 fun LocalePhotoPickButton(onClick: (String) -> Unit) {
+    val cdLocalePhotoButton =
+        stringResource(R.string.locale_photo_button_click_here_to_pick_a_photo_from_your_device)
     // Get the ImagePicker launcher
     val imagePickerLauncher = sharedImagePicker { onClick(it.toString()) }
     SharedIconButton(
@@ -238,7 +242,11 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
         shape = MaterialTheme.shapes.large,
         tint = White,
         colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red),
-        modifier = Modifier.size(SharedSize.medium)
+        modifier = Modifier
+            .size(SharedSize.medium)
+            .semantics() {
+                contentDescription = cdLocalePhotoButton
+            }
     ) {
         imagePickerLauncher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
     }
@@ -246,13 +254,18 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
 
 @Composable
 fun CameraPhotoPickButton(onClick: () -> Unit) {
+    val cdCameraButton = stringResource(R.string.camera_button_click_here_to_take_a_photo)
     SharedIconButton(
         icon = IconSource.VectorIcon(Icons.Outlined.CameraAlt),
         shape = MaterialTheme.shapes.large,
         tint = Black,
         colors = IconButtonDefaults.iconButtonColors(containerColor = White),
         onClick = onClick,
-        modifier = Modifier.size(SharedSize.medium)
+        modifier = Modifier
+            .size(SharedSize.medium)
+            .semantics() {
+                contentDescription = cdCameraButton
+            }
     )
 }
 

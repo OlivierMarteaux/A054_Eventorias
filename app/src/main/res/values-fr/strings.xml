@@ -86,4 +86,5 @@
     <string name="please_enter_an_address">Veuillez saisir une adresse</string>
     <string name="please_enter_a_date">Veuillez saisir une date</string>
     <string name="please_enter_a_time">Veuillez saisir une heure</string>
+    <string name="edit_box">Zone d\'édition. %1$s</string>
 </resources>

@@ -87,4 +87,5 @@
     <string name="please_enter_an_address">Please enter an address</string>
     <string name="please_enter_a_date">Please enter a date</string>
     <string name="please_enter_a_time">Please enter a time</string>
+    <string name="edit_box">Edit box. %1$s</string>
 </resources>

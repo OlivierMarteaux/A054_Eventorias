@@ -19,6 +19,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -143,14 +145,17 @@ fun SharedFilledTextField(
         bottomPadding = bottomPadding,
         modifier = modifier
     ) {
+        val cdTextField = stringResource(R.string.edit_box, label)
         val cdError = if (isError) stringResource(R.string.error_message, errorText?:"") else ""
         TextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = textFieldModifier.clearAndSetSemantics{
-                if (isError) {
-                    stateDescription = cdError
-                }
+            modifier = textFieldModifier.clearAndSetSemantics(){
+                this.contentDescription = cdTextField
+                this.error(errorText?:"")
+//                if (isError) {
+//                    stateDescription = cdError
+//                }
             },
             enabled = enabled,
             readOnly = readOnly,

@@ -146,6 +146,7 @@ dependencies {
     // Personal shared library
     implementation(libs.oliviermarteaux.compose)
     implementation(libs.oliviermarteaux.core)
+    implementation(libs.oliviermarteaux.test)
 
     // Base dependencies for compose app
     implementation(platform(libs.androidx.compose.bom))

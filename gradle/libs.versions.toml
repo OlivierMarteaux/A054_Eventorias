@@ -77,6 +77,7 @@ material-icons-extended = { module = "androidx.compose.material:material-icons-e
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 oliviermarteaux-compose = { module = "com.github.OlivierMarteaux.shared-android-library:compose", version.ref = "oliviermarteaux" }
 oliviermarteaux-core = { module = "com.github.OlivierMarteaux.shared-android-library:core", version.ref = "oliviermarteaux" }
+oliviermarteaux-test = { module = "com.github.OlivierMarteaux.shared-android-library:test", version.ref = "oliviermarteaux" }
 play-services-credentials = {module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials"}
 
 [plugins]

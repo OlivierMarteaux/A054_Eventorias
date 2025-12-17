@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 
 @Composable
-fun hideKeyboard() {
+fun HideKeyboard() {
     val keyboardController = LocalSoftwareKeyboardController.current
     keyboardController?.hide()
 }

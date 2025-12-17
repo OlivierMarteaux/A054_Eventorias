@@ -28,6 +28,7 @@ lifecycleRuntimeKtx = "2.9.4"
 materialIconsExtended = "1.7.8"
 mockitoKotlin = "5.4.0"
 oliviermarteaux = "3.6.1"
+mockkVersion = "1.13.5"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -79,6 +80,7 @@ oliviermarteaux-compose = { module = "com.github.OlivierMarteaux.shared-android-
 oliviermarteaux-core = { module = "com.github.OlivierMarteaux.shared-android-library:core", version.ref = "oliviermarteaux" }
 oliviermarteaux-test = { module = "com.github.OlivierMarteaux.shared-android-library:test", version.ref = "oliviermarteaux" }
 play-services-credentials = {module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials"}
+mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
 
 [plugins]
 #secrets-gradle = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets-gradle"}

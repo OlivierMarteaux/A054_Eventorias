@@ -207,6 +207,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test) // coroutine test (runTest)
     // Unit tests mocking
     testImplementation(libs.mockito.kotlin)// Mockito mocking framework
+    testImplementation(libs.mockk) // kotlin mocking framework
 
     //_ cucumber for UnitTests
     testImplementation(libs.cucumber.java)

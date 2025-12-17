@@ -47,8 +47,8 @@ android {
         manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
 
         // choose test runner
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        // testInstrumentationRunner = "com.kirabium.relayance.runner.MyCucumberTestRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.oliviermarteaux.a054_eventorias.test.MyCucumberTestRunner"
     }
 
     buildTypes {
@@ -74,6 +74,33 @@ android {
 
     buildFeatures {
         compose = true
+    }
+}
+
+//_ Ensure use an emulator for android tests
+tasks.register("ensureEmulator") {
+    doFirst {
+        val adbOutput = ProcessBuilder("adb", "devices")
+            .redirectErrorStream(true)
+            .start()
+            .inputStream
+            .bufferedReader()
+            .readText()
+
+        val connectedDevices = adbOutput.lines()
+            .filter { it.isNotBlank() && !it.startsWith("List") && it.contains("device") }
+
+        val emulators = connectedDevices.filter { it.startsWith("emulator-") }
+
+        if (emulators.isEmpty()) {
+            throw GradleException("❌ No emulator detected. Please start one before running tests.")
+        }
+
+        if (connectedDevices.size > emulators.size) {
+            throw GradleException("⚠️ Physical device(s) detected. Disconnect them to run tests only on emulator.")
+        }
+
+        println("✅ Emulator detected (${emulators.joinToString()}). Proceeding with tests.")
     }
 }
 

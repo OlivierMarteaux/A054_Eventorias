@@ -7,6 +7,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
+import com.oliviermarteaux.localshared.firebase.authentication.domain.mapper.toUser
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.localshared.firebase.messaging.SharedMessagingService
@@ -17,6 +18,8 @@ import com.oliviermarteaux.shared.utils.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -70,14 +73,31 @@ class AccountViewModel @Inject constructor(
     private fun getCurrentUser(){
         viewModelScope.launch {
 //            delay(1500) // for test
-            snapshotFlow { currentUser }
+            /* fixed: snapshotFlow only emits when a Compose snapshot is applied.
+                then it cannot be tested thru Unit Test.
+                ==> Use Flow.map.collect instead.
+             */
+//            snapshotFlow { currentUser }
+//                .collect { currentUser ->
+//                    try {
+//                        userUiState = UiState.Success(currentUser!!)
+//                        user = currentUser
+//                        log.d("AccountViewModel: user updated to ${currentUser.email}")
+//                    } catch (e: Exception){
+//                        userUiState = UiState.Error(e)
+//                    }
+//                }
+            userRepository.userAuthState
+                .map { it?.toUser() }
+//                .filterNotNull()
                 .collect { currentUser ->
-                    try {
-                        userUiState = UiState.Success(currentUser!!)
-                        user = currentUser
+                    if (currentUser != null) {
+                        userUiState = UiState.Success(currentUser)
+                        this@AccountViewModel.user = currentUser
                         log.d("AccountViewModel: user updated to ${currentUser.email}")
-                    } catch (e: Exception){
-                        userUiState = UiState.Error(e)
+                    } else {
+                        userUiState = UiState.Error(Throwable("No user logged in"))
+                        log.d("AccountViewModel: no user logged in")
                     }
                 }
         }

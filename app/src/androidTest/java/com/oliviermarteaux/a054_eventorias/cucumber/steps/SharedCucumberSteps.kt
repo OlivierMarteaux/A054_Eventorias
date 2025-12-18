@@ -18,10 +18,15 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
     private val composeRule = composeRuleHolder.composeRule
 
     @When("I click on the {string} FAB button")
-    @When("I click on the {string} button")
-    fun iClickOnButton(fabLabel: String) {
+    fun iClickOnFabButton(fabLabel: String) {
         // Use contentDescription or tag for your FABs
         composeRule.onNodeWithContentDescription(fabLabel).performClick()
+    }
+
+    @When("I click on the {string} button")
+    fun iClickOnButton(text: String) {
+        // Use contentDescription or tag for your FABs
+        composeRule.onNodeWithText(text = text, useUnmergedTree = true).performClick()
     }
 
     @When("I click on the {string} card")

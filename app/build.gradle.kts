@@ -1,4 +1,5 @@
 import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import java.util.Properties
 
 plugins {
@@ -207,7 +208,6 @@ dependencies {
 
     //_ hilt for DI
     implementation(libs.hilt)
-
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 

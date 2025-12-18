@@ -12,7 +12,9 @@ import com.oliviermarteaux.shared.composables.startup.DismissKeyboardOnTapOutsid
 import com.oliviermarteaux.localshared.composables.startup.RequestNotificationPermission
 
 @Composable
-fun EventoriasApp(){
+fun EventoriasApp(
+    startDestination: String = Screen.Splash.route
+){
 
     val navController = rememberNavController()
 
@@ -24,7 +26,7 @@ fun EventoriasApp(){
         DismissKeyboardOnTapOutside {
             SharedNavGraph(
                 navHostController = navController,
-                startDestination = Screen.Splash.route,
+                startDestination = startDestination,
                 logoRes = R.drawable.eventorias_logo
             )
         }

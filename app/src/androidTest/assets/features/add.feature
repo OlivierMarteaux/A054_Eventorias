@@ -26,6 +26,7 @@ Feature: Add a new event
     And I pick the first photo from the photo library
     And I click on the "Validate" button
     Then I should arrive on the Home Screen
+#    And Newly created event should be on the top of the list
 
 #  Scenario: Cannot add new customer when name field is empty
 #    Given I am on the Add screen

@@ -35,6 +35,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.localshared.composables.SharedButton
 import com.oliviermarteaux.localshared.composables.SharedDateTextField
@@ -149,7 +150,8 @@ fun AddScreenBody(
             SpacerXl()
 
             AddScreenSaveButton(
-                onClick = addPost
+                onClick = addPost,
+                post = post
             )
         }
     }
@@ -285,6 +287,7 @@ fun AddScreenImagePreview(photoUrl: String){
 
 @Composable
 fun AddScreenSaveButton(
+    post: Post,
     onClick: () -> Unit
 ){
     SharedButton(
@@ -294,7 +297,18 @@ fun AddScreenSaveButton(
         modifier = Modifier
             .fillMaxWidth()
             .height(SharedSize.medium),
-        colors = ButtonDefaults.buttonColors(containerColor = Red40),
-        textColor = White
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Red40,
+            disabledContainerColor = Grey40,
+        ),
+        textColor = White,
+        enabled = (
+                post.title.isNotEmpty()
+                        && post.description.isNotEmpty()
+                        && post.localeDateString.isNotEmpty()
+                        && post.localeTimeString.isNotEmpty()
+                        && post.address.street.isNotEmpty()
+                        && !post.photoUrl.isNullOrEmpty()
+                ),
     )
 }

@@ -19,6 +19,7 @@ import java.util.Calendar
 fun SharedDateTextField(
     date: String,
     modifier: Modifier = Modifier,
+    textFieldModifier: Modifier = Modifier,
     onDateChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
@@ -40,7 +41,7 @@ fun SharedDateTextField(
         label = stringResource(R.string.date),
         placeholder = stringResource(R.string.mm_dd_yyyy),
         modifier = modifier,
-        textFieldModifier = Modifier
+        textFieldModifier = textFieldModifier
             .fillMaxWidth()
             .clickable { datePickerDialog.show() },
         isError = date.isEmpty(),

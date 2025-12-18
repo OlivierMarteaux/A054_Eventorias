@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -70,6 +71,7 @@ fun AddScreen(
             Box(){
                 AddScreenBody(
                     post = post,
+                    modifier = Modifier.testTag("Add Screen"),
                     updatePostTitle = ::updatePostTitle,
                     updatePostDescription = ::updatePostDescription,
                     updatePostDate = ::updatePostDate,
@@ -98,6 +100,7 @@ fun AddScreen(
 @Composable
 fun AddScreenBody(
     post: Post,
+    modifier: Modifier = Modifier,
     updatePostTitle: (String) -> Unit,
     updatePostDescription: (String) -> Unit,
     updatePostDate: (String) -> Unit,
@@ -114,7 +117,7 @@ fun AddScreenBody(
     val isLandscape = orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(paddingValues)
             .padding(bottom = SharedPadding.xxl)
@@ -193,12 +196,14 @@ fun AddScreenTextForm(
                 date = localeDateString,
                 onDateChange = { updatePostDate(it) },
                 modifier = Modifier.weight(weight = 1f, fill = true),
+                textFieldModifier = Modifier.testTag("Date")
             )
             //_ time
             SharedTimeTextField(
                 time = localeTimeString,
                 onTimeChange = { updatePostTime(it) },
                 modifier = Modifier.weight(weight = 1f, fill = true),
+                textFieldModifier = Modifier.testTag("Time")
             )
         }
 

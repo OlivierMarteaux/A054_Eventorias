@@ -243,9 +243,16 @@ dependencies {
 
     // Android Tests
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+
+    // espresso is used only for date and time pickers interaction in cucumber tests
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1") {
+        exclude(group = "com.google.protobuf")
+        exclude(group = "androidx.recyclerview")
+        exclude(group = "androidx.drawerlayout")
+    }
 
     //_ cucumber for AndroidTests
     androidTestImplementation(libs.cucumber.android)

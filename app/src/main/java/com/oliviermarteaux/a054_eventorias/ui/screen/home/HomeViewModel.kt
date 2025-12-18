@@ -102,7 +102,7 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        setAuthObserverDelay(2000)
+        setAuthObserverDelay(200)
 //    throw RuntimeException("Test Crash") // Force a crash
         log.d("HomeFeedViewModel: init")
 

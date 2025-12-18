@@ -1,21 +1,25 @@
 package com.oliviermarteaux.a054_eventorias.cucumber.steps
 
+import android.widget.TimePicker
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasClickAction
-import androidx.compose.ui.test.hasContentDescription
-import androidx.compose.ui.test.isDisplayed
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.printToLog
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.contrib.PickerActions
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.oliviermarteaux.a054_eventorias.di.ComposeRuleHolder
 import io.cucumber.java.en.And
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
+import kotlin.jvm.java
+import org.hamcrest.Matchers.`is`
 
 //_ This class requires picocontainer to inject dependency
 class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
@@ -25,7 +29,8 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
     @When("I click on the {string} FAB button")
     fun iClickOnFabButton(fabLabel: String) {
         // Use contentDescription or tag for your FABs
-        composeRule.onNodeWithContentDescription(fabLabel).performClick()
+        Thread.sleep(300)
+        composeRule.onNodeWithTag(fabLabel).performClick()
     }
 
     @When("I click on the {string} button")
@@ -64,5 +69,41 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
 //        composeRule
 //            .onRoot(useUnmergedTree = true)
 //            .printToLog("SEMANTICS")
+    }
+    @When("I select {string} in the Date field")
+    fun selectDate(date: String) {
+        // Split date string "dd/MM/yyyy"
+        val (day, month, year) = date.split("/").map { it.toInt() }
+
+        // Click the date field to open DatePickerDialog
+        composeRule.onNodeWithText("Date", useUnmergedTree = true).performClick()
+
+        // Use Espresso to set the date in the dialog
+        onView(withClassName(`is`(android.widget.DatePicker::class.java.name)))
+            .inRoot(isDialog())
+            .perform(PickerActions.setDate(year, month, day))
+
+        // Click OK button
+        onView(withText("OK"))
+            .inRoot(isDialog())
+            .perform(click())
+    }
+    @When("I select {string} in the Time field")
+    fun selectTime(time: String) {
+        // Split time string "HH:mm"
+        val (hour, minute) = time.split(":").map { it.toInt() }
+
+        // Click the time field to open TimePickerDialog
+        composeRule.onNodeWithText("Time", useUnmergedTree = true).performClick()
+
+        // Use Espresso to set the time
+        onView(withClassName(`is`(TimePicker::class.java.name)))
+            .inRoot(isDialog())
+            .perform(PickerActions.setTime(hour, minute))
+
+        // Click OK button
+        onView(withText("OK"))
+            .inRoot(isDialog())
+            .perform(click())
     }
 }

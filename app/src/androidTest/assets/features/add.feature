@@ -19,10 +19,11 @@ Feature: Add a new event
   Scenario: Add a new customer successfully
     Given I am on the Add Screen
     When I enter "Christmas Tree" in the "New event" field
-    And I enter "Christmas tree decoration" in the "Tap here to enter your description" field
+    And I enter "Join us at the Eiffel Tower for a festive event, decorating Christmas trees with lights, ornaments, and holiday cheer." in the "Tap here to enter your description" field
     And I select "18/12/2025" in the Date field
     And I select "15:00" in the Time field
-    And I enter "example address" in the "Address" field
+    And I enter "Tour Eiffel, Champ de Mars, 5 Avenue Anatole France, 75007 Paris, France" in the "Address" field
+    And I pick the first photo from the photo library
     And I click on the "Validate" button
     Then I should arrive on the Home Screen
 

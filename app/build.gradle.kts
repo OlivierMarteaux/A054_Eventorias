@@ -254,6 +254,9 @@ dependencies {
         exclude(group = "androidx.drawerlayout")
     }
 
+    // uiautomator for image picking in cucumber test
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+
     //_ cucumber for AndroidTests
     androidTestImplementation(libs.cucumber.android)
     androidTestImplementation(libs.cucumber.junit)

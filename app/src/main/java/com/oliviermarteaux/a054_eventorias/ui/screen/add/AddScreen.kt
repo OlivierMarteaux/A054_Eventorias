@@ -248,6 +248,7 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
         tint = White,
         colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red),
         modifier = Modifier
+            .testTag("Locale Photo Button")
             .size(SharedSize.medium)
             .semantics() {
                 contentDescription = cdLocalePhotoButton

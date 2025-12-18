@@ -1,19 +1,27 @@
-Feature: Display the customer details
+Feature: Display the event details
   As a user on the Home screen,
-  I want to access to the customer details
+  I want to access to the event details
   So that I can see its detailed data
 
-  Background: Navigate to Add Screen
-    Given I am on the Home screen
+  Background: Navigate to Home Screen
+    Given I am on the Splash screen
+    When I click on the "Sign in with email" button
+    Then I should arrive on the Login Screen
+    When I enter "fievel.farwest@example.com" in the "Email" field
+    And I click on the "Next" button
+    Then I should arrive on the Password screen
+    When I enter "test123&" in the "Password" field
+    And I click on the "Sign in" button
+    Then I should arrive on the Home Screen
 
   Scenario Outline: Navigate to Detail Screen
     When I click on the "<name>" card
-    Then I should arrive on the "Detail" screen for the "customer" item named "<name>"
+    Then I should arrive on the "Detail" screen for the "event" item named "<name>"
 
     Examples:
-      | name               |
-      | Alice Wonderland   |
-      | Bob Builder        |
-      | Charlie Chocolate  |
-      | Diana Dream        |
-      | Evan Escape        |
+      | name                  |
+      | City Carnival         |
+      | Winter Light Festival |
+      | City Film Festival    |
+      | Science Festival      |
+      | Book Fair             |

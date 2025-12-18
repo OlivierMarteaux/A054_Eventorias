@@ -3,10 +3,15 @@ package com.oliviermarteaux.a054_eventorias.cucumber.steps
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.printToLog
 import com.oliviermarteaux.a054_eventorias.di.ComposeRuleHolder
 import io.cucumber.java.en.And
 import io.cucumber.java.en.Then
@@ -55,6 +60,9 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
 
     @Then("I should arrive on the {string} screen for the {string} item named {string}")
     fun iAmOnTheItemScreen(screen: String, item: String, itemName: String, ) {
-        composeRule.onNodeWithText(itemName).assertIsDisplayed()
+        composeRule.onNodeWithTag(itemName).assertIsDisplayed()
+//        composeRule
+//            .onRoot(useUnmergedTree = true)
+//            .printToLog("SEMANTICS")
     }
 }

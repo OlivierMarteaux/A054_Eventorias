@@ -14,7 +14,7 @@ import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUse
 import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostRepository
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Address
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
-import com.oliviermarteaux.shared.ui.UiState
+import com.oliviermarteaux.localshared.ui.UiState
 import com.oliviermarteaux.shared.utils.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

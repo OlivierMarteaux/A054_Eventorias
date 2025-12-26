@@ -81,12 +81,12 @@ data class Post(
 
     // Explicit no-arg constructor for Firebase deserialization --> needed for minification
     constructor() : this(
-        id = "",
+        id = UUID.randomUUID().toString(),
         title = "",
         description = "",
         photoUrl = "",
-        timestamp = 0L,
-        author = null,
+        timestamp = System.currentTimeMillis(),
+        author = User(),
         comments = emptyList(),
         date = null,
         time = null,

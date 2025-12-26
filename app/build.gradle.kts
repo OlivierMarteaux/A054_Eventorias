@@ -1,4 +1,5 @@
 import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import java.util.Properties
 
 plugins {
@@ -47,8 +48,8 @@ android {
         manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
 
         // choose test runner
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        // testInstrumentationRunner = "com.kirabium.relayance.runner.MyCucumberTestRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.oliviermarteaux.a054_eventorias.test.MyCucumberTestRunner"
     }
 
     buildTypes {
@@ -74,6 +75,33 @@ android {
 
     buildFeatures {
         compose = true
+    }
+}
+
+//_ Ensure use an emulator for android tests
+tasks.register("ensureEmulator") {
+    doFirst {
+        val adbOutput = ProcessBuilder("adb", "devices")
+            .redirectErrorStream(true)
+            .start()
+            .inputStream
+            .bufferedReader()
+            .readText()
+
+        val connectedDevices = adbOutput.lines()
+            .filter { it.isNotBlank() && !it.startsWith("List") && it.contains("device") }
+
+        val emulators = connectedDevices.filter { it.startsWith("emulator-") }
+
+        if (emulators.isEmpty()) {
+            throw GradleException("❌ No emulator detected. Please start one before running tests.")
+        }
+
+        if (connectedDevices.size > emulators.size) {
+            throw GradleException("⚠️ Physical device(s) detected. Disconnect them to run tests only on emulator.")
+        }
+
+        println("✅ Emulator detected (${emulators.joinToString()}). Proceeding with tests.")
     }
 }
 
@@ -105,6 +133,12 @@ val jacocoTestReport by tasks.registering(JacocoReport::class) {
     executionData.setFrom(fileTree(buildDir) {
         include("**/*.exec", "**/*.ec")
     })
+
+    doLast {
+        println()
+        println("JacocoTestReport terminated: Don't forget to delete test-created posts !")
+        println()
+    }
 }
 
 //_ The JacocoCoverageVerification task can be used to verify if code coverage metrics are met
@@ -146,6 +180,7 @@ dependencies {
     // Personal shared library
     implementation(libs.oliviermarteaux.compose)
     implementation(libs.oliviermarteaux.core)
+    implementation(libs.oliviermarteaux.test)
 
     // Base dependencies for compose app
     implementation(platform(libs.androidx.compose.bom))
@@ -179,7 +214,6 @@ dependencies {
 
     //_ hilt for DI
     implementation(libs.hilt)
-
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
@@ -203,6 +237,10 @@ dependencies {
 
     // Unit Tests
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test) // coroutine test (runTest)
+    // Unit tests mocking
+    testImplementation(libs.mockito.kotlin)// Mockito mocking framework
+    testImplementation(libs.mockk) // kotlin mocking framework
 
     //_ cucumber for UnitTests
     testImplementation(libs.cucumber.java)
@@ -211,9 +249,19 @@ dependencies {
 
     // Android Tests
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+
+    // espresso is used only for date and time pickers interaction in cucumber tests
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1") {
+        exclude(group = "com.google.protobuf")
+        exclude(group = "androidx.recyclerview")
+        exclude(group = "androidx.drawerlayout")
+    }
+
+    // uiautomator for image picking in cucumber test
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
 
     //_ cucumber for AndroidTests
     androidTestImplementation(libs.cucumber.android)

@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CollectionInfo
 import androidx.compose.ui.semantics.CollectionItemInfo
@@ -153,6 +154,7 @@ fun HomeScreen(
                 // fab button
                 fabVisible = fabDisplayed,
                 fabContentDescription = cdFabButton,
+                fabModifier = modifier.testTag("Add"),
                 onFabClick = {
                     // for initial posts populating purpose
 //                uploadSamplePosts(context)

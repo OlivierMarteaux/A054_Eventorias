@@ -26,7 +26,7 @@ import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.localshared.composables.ImageScaffold
 import com.oliviermarteaux.localshared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.NewUser
-import com.oliviermarteaux.shared.composables.SharedButton
+import com.oliviermarteaux.localshared.composables.SharedButton
 import com.oliviermarteaux.localshared.composables.SharedOutlinedEmail
 import com.oliviermarteaux.shared.composables.SharedOutlinedPassword
 import com.oliviermarteaux.shared.composables.SharedOutlinedTextField

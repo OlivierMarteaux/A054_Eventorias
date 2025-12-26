@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -58,12 +59,13 @@ fun DetailScreen(
         SharedScaffold(
             title = post.title,
             onBackClick = onBackClick,
-            screenContentDescription = cdDetailScreenTitle
+            screenContentDescription = cdDetailScreenTitle,
         ) { paddingValues ->
             DetailBody(
                 paddingValues = paddingValues,
                 post = post,
                 modifier = Modifier
+                    .testTag(post.title)
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(horizontal = SharedPadding.large)

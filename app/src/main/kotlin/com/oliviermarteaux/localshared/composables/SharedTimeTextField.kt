@@ -20,6 +20,7 @@ fun SharedTimeTextField(
     time: String,
     modifier: Modifier = Modifier,
     onTimeChange: (String) -> Unit,
+    textFieldModifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
@@ -40,7 +41,7 @@ fun SharedTimeTextField(
         label = stringResource(R.string.time),
         placeholder = stringResource(R.string.hh_mm),
         modifier = modifier,
-        textFieldModifier = Modifier
+        textFieldModifier = textFieldModifier
             .fillMaxWidth()
             .clickable { timePickerDialog.show() },
         isError = time.isEmpty(),

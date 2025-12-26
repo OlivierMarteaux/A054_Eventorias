@@ -28,12 +28,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
+import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.localshared.composables.SharedButton
 import com.oliviermarteaux.localshared.composables.SharedDateTextField
@@ -70,6 +72,7 @@ fun AddScreen(
             Box(){
                 AddScreenBody(
                     post = post,
+                    modifier = Modifier.testTag("Add Screen"),
                     updatePostTitle = ::updatePostTitle,
                     updatePostDescription = ::updatePostDescription,
                     updatePostDate = ::updatePostDate,
@@ -98,6 +101,7 @@ fun AddScreen(
 @Composable
 fun AddScreenBody(
     post: Post,
+    modifier: Modifier = Modifier,
     updatePostTitle: (String) -> Unit,
     updatePostDescription: (String) -> Unit,
     updatePostDate: (String) -> Unit,
@@ -114,7 +118,7 @@ fun AddScreenBody(
     val isLandscape = orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(paddingValues)
             .padding(bottom = SharedPadding.xxl)
@@ -146,7 +150,8 @@ fun AddScreenBody(
             SpacerXl()
 
             AddScreenSaveButton(
-                onClick = addPost
+                onClick = addPost,
+                post = post
             )
         }
     }
@@ -193,12 +198,14 @@ fun AddScreenTextForm(
                 date = localeDateString,
                 onDateChange = { updatePostDate(it) },
                 modifier = Modifier.weight(weight = 1f, fill = true),
+                textFieldModifier = Modifier.testTag("Date")
             )
             //_ time
             SharedTimeTextField(
                 time = localeTimeString,
                 onTimeChange = { updatePostTime(it) },
                 modifier = Modifier.weight(weight = 1f, fill = true),
+                textFieldModifier = Modifier.testTag("Time")
             )
         }
 
@@ -243,6 +250,7 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
         tint = White,
         colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red),
         modifier = Modifier
+            .testTag("Locale Photo Button")
             .size(SharedSize.medium)
             .semantics() {
                 contentDescription = cdLocalePhotoButton
@@ -279,6 +287,7 @@ fun AddScreenImagePreview(photoUrl: String){
 
 @Composable
 fun AddScreenSaveButton(
+    post: Post,
     onClick: () -> Unit
 ){
     SharedButton(
@@ -288,7 +297,18 @@ fun AddScreenSaveButton(
         modifier = Modifier
             .fillMaxWidth()
             .height(SharedSize.medium),
-        colors = ButtonDefaults.buttonColors(containerColor = Red40),
-        textColor = White
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Red40,
+            disabledContainerColor = Grey40,
+        ),
+        textColor = White,
+        enabled = (
+                post.title.isNotEmpty()
+                        && post.description.isNotEmpty()
+                        && post.localeDateString.isNotEmpty()
+                        && post.localeTimeString.isNotEmpty()
+                        && post.address.street.isNotEmpty()
+                        && !post.photoUrl.isNullOrEmpty()
+                ),
     )
 }

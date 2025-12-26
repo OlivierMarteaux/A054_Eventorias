@@ -20,7 +20,7 @@ class HomeSteps(private val composeRuleHolder: ComposeRuleHolder) {
 
         // Perform scroll action to verify it is scrollable
         composeRule.onNode(hasScrollAction()) // ensure scrollable container exists
-            .performScrollToIndex(4)           // scroll to a later item, e.g., 5th item
+            .performScrollToIndex(5)           // scroll to a later item, e.g., 5th item
 
         // Now verify the last event becomes visible
         composeRule.onNodeWithText("Farmers Market").assertIsDisplayed()

@@ -1,7 +1,6 @@
-Feature: Display the event details
+Feature: Display the user profile
   As a user on the Home screen,
-  I want to access to the event details
-  So that I can see its detailed data
+  I want to access to the user profile
 
   Background: Navigate to Home Screen
     Given I am on the Splash screen
@@ -14,11 +13,7 @@ Feature: Display the event details
     And I click on the "Sign in" button
     Then I should arrive on the Home Screen
 
-  Scenario Outline: Navigate to Detail Screen
-    When I click on the "<name>" card
-    Then I should arrive on the "Detail" screen for the "event" item named "<name>"
-
-    Examples:
-      | name                  |
-      | City Carnival         |
-      | Winter Light Festival |
+  Scenario: Navigate to Profile Screen
+    Given I am on the Home screen
+    When I click on the "Profile" button
+    Then I should arrive on the Profile Screen for the current user

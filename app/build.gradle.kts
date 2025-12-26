@@ -133,6 +133,12 @@ val jacocoTestReport by tasks.registering(JacocoReport::class) {
     executionData.setFrom(fileTree(buildDir) {
         include("**/*.exec", "**/*.ec")
     })
+
+    doLast {
+        println()
+        println("JacocoTestReport terminated: Don't forget to delete test-created posts !")
+        println()
+    }
 }
 
 //_ The JacocoCoverageVerification task can be used to verify if code coverage metrics are met

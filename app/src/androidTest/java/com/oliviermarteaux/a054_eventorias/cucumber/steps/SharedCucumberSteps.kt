@@ -1,6 +1,7 @@
 package com.oliviermarteaux.a054_eventorias.cucumber.steps
 
 import android.widget.TimePicker
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertTextContains
@@ -30,6 +31,7 @@ import io.cucumber.java.en.When
 import kotlin.jvm.java
 import org.hamcrest.Matchers.`is`
 import androidx.test.platform.app.InstrumentationRegistry
+import kotlin.text.get
 
 //_ This class requires picocontainer to inject dependency
 class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
@@ -65,6 +67,14 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
         composeRule.onNodeWithText(text).assertIsDisplayed()
         val itemsNodes = composeRule.onAllNodes(hasClickAction())
         val lastItemNode = itemsNodes[itemsNodes.fetchSemanticsNodes().size - 2]
+        lastItemNode.assertTextContains(text)
+    }
+
+    @And("I should see {string} added at the top of the {string} list")
+    fun iShouldSeeTextInFirstListItem(text: String, item: String){
+        composeRule.onNodeWithText(text).assertIsDisplayed()
+        val itemsNodes = composeRule.onAllNodes(hasClickAction())
+        val lastItemNode: SemanticsNodeInteraction = itemsNodes[0]
         lastItemNode.assertTextContains(text)
     }
 
@@ -126,7 +136,7 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
         // Wait for photo picker
         device.wait(
             Until.hasObject(By.pkg("com.android.providers.media")),
-            5_000
+            1_000
         )
 
         // Find the first photo in the picker. Using a content description is often reliable.

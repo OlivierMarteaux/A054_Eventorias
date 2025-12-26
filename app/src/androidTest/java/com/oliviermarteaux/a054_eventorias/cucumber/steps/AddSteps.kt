@@ -3,10 +3,13 @@ package com.oliviermarteaux.a054_eventorias.cucumber.steps
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.isDisplayed
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import com.oliviermarteaux.a054_eventorias.di.ComposeRuleHolder
+import io.cucumber.java.en.And
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 
@@ -21,5 +24,12 @@ class AddSteps(private val composeRuleHolder: ComposeRuleHolder) {
         composeRule.waitUntil(5000) {
             composeRule.onNodeWithTag("Add Screen").isDisplayed()
         }
+    }
+
+    @Then("I cannot click on the {string} button")
+    fun iCannotClickButton(buttonLabel:String){
+        composeRule.onNodeWithText(text = buttonLabel, useUnmergedTree = true).performClick()
+        // Assert that user does not go back to home screen
+        composeRule.onNodeWithTag("Add").assertDoesNotExist()
     }
 }

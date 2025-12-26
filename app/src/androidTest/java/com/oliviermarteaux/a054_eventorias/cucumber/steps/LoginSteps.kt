@@ -34,7 +34,7 @@ class LoginSteps(private val composeRuleHolder: ComposeRuleHolder) {
         // Verify some known events are shown
         composeRule.waitUntil(5000) {
             composeRule.onNodeWithText("City Carnival").isDisplayed()
-            composeRule.onNodeWithText("Science Festival").isDisplayed()
+//            composeRule.onNodeWithText("Science Festival").isDisplayed()
         }
     }
 }

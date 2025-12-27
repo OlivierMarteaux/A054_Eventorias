@@ -1,4 +1,4 @@
-package com.oliviermarteaux.localshared.navigation
+package com.oliviermarteaux.a054_eventorias.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -48,18 +48,16 @@ fun SharedNavGraph(
                 logoDrawableRes = logoRes,
                 onBackClick = { navHostController.navigateUp() },
                 navigateToPasswordScreen = {
-                        email -> navHostController.navigate("password/$email")
+                    email -> navHostController.navigate("password/$email")
                 },
-                navigateToHomeScreen = {
-                    navHostController.navigate(Screen.Home.route)
-                }
+                navigateToHomeScreen = { navHostController.navigate(Screen.Home.route) }
             )
         }
         /*_ PASSWORD SCREEN ##########################################################################*/
         composable(
             route = Screen.Password.routeWithArgs,
             arguments = Screen.Password.navArguments
-        ) { backStackEntry ->
+        ) {
             PasswordScreen(
                 logoDrawableRes = logoRes,
                 onBackClick = { navHostController.navigateUp() },
@@ -69,7 +67,7 @@ fun SharedNavGraph(
                     }
                 },
                 navigateToPasswordResetScreen = {
-                        email -> navHostController.navigate(Screen.Reset.route + "/${email}")
+                    email -> navHostController.navigate(Screen.Reset.route + "/${email}")
                 }
             )
         }
@@ -77,7 +75,7 @@ fun SharedNavGraph(
         composable(
             route = Screen.Reset.routeWithArgs,
             arguments = Screen.Reset.navArguments,
-        ) { backStackEntry ->
+        ) {
             ResetScreen(
                 onBackClick = { navHostController.navigateUp() },
                 navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) },
@@ -88,37 +86,17 @@ fun SharedNavGraph(
             HomeScreen(
                 postViewModel = postViewModel,
                 navController = navHostController,
-                navigateToDetailScreen = {
-//                        post -> navHostController.navigate(Screen.Detail.route + "/${post.id}")
-                    navHostController.navigate(Screen.Detail.route)
-                },
-                onSettingsClick = { /*navHostController.navigate(Screen.Settings.route)*/ },
-                navigateToLoginScreen = { /*navHostController.navigate(Screen.Login.route)*/ },
-                navigateToAccountScreen = { /*navHostController.navigate(Screen.Account.route)*/ },
-                navigateToAddScreen = {
-                    navHostController.navigate(Screen.Add.route)
-//                    navHostController.navigate(Screen.Add.route + "/")
-
-                }
+                navigateToDetailScreen = {navHostController.navigate(Screen.Detail.route) },
+                navigateToAddScreen = { navHostController.navigate(Screen.Add.route) }
             )
         }
         /*_ DETAIL SCREEN ###########################################################################*/
-        composable(
-            route = Screen.Detail.route/* + "/{post_id}"*/,
-//            arguments = listOf(navArgument("post_id") { type = NavType.StringType })
-        ){
+        composable(route = Screen.Detail.route){
             DetailScreen(
                 postViewModel = postViewModel,
                 onBackClick = { navHostController.navigateUp() },
             )
         }
-//        /*_ COMMENT SCREEN ###########################################################################*/
-//        composable(
-//            route = Screen.Comment.route + "/{post_id}",
-//            arguments = listOf(navArgument("post_id") { type = NavType.StringType })
-//        ){
-//            CommentScreen(onBackClick = { navHostController.navigateUp() })
-//        }
         /*_ ACCOUNT SCREEN ###########################################################################*/
         composable(route = Screen.Account.route) {
             AccountScreen(
@@ -126,9 +104,7 @@ fun SharedNavGraph(
             )
         }
         /*_ ADD POST SCREEN ##########################################################################*/
-        composable(
-            route = Screen.Add.route,
-        ) {
+        composable(route = Screen.Add.route) {
             AddScreen(
                 navigateBack = { navHostController.navigateUp() },
                 navigateToCamera = { navHostController.navigate(Screen.Camera.route) }
@@ -138,113 +114,7 @@ fun SharedNavGraph(
         composable(route = Screen.Camera.route) {
             CameraScreen(
                 navigateBack = { navHostController.navigateUp() },
-//                onImageCapture = { photoUrl ->
-//                    val encodedPhotoUrl = URLEncoder.encode(photoUrl, StandardCharsets.UTF_8.toString())
-//                    navHostController.navigate(Screen.Add.route + "/$encodedPhotoUrl")
-//                }
             )
         }
     }
 }
-//@Composable
-//fun EventoriasNavHost(navHostController: NavHostController) {
-//    NavHost(
-//        navController = navHostController,
-//        startDestination = Screen.Splash.route
-//    ) {
-//        val logoDrawableRes = R.drawable.eventorias_logo
-//        /*_ SPLASH SCREEN ############################################################################*/
-//        composable(route = Screen.Splash.route) {
-//            SplashScreen(
-//                logoDrawableRes = logoDrawableRes,
-//                navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) },
-//                navigateToHomeScreen = { navHostController.navigate(Screen.Home.route) }
-//            )
-//        }
-//        /*_ LOGIN SCREEN #############################################################################*/
-//        composable(route = Screen.Login.route) {
-//            LoginScreen(
-//                logoDrawableRes = logoDrawableRes,
-//                onBackClick = { navHostController.navigateUp() },
-//                navigateToPasswordScreen = {
-//                        email -> navHostController.navigate("password/$email")
-//                },
-//                navigateToHomeScreen = {
-//                    navHostController.navigate(Screen.Home.route)
-//                }
-//            )
-//        }
-//        /*_ PASSWORD SCREEN ##########################################################################*/
-//        composable(
-//            route = Screen.Password.routeWithArgs,
-//            arguments = Screen.Password.navArguments
-//        ) { backStackEntry ->
-//            PasswordScreen(
-//                logoDrawableRes = logoDrawableRes,
-//                onBackClick = { navHostController.navigateUp() },
-//                navigateToHomeScreen = {
-//                    navHostController.navigate(Screen.Home.route){
-//                    popUpTo(0) { inclusive = true } // clear everything
-//                }
-//                                       },
-//                navigateToPasswordResetScreen = {
-//                        email -> navHostController.navigate(Screen.Reset.route + "/${email}")
-//                }
-//            )
-//        }
-//        /*_ RESET SCREEN #############################################################################*/
-//        composable(
-//            route = Screen.Reset.routeWithArgs,
-//            arguments = Screen.Reset.navArguments,
-//        ) { backStackEntry ->
-//            ResetScreen(
-//                onBackClick = { navHostController.navigateUp() },
-//                navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) },
-//            )
-//        }
-//        /*_ HOME SCREEN ##############################################################################*/
-//        composable(route = Screen.Home.route) {
-//            HomeScreen(
-//                navController = navHostController,
-//                navigateToDetailScreen = {
-////                        post -> navHostController.navigate(Screen.Detail.route + "/${post.id}")
-//                },
-//                onSettingsClick = { /*navHostController.navigate(Screen.Settings.route)*/ },
-//                navigateToLoginScreen = { /*navHostController.navigate(Screen.Login.route)*/ },
-//                navigateToAccountScreen = { /*navHostController.navigate(Screen.Account.route)*/ },
-//                navigateToAddScreen = { /*navHostController.navigate(Screen.AddPost.route)*/ }
-//            )
-//        }
-////        /*_ DETAIL SCREEN ###########################################################################*/
-////        composable(
-////            route = Screen.Detail.route + "/{post_id}",
-////            arguments = listOf(navArgument("post_id") { type = NavType.StringType })
-////        ){
-////            DetailScreen(
-////                onBackClick = { navHostController.navigateUp() },
-////                navigateToCommentScreen = {
-////                        post -> navHostController.navigate(Screen.Comment.route + "/${post.id}")
-////                }
-////            )
-////        }
-////        /*_ COMMENT SCREEN ###########################################################################*/
-////        composable(
-////            route = Screen.Comment.route + "/{post_id}",
-////            arguments = listOf(navArgument("post_id") { type = NavType.StringType })
-////        ){
-////            CommentScreen(onBackClick = { navHostController.navigateUp() })
-////        }
-//        /*_ ACCOUNT SCREEN ###########################################################################*/
-//        composable(route = Screen.Account.route) {
-//            AccountScreen()
-//        }
-////        /*_ ADD POST SCREEN ##########################################################################*/
-////        composable(route = Screen.AddPost.route) {
-////            AddScreen(navigateBack = { navHostController.navigateUp() })
-////        }
-////        /*_ SETTINGS SCREEN ##########################################################################*/
-////        composable(route = Screen.Settings.route) {
-////            SettingsScreen(onBackClick = { navHostController.navigateUp() })
-////        }
-//    }
-//}

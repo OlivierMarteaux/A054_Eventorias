@@ -5,11 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.oliviermarteaux.localshared.ui.navigation.Screen
 import com.oliviermarteaux.localshared.ui.navigation.SharedNavGraph
-import com.oliviermarteaux.localshared.utils.LogRoutes
 import com.oliviermarteaux.shared.composables.startup.DismissKeyboardOnTapOutside
 import com.oliviermarteaux.shared.composables.startup.RequestCameraPermission
 import com.oliviermarteaux.shared.composables.startup.RequestMapsPermission
 import com.oliviermarteaux.shared.composables.startup.RequestNotificationPermission
+import com.oliviermarteaux.shared.navigation.LogRoutes
 
 @Composable
 fun EventoriasApp(

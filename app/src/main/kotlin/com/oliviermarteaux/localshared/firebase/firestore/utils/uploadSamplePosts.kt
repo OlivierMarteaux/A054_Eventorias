@@ -3,8 +3,8 @@ package com.oliviermarteaux.localshared.firebase.firestore.utils
 import android.content.Context
 import android.util.Log
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
-import com.oliviermarteaux.localshared.utils.randomAvatarUrl
-import com.oliviermarteaux.localshared.utils.randomPhoto
+import com.oliviermarteaux.shared.utils.randomAvatarUrl
+import com.oliviermarteaux.shared.utils.randomPhoto
 
 suspend fun uploadSamplePosts(context: Context, upload: suspend (Post) -> Result<Unit>){
     val posts = generateSamplePosts()

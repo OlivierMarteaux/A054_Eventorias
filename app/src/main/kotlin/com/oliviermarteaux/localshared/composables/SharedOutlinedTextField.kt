@@ -1,15 +1,8 @@
 package com.oliviermarteaux.localshared.composables
 
-import android.R.attr.enabled
-import android.R.attr.label
-import android.R.attr.maxLines
-import android.R.attr.minLines
-import android.R.attr.singleLine
-import android.R.attr.textStyle
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
@@ -28,7 +21,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.oliviermarteaux.localshared.composables.SupportingText
 
 /**
  * A reusable outlined text field with support for labels, icons, error handling, and

@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.oliviermarteaux.shared.composables.SupportingText
 import com.oliviermarteaux.shared.extensions.isValidEmail
 
 /**
@@ -141,7 +140,7 @@ fun SharedOutlinedEmail(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = textFieldModifier.semantics(){
+            modifier = textFieldModifier.semantics{
                 if (isError == true) {
                     this.error(errorText?:"")
                 }

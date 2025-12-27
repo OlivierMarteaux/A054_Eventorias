@@ -1,8 +1,5 @@
 package com.oliviermarteaux.localshared.ui.theme
 
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-
 /**
  * Shared reusable toast padding values.
  */

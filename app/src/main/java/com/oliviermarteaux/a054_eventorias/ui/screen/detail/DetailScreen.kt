@@ -32,18 +32,17 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.apikeys.GOOGLE_MAPS_API_KEY
-import com.oliviermarteaux.shared.composables.SharedScaffold
-import com.oliviermarteaux.shared.composables.StaticGoogleMap
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
 import com.oliviermarteaux.shared.composables.SharedIcon
-import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
-import com.oliviermarteaux.localshared.ui.theme.SharedPadding
-import com.oliviermarteaux.localshared.ui.theme.SharedSize
+import com.oliviermarteaux.shared.composables.SharedScaffold
+import com.oliviermarteaux.shared.composables.StaticGoogleMap
+import com.oliviermarteaux.shared.ui.theme.SharedPadding
+import com.oliviermarteaux.shared.ui.theme.SharedSize
 
 @Composable
 fun DetailScreen(

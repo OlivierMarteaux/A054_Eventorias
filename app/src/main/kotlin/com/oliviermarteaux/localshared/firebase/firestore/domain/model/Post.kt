@@ -1,14 +1,12 @@
 package com.oliviermarteaux.localshared.firebase.firestore.domain.model
 
-import com.oliviermarteaux.localshared.extensions.toLocalTimeString
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.shared.extensions.toLocalDateString
+import com.oliviermarteaux.shared.extensions.toLocalTimeString
 import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.temporal.TemporalQueries.localDate
-import java.time.temporal.TemporalQueries.localTime
 import java.util.Date
 import java.util.UUID
 

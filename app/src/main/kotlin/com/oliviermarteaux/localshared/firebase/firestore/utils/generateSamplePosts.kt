@@ -1,10 +1,10 @@
 package com.oliviermarteaux.localshared.firebase.firestore.utils
 
-import com.oliviermarteaux.localshared.extensions.toDate
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Address
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Comment
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.extensions.toDate
 import java.time.LocalDate
 import java.time.LocalTime
 

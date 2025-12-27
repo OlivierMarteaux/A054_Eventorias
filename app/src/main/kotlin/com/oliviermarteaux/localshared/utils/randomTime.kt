@@ -1,6 +1,6 @@
 package com.oliviermarteaux.localshared.utils
 
-import com.oliviermarteaux.localshared.extensions.toDate
+import com.oliviermarteaux.shared.extensions.toDate
 import java.time.LocalTime
 import java.util.Date
 

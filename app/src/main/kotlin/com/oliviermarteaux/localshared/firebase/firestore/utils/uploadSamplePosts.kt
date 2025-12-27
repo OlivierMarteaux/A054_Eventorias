@@ -3,6 +3,7 @@ package com.oliviermarteaux.localshared.firebase.firestore.utils
 import android.content.Context
 import android.util.Log
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.utils.downloadImageToLocalFile
 import com.oliviermarteaux.shared.utils.randomAvatarUrl
 import com.oliviermarteaux.shared.utils.randomPhoto
 

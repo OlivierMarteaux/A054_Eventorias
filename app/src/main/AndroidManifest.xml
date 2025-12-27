@@ -43,7 +43,7 @@
         </activity>
 
         <service
-            android:name="com.oliviermarteaux.localshared.firebase.messaging.SharedMessagingService"
+            android:name="com.oliviermarteaux.shared.firebase.messaging.SharedMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

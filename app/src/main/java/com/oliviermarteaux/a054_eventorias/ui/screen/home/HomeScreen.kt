@@ -58,7 +58,6 @@ import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
-import com.oliviermarteaux.localshared.ui.navigation.Screen
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
@@ -71,6 +70,7 @@ import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.composables.spacer.SpacerLarge
 import com.oliviermarteaux.shared.composables.texts.TextTitleMedium
 import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
+import com.oliviermarteaux.shared.navigation.Screen
 import com.oliviermarteaux.shared.ui.ListUiState
 import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.ui.theme.ToastPadding

@@ -17,6 +17,7 @@ import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.passwor
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset.ResetScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash.SplashScreen
 import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
+import com.oliviermarteaux.shared.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets

@@ -1,4 +1,4 @@
-package com.oliviermarteaux.localshared.ui.navigation
+package com.oliviermarteaux.localshared.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel

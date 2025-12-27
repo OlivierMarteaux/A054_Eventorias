@@ -1,6 +1,6 @@
 package com.oliviermarteaux.localshared.firebase.firestore.ui
 
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

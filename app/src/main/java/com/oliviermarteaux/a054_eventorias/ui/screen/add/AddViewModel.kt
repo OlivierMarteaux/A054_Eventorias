@@ -7,11 +7,11 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.oliviermarteaux.shared.cameraX.CameraRepository
-import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
-import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
-import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostRepository
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Address
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
+import com.oliviermarteaux.shared.firebase.authentication.ui.screen.AuthUserViewModel
+import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostRepository
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Address
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.shared.extensions.toDateTypeDate
 import com.oliviermarteaux.shared.extensions.toDateTypeTime
 import com.oliviermarteaux.shared.ui.UiState

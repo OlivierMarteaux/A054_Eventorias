@@ -2,7 +2,7 @@ package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset
 
 import androidx.lifecycle.SavedStateHandle
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeUser
-import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.localshared.test.assertFlagSwitching
 import com.oliviermarteaux.shared.test.rule.MainDispatcherRule
 import com.oliviermarteaux.shared.utils.Logger

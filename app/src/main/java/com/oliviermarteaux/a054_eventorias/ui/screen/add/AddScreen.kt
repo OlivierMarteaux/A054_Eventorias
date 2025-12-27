@@ -37,7 +37,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.ui.theme.SharedSize
 import com.oliviermarteaux.shared.ui.theme.ToastPadding

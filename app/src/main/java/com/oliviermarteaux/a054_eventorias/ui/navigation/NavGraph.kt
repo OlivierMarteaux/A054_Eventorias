@@ -5,15 +5,16 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.screen.account.AccountScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.add.AddScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.detail.DetailScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.home.HomeScreen
-import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
-import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password.PasswordScreen
-import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset.ResetScreen
-import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash.SplashScreen
-import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
+import com.oliviermarteaux.shared.firebase.authentication.ui.screen.login.LoginScreen
+import com.oliviermarteaux.shared.firebase.authentication.ui.screen.password.PasswordScreen
+import com.oliviermarteaux.shared.firebase.authentication.ui.screen.reset.ResetScreen
+import com.oliviermarteaux.shared.firebase.authentication.ui.screen.splash.SplashScreen
+import com.oliviermarteaux.shared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.shared.cameraX.CameraScreen
 import com.oliviermarteaux.shared.navigation.Screen
 
@@ -38,6 +39,7 @@ fun SharedNavGraph(
         composable(route = Screen.Splash.route) {
             SplashScreen(
                 logoDrawableRes = logoRes,
+                serverClientIdStringRes = R.string.default_web_client_id,
                 navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) },
                 navigateToHomeScreen = { navHostController.navigate(Screen.Home.route) }
             )
@@ -79,6 +81,7 @@ fun SharedNavGraph(
             ResetScreen(
                 onBackClick = { navHostController.navigateUp() },
                 navigateToLoginScreen = { navHostController.navigate(Screen.Login.route) },
+                logoDrawableRes = logoRes
             )
         }
         /*_ HOME SCREEN ##############################################################################*/

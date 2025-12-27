@@ -4,10 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
-import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
-import com.oliviermarteaux.localshared.firebase.authentication.domain.mapper.toUser
-import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
-import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.AuthUserViewModel
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
+import com.oliviermarteaux.shared.firebase.authentication.domain.mapper.toUser
+import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
+import com.oliviermarteaux.shared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.shared.datastore.NotificationPreferencesRepository
 import com.oliviermarteaux.shared.ui.UiState
 import com.oliviermarteaux.shared.utils.CoroutineDispatcherProvider

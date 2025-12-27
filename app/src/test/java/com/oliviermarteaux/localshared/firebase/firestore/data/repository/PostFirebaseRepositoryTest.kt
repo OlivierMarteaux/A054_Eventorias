@@ -3,7 +3,7 @@ package com.oliviermarteaux.localshared.firebase.firestore.data.repository
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeComment
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakePost
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakePosts
-import com.oliviermarteaux.localshared.firebase.firestore.data.service.PostApi
+import com.oliviermarteaux.shared.firebase.firestore.data.service.PostApi
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

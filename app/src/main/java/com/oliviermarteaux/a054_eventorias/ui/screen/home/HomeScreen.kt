@@ -56,8 +56,8 @@ import androidx.navigation.NavController
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
-import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage

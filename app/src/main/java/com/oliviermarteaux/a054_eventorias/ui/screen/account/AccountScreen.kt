@@ -23,7 +23,7 @@ import androidx.navigation.NavController
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.a054_eventorias.ui.theme.White
-import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
+import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.SharedBottomAppBar
 import com.oliviermarteaux.shared.composables.SharedFilledTextField

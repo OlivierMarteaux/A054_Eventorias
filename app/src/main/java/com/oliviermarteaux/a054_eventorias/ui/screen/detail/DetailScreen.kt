@@ -34,8 +34,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.apikeys.GOOGLE_MAPS_API_KEY
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
-import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
 import com.oliviermarteaux.shared.composables.SharedIcon

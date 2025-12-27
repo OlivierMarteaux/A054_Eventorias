@@ -2,7 +2,7 @@ package com.oliviermarteaux.localshared.firebase.authentication.data.repository
 
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeNewUser
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeUser
-import com.oliviermarteaux.localshared.firebase.authentication.data.service.UserApi
+import com.oliviermarteaux.shared.firebase.authentication.data.service.UserApi
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

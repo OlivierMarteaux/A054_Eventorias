@@ -2,7 +2,7 @@ package com.oliviermarteaux.a054_eventorias.ui.screen.account
 
 import com.google.firebase.auth.FirebaseUser
 import com.oliviermarteaux.localshared.fake.fakeFirebaseUser
-import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.ui.UiState
 import com.oliviermarteaux.shared.datastore.NotificationPreferencesRepository
 import com.oliviermarteaux.shared.test.rule.MainDispatcherRule

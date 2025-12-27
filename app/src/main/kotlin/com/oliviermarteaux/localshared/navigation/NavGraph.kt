@@ -3,24 +3,19 @@ package com.oliviermarteaux.localshared.navigation
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.oliviermarteaux.a054_eventorias.ui.screen.account.AccountScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.add.AddScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.detail.DetailScreen
 import com.oliviermarteaux.a054_eventorias.ui.screen.home.HomeScreen
-import com.oliviermarteaux.localshared.cameraX.CameraScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login.LoginScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password.PasswordScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.reset.ResetScreen
 import com.oliviermarteaux.localshared.firebase.authentication.ui.screen.splash.SplashScreen
 import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
+import com.oliviermarteaux.shared.cameraX.CameraScreen
 import com.oliviermarteaux.shared.navigation.Screen
-import dagger.hilt.android.lifecycle.HiltViewModel
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 /**
  * The main navigation graph for the application.

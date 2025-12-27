@@ -23,11 +23,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
-import com.oliviermarteaux.localshared.composables.ImageScaffold
-import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.shared.composables.ImageScaffold
+import com.oliviermarteaux.shared.composables.SharedScaffold
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.NewUser
-import com.oliviermarteaux.localshared.composables.SharedButton
-import com.oliviermarteaux.localshared.composables.SharedOutlinedEmail
+import com.oliviermarteaux.shared.composables.SharedButton
+import com.oliviermarteaux.shared.composables.SharedOutlinedEmail
 import com.oliviermarteaux.shared.composables.SharedOutlinedPassword
 import com.oliviermarteaux.shared.composables.SharedOutlinedTextField
 import com.oliviermarteaux.shared.composables.SharedToast

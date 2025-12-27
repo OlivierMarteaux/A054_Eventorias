@@ -1,10 +1,8 @@
 package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.password
 
-import android.R.attr.text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -12,23 +10,20 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.oliviermarteaux.shared.ui.theme.SharedPadding
-import com.oliviermarteaux.shared.composables.IconScaffold
-import com.oliviermarteaux.shared.composables.IconSource
-import com.oliviermarteaux.localshared.composables.SharedButton
-import com.oliviermarteaux.shared.composables.SharedOutlinedPassword
-import com.oliviermarteaux.localshared.composables.SharedScaffold
-import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.a054_eventorias.R
-import com.oliviermarteaux.localshared.composables.ImageScaffold
-import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
+import com.oliviermarteaux.shared.composables.ImageScaffold
+import com.oliviermarteaux.shared.composables.SharedButton
+import com.oliviermarteaux.shared.composables.SharedOutlinedPassword
+import com.oliviermarteaux.shared.composables.SharedScaffold
+import com.oliviermarteaux.shared.composables.SharedToast
+import com.oliviermarteaux.shared.composables.extensions.cdButtonSemantics
+import com.oliviermarteaux.shared.ui.theme.SharedPadding
 
 /**
  * A screen for entering a password to sign in.

@@ -1,7 +1,5 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.account
 
-import android.R.attr.contentDescription
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,25 +18,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.a054_eventorias.ui.theme.White
-import com.oliviermarteaux.localshared.composables.SharedBottomAppBar
-import com.oliviermarteaux.localshared.composables.SharedScaffold
-import com.oliviermarteaux.localshared.composables.SharedFilledTextField
-import com.oliviermarteaux.localshared.composables.extensions.cdButtonSemantics
-import com.oliviermarteaux.localshared.composables.spacer.SpacerLarge
-import com.oliviermarteaux.localshared.composables.spacer.SpacerSmall
-import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
 import com.oliviermarteaux.localshared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.localshared.ui.UiState
 import com.oliviermarteaux.localshared.ui.theme.SharedPadding
 import com.oliviermarteaux.localshared.ui.theme.ToastPadding
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
+import com.oliviermarteaux.shared.composables.SharedBottomAppBar
+import com.oliviermarteaux.shared.composables.SharedFilledTextField
+import com.oliviermarteaux.shared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
+import com.oliviermarteaux.shared.composables.extensions.cdButtonSemantics
+import com.oliviermarteaux.shared.composables.spacer.SpacerLarge
+import com.oliviermarteaux.shared.composables.spacer.SpacerSmall
+import com.oliviermarteaux.shared.composables.spacer.SpacerXl
 
 @Composable
 fun AccountScreen(

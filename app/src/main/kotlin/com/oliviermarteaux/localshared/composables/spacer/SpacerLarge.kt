@@ -1,13 +1,13 @@
 package com.oliviermarteaux.localshared.composables.spacer
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import com.oliviermarteaux.localshared.ui.theme.SharedPadding
-
-/**
- * 24.dp
- */
-@Composable
-fun SpacerLarge() = Spacer(modifier = Modifier.size(SharedPadding.large))
+//import androidx.compose.foundation.layout.Spacer
+//import androidx.compose.foundation.layout.size
+//import androidx.compose.runtime.Composable
+//import androidx.compose.ui.Modifier
+//import com.oliviermarteaux.localshared.ui.theme.SharedPadding
+//
+///**
+// * 24.dp
+// */
+//@Composable
+//fun SpacerLarge() = Spacer(modifier = Modifier.size(SharedPadding.large))

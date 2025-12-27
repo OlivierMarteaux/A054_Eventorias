@@ -12,7 +12,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.shared.composables.SharedScaffold
 
 @Composable
 fun CameraScreen(

@@ -23,13 +23,13 @@ import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.composables.IconScaffold
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAlertDialog
-import com.oliviermarteaux.localshared.composables.SharedButton
-import com.oliviermarteaux.localshared.composables.SharedOutlinedEmail
-import com.oliviermarteaux.localshared.composables.SharedScaffold
+import com.oliviermarteaux.shared.composables.SharedButton
+import com.oliviermarteaux.shared.composables.SharedOutlinedEmail
+import com.oliviermarteaux.shared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.extensions.isValidEmail
 import com.oliviermarteaux.a054_eventorias.R
-import com.oliviermarteaux.localshared.composables.ImageScaffold
+import com.oliviermarteaux.shared.composables.ImageScaffold
 import com.oliviermarteaux.shared.ui.theme.SharedSize
 
 /**

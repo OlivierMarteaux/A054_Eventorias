@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
-import com.oliviermarteaux.localshared.composables.ImageScaffold
-import com.oliviermarteaux.localshared.composables.SharedButton
+import com.oliviermarteaux.shared.composables.ImageScaffold
+import com.oliviermarteaux.shared.composables.SharedButton
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedScaffold
 
@@ -58,6 +58,7 @@ fun SplashScreen(
                     shape = MaterialTheme.shapes.extraSmall,
                     contentPadding = PaddingValues(16.dp),
                     modifier = Modifier.fillMaxWidth(),
+                    tint = Color.Unspecified
                 )
                 Spacer(Modifier.height(24.dp))
 
@@ -70,6 +71,7 @@ fun SplashScreen(
                     shape = MaterialTheme.shapes.extraSmall,
                     contentPadding = PaddingValues(16.dp),
                     modifier = Modifier.fillMaxWidth(),
+                    tint = Color.Unspecified
                 )
             }
 //            Column(

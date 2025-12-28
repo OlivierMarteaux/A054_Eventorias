@@ -3,6 +3,7 @@ package com.oliviermarteaux.localshared.firebase.authentication.ui.screen.login
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeNewUser
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeUser
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
+import com.oliviermarteaux.shared.firebase.authentication.ui.screen.login.LoginViewModel
 import com.oliviermarteaux.shared.test.rule.MainDispatcherRule
 import com.oliviermarteaux.shared.utils.CoroutineDispatcherProvider
 import com.oliviermarteaux.shared.utils.Logger

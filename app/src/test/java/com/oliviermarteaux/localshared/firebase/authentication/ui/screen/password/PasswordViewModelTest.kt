@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeUser
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.localshared.test.assertFlagSwitching
+import com.oliviermarteaux.shared.firebase.authentication.ui.screen.password.PasswordViewModel
 import com.oliviermarteaux.shared.utils.Logger
 import com.oliviermarteaux.shared.utils.NoOpLogger
 import com.oliviermarteaux.shared.test.rule.MainDispatcherRule

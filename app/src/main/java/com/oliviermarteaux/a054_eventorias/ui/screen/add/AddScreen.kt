@@ -37,22 +37,22 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
-import com.oliviermarteaux.localshared.composables.SharedButton
-import com.oliviermarteaux.localshared.composables.SharedDateTextField
-import com.oliviermarteaux.localshared.composables.SharedScaffold
-import com.oliviermarteaux.localshared.composables.SharedFilledTextField
-import com.oliviermarteaux.localshared.composables.SharedTimeTextField
-import com.oliviermarteaux.localshared.composables.spacer.SpacerXl
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
-import com.oliviermarteaux.localshared.ui.theme.SharedPadding
-import com.oliviermarteaux.localshared.ui.theme.SharedSize
-import com.oliviermarteaux.localshared.ui.theme.ToastPadding
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.ui.theme.SharedPadding
+import com.oliviermarteaux.shared.ui.theme.SharedSize
+import com.oliviermarteaux.shared.ui.theme.ToastPadding
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.IconSource
+import com.oliviermarteaux.shared.composables.SharedButton
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
+import com.oliviermarteaux.shared.composables.SharedDateTextField
+import com.oliviermarteaux.shared.composables.SharedFilledTextField
 import com.oliviermarteaux.shared.composables.SharedIconButton
+import com.oliviermarteaux.shared.composables.SharedScaffold
+import com.oliviermarteaux.shared.composables.SharedTimeTextField
 import com.oliviermarteaux.shared.composables.SharedToast
 import com.oliviermarteaux.shared.composables.sharedImagePicker
+import com.oliviermarteaux.shared.composables.spacer.SpacerXl
 import com.oliviermarteaux.shared.ui.UiState
 
 @Composable

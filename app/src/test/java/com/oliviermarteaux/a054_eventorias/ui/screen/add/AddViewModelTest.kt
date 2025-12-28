@@ -2,11 +2,11 @@ package com.oliviermarteaux.a054_eventorias.ui.screen.add
 
 import androidx.lifecycle.SavedStateHandle
 import com.google.firebase.auth.FirebaseUser
-import com.oliviermarteaux.localshared.cameraX.CameraRepository
-import com.oliviermarteaux.localshared.firebase.authentication.data.repository.UserRepository
-import com.oliviermarteaux.localshared.firebase.firestore.data.repository.PostRepository
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Address
-import com.oliviermarteaux.localshared.ui.UiState
+import com.oliviermarteaux.shared.cameraX.CameraRepository
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
+import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostRepository
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Address
+import com.oliviermarteaux.shared.ui.UiState
 import com.oliviermarteaux.shared.test.rule.MainDispatcherRule
 import com.oliviermarteaux.shared.utils.Logger
 import com.oliviermarteaux.shared.utils.NoOpLogger

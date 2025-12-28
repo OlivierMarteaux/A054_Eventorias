@@ -32,17 +32,16 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.apikeys.GOOGLE_MAPS_API_KEY
-import com.oliviermarteaux.localshared.composables.SharedScaffold
-import com.oliviermarteaux.localshared.composables.StaticGoogleMap
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
-import com.oliviermarteaux.localshared.composables.SharedIcon
-import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
-import com.oliviermarteaux.localshared.ui.theme.SharedPadding
+import com.oliviermarteaux.shared.composables.SharedIcon
+import com.oliviermarteaux.shared.composables.SharedScaffold
+import com.oliviermarteaux.shared.composables.StaticGoogleMap
+import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.ui.theme.SharedSize
 
 @Composable
@@ -161,7 +160,7 @@ fun DetailScheduleAndAuthorCard(post: Post) {
             Row (verticalAlignment = Alignment.CenterVertically) {
                 SharedIcon(
                     icon = IconSource.VectorIcon(Icons.Default.CalendarToday),
-                    modifier = Modifier.size(SharedSize.extraSmall)
+                    modifier = Modifier.size(SharedSize.xxs)
                 )
                 Text(
                     text = post.localeDateString,
@@ -173,7 +172,7 @@ fun DetailScheduleAndAuthorCard(post: Post) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 SharedIcon(
                     icon = IconSource.VectorIcon(Icons.Default.Schedule),
-                    modifier = Modifier.size(SharedSize.extraSmall)
+                    modifier = Modifier.size(SharedSize.xxs)
                 )
                 Text(
                     text = post.localeTimeString,

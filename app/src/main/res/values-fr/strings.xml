@@ -97,4 +97,7 @@
     <string name="not_editable">Non modifiable</string>
     <string name="button_double_tap_to_open_the_password_reset_screen">Bouton: %1$s. Appuyer deux fois pour ouvrir l\'écran de réinitialisation de mot de passe.</string>
     <string name="button_double_tap_to_sign_in">Bouton: %1$s. Appuyer deux fois pour vous connecter.</string>
+    <string name="enabled">activées</string>
+    <string name="disabled">désactivées</string>
+    <string name="notifications_setting_notifications_are_double_tap_to_toggle_notifications">Paramètres de notifications. Les notifications sont %1$s. Appuyer deux fois pour activer/désactiver les notifications.</string>
 </resources>

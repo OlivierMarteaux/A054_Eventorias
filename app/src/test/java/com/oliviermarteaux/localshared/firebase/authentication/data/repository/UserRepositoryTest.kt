@@ -2,7 +2,8 @@ package com.oliviermarteaux.localshared.firebase.authentication.data.repository
 
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeNewUser
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeUser
-import com.oliviermarteaux.localshared.firebase.authentication.data.service.UserApi
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
+import com.oliviermarteaux.shared.firebase.authentication.data.service.UserApi
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -87,10 +88,12 @@ class UserRepositoryTest {
     @Test
     fun signInWithGoogle_whenCalled_DelegatesToApi() = runTest {
         // Given
-        coEvery { userApi.signInWithGoogle() } returns Result.success(fakeUser)
+        coEvery {
+            userApi.signInWithGoogle(any())
+        } returns Result.success(fakeUser)
         // When
-        userRepository.signInWithGoogle()
+        userRepository.signInWithGoogle(0)
         // Then
-        coVerify { userApi.signInWithGoogle() }
+        coVerify { userApi.signInWithGoogle(0) }
     }
 }

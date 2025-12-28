@@ -5,9 +5,8 @@ import android.content.Context
 import android.util.Log
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.oliviermarteaux.shared.firebase.firebaseCloudMessaging.subscribeToFcmNotificationTopic
+import com.oliviermarteaux.shared.firebase.messaging.subscribeToFcmNotificationTopic
 import dagger.hilt.android.HiltAndroidApp
 
 /**

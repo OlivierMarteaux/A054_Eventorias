@@ -1,6 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
 
 enum class SortOption(val comparator: Comparator<Post>) {
     TITLE(compareBy { it.title }),

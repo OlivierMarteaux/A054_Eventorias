@@ -1,6 +1,5 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
-import android.R.attr.text
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
@@ -54,28 +53,27 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Grey40
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
-import com.oliviermarteaux.localshared.composables.SharedBottomAppBar
-import com.oliviermarteaux.localshared.composables.SharedButton
-import com.oliviermarteaux.localshared.composables.SharedIcon
-import com.oliviermarteaux.localshared.composables.SharedScaffold
-import com.oliviermarteaux.localshared.composables.spacer.SpacerLarge
-import com.oliviermarteaux.localshared.firebase.firestore.domain.model.Post
-import com.oliviermarteaux.localshared.firebase.firestore.ui.PostViewModel
-import com.oliviermarteaux.localshared.ui.navigation.Screen
-import com.oliviermarteaux.localshared.ui.theme.SharedPadding
-import com.oliviermarteaux.localshared.ui.theme.ToastPadding
+import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
+import com.oliviermarteaux.shared.firebase.firestore.ui.PostViewModel
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.IconSource
 import com.oliviermarteaux.shared.composables.SharedAsyncImage
+import com.oliviermarteaux.shared.composables.SharedBottomAppBar
+import com.oliviermarteaux.shared.composables.SharedButton
 import com.oliviermarteaux.shared.composables.SharedCardAsyncImage
+import com.oliviermarteaux.shared.composables.SharedIcon
+import com.oliviermarteaux.shared.composables.SharedScaffold
 import com.oliviermarteaux.shared.composables.SharedToast
+import com.oliviermarteaux.shared.composables.spacer.SpacerLarge
 import com.oliviermarteaux.shared.composables.texts.TextTitleMedium
 import com.oliviermarteaux.shared.composables.texts.TextTitleSmall
+import com.oliviermarteaux.shared.navigation.Screen
 import com.oliviermarteaux.shared.ui.ListUiState
+import com.oliviermarteaux.shared.ui.theme.SharedPadding
+import com.oliviermarteaux.shared.ui.theme.ToastPadding
 import kotlinx.coroutines.delay
 
 /**

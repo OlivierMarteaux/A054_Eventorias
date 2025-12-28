@@ -4,7 +4,7 @@
 
     <!-- for Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- for GoogleMaps -->
+<!--    &lt;!&ndash; for GoogleMaps &ndash;&gt;-->
 <!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 <!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 <!--    &lt;!&ndash; for camera &ndash;&gt;-->
@@ -43,7 +43,7 @@
         </activity>
 
         <service
-            android:name="com.oliviermarteaux.localshared.firebase.messaging.SharedMessagingService"
+            android:name="com.oliviermarteaux.shared.firebase.messaging.SharedMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

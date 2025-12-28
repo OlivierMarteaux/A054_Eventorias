@@ -3,38 +3,91 @@
 
 ## 🚀 About the Project
 
+Eventorias is an Android application dedicated to events management. It allows its users to browse, read and add some special events to be gathered with community.
+The application is build following modern Android coding standard (Kotlin language, Jetpack Compose layout and MVVM architecture).
+It uses Firebase as autenthication, database and media storage functions.
+
+The project was developed as part of an educational and demonstration initiative showcasing how to structure Android apps with strong architectural boundaries.
 
 
 ## ✨ Features
 
+👤 User Authentication – Login, registration, and password reset via Firebase Auth.
+
+🏠 Special Events Feed – Displays community posts dynamically updated from Firestore.
+
+➕ Add Events – Create and publish new events posts with all details.
+
+⚙️ Settings & Profile – Manage personal information and preferences.
+
+🔔 Push Notifications – Powered by Firebase Messaging.
+
+🧭 Navigation Graph – Declarative, type-safe navigation between screens.
+
+🌙 Material 3 UI Design – Fully Compose-based adaptive theming with rounded shapes, elevation, and animations.
 
 
 ## 🧰 Tech Stack
 
+| Layer | Technology |
+|-------|------------|
+| Language | Kotlin |
+| UI | Jetpack Compose, Material 3 |
+| Architecture | MVVM, ViewModel, State Management |
+| Navigation | Jetpack Navigation Compose |
+| Authentication | Firebase Auth, Google Credential |
+| Backend Storage | Firebase FireStore and Storage |
+| Push notifications | Firebase Cloud Messaging and Preferences DataStore |
+| Crash Analyses | Firebase CrashLytics|
+| Background Work | Kotlin Coroutines, Flows |
+| Image Handling | URI-based storage in internal memory using Coil |
+| Image Capture | Camera X |
+| Static map display | GoogleMaps API |
+| Dependency Injection | Dagger/Hilt |
+| Build | Gradle (KTS) |
+| Testing | JUnit4, MockK, Espresso, Cucumber, Jacoco |
 
 
 ## 📂 Project Structure
 
+```
+A054_Eventorias/
+├── data/
+│   ├── repository/           # Repositories wrapping data sources
+│   ├── service/              # Firebase API implementations (PostApi, UserApi)
+│   └── mapper/               # DTO ↔ Domain model mappers
+├── domain/
+│   ├── model/                # Business entities (Post, User, Comment)
+│   └── usecase/              # (Future) domain logic
+├── ui/
+│   ├── screen/               # Compose screens (login, home, detail, etc.)
+│   ├── navigation/           # NavGraph and route definitions
+│   └── components/           # Shared Compose UI components
+├── di/                       # Hilt modules and providers
+├── EventoriasApp.kt          # Top-level composable
+├── EventoriasApplication.kt
+└── MainActivity.kt
+```
 
-
+<!--
 ## 📸 Screenshots
 
 Coming soon.
 
-<!--
+
 
 Visit the following link to browse screenshots of the Hexagonal Games application:  
 🔗 [Hexagonal Games App Screenshots](screenshots/)
 -->
 
-
+<!--
 ## 📲 Install
 
 Coming soon.
 
-<!--
 
-To install the Hexagonal Games application on your physical Android device:
+
+To install the Eventorias application on your physical Android device:
 
 1. **Download the APK from your smartphone**
    - Go to the [Releases](https://github.com/OlivierMarteaux/A052_HexagonalGames/releases) section of this repository.
@@ -55,12 +108,12 @@ To install the Hexagonal Games application on your physical Android device:
 
 --> 
 
-
+<!--
 ## ⚙️ Setup
 
 Coming soon.
 
-<!--
+
 ⚙️ Setup
 
 1. Create a Firebase project and enable:

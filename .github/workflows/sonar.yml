@@ -56,13 +56,19 @@ jobs:
           # Optionally install platform-tools (adb)
           components: platform-tools
 
-      - name: Create emulator
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --update
+          yes | sdkmanager "platform-tools" "emulator" "platforms;android-36" "system-images;android-36;google_apis;x86_64"
+          yes | sdkmanager --licenses
+
+      - name: Create Emulator
         run: |
           echo "no" | avdmanager create avd -n testEmulator -k "system-images;android-36;google_apis;x86_64" --force
 
-      - name: Start emulator
+      - name: Start Emulator
         run: |
-          $ANDROID_HOME/emulator/emulator -avd testEmulator -no-window -no-audio &
+          emulator -avd testEmulator -no-window -no-audio -no-boot-anim &
           adb wait-for-device
 
       - name: Make gradlew executable

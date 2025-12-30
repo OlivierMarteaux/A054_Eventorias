@@ -50,6 +50,9 @@ class AddViewModelTest {
 
     @Before
     fun setup() {
+
+        userAuthStateFlow.value = null
+        isOnlineFlow.value = true
         // 🔴 REQUIRED: AuthUserViewModel collects this in init {}
         whenever(userRepository.userAuthState).thenReturn(userAuthStateFlow)
 
@@ -140,43 +143,42 @@ class AddViewModelTest {
         assertTrue(viewModel.addPostUiState is UiState.Idle)
     }
 
-//    @Test
-//    fun addPost_whenRepositorySucceeds_shouldInvokeCallback() = runTest {
-//        Dispatchers.setMain(StandardTestDispatcher(testScheduler)) // add this
-//        // Given
-//        val user = fakeFirebaseUser()
-//        userAuthStateFlow.value = user
-//
-//        whenever(postRepository.addPost(any()))
-//            .thenReturn(Result.success(Unit))
-//
-//        var callbackCalled = false
-//
-//        // When
-//        viewModel.addPost { callbackCalled = true }
-//        advanceUntilIdle()
-//
-//        // Then
-//        verify(postRepository).addPost(any())
-//        assertTrue(callbackCalled)
-//        assertTrue(viewModel.addPostUiState is UiState.Idle)
-//    }
+    @Test
+    fun addPost_whenRepositorySucceeds_shouldInvokeCallback() = runTest {
+        // Given
+        val user = fakeFirebaseUser()
+        userAuthStateFlow.value = user
 
-//    @Test
-//    fun addPost_whenRepositoryFails_shouldShowErrorAndResetUiState() = runTest {
-//        // Given
-//        val user = fakeFirebaseUser()
-//        userAuthStateFlow.value = user
-//
-//        whenever(postRepository.addPost(any()))
-//            .thenReturn(Result.failure(RuntimeException("Error")))
-//
-//        // When
-//        viewModel.addPost {}
-//        advanceUntilIdle()
-//
-//        // Then
-//        verify(postRepository).addPost(any())
-//        assertEquals(UiState.Idle, viewModel.addPostUiState)
-//    }
+        whenever(postRepository.addPost(any()))
+            .thenReturn(Result.success(Unit))
+
+        var callbackCalled = false
+
+        // When
+        viewModel.addPost { callbackCalled = true }
+        advanceUntilIdle()
+
+        // Then
+        verify(postRepository).addPost(any())
+        assertTrue(callbackCalled)
+        assertTrue(viewModel.addPostUiState is UiState.Idle)
+    }
+
+    @Test
+    fun addPost_whenRepositoryFails_shouldShowErrorAndResetUiState() = runTest {
+        // Given
+        val user = fakeFirebaseUser()
+        userAuthStateFlow.value = user
+
+        whenever(postRepository.addPost(any()))
+            .thenReturn(Result.failure(RuntimeException("Error")))
+
+        // When
+        viewModel.addPost {}
+        advanceUntilIdle()
+
+        // Then
+        verify(postRepository).addPost(any())
+        assertEquals(UiState.Idle, viewModel.addPostUiState)
+    }
 }

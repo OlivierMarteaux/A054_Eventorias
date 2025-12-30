@@ -48,6 +48,23 @@ jobs:
           const val GOOGLE_MAPS_API_KEY = "${{ secrets.GOOGLE_MAPS_API_KEY }}"
           EOF
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 36
+          build-tools: 36.0.0
+          # Optionally install platform-tools (adb)
+          components: platform-tools
+
+      - name: Create emulator
+        run: |
+          echo "no" | avdmanager create avd -n testEmulator -k "system-images;android-36;google_apis;x86_64" --force
+
+      - name: Start emulator
+        run: |
+          $ANDROID_HOME/emulator/emulator -avd testEmulator -no-window -no-audio &
+          adb wait-for-device
+
       - name: Make gradlew executable
         run: chmod +x gradlew
 

@@ -4,15 +4,15 @@
 
     <!-- for Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
-<!--    &lt;!&ndash; for GoogleMaps &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
-<!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
-<!--    &lt;!&ndash; for camera &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.CAMERA" />-->
-<!--    &lt;!&ndash; Declare camera as optional so devices without a camera can install the app &ndash;&gt;-->
-<!--    <uses-feature android:name="android.hardware.camera" android:required="false" />-->
-<!--    &lt;!&ndash; for notifications &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />-->
+    <!-- for GoogleMaps -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- for camera -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Declare camera as optional so devices without a camera can install the app -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <!-- for notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".EventoriasApplication"

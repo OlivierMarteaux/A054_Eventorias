@@ -42,6 +42,7 @@ jobs:
 
       - name: Generate apikey.kt
         run: |
+          mkdir -p app/src/main/java/com/oliviermarteaux/apikeys
           cat <<EOF > app/src/main/java/com/oliviermarteaux/apikeys/apikey.kt
           package com.oliviermarteaux.apikeys
           const val GOOGLE_MAPS_API_KEY = "${{ secrets.GOOGLE_MAPS_API_KEY }}"

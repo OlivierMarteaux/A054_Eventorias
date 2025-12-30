@@ -48,12 +48,13 @@ jobs:
           const val GOOGLE_MAPS_API_KEY = "${{ secrets.GOOGLE_MAPS_API_KEY }}"
           EOF
 
-      - name: Install Android SDK
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v2
         with:
-            api-level: 36
-            build-tools: 36.0.0
-            components: platform-tools, emulator, system-images;android-36;google_apis;x86_64
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          emulator: true
 
       - name: Install Android SDK packages
         run: |
@@ -71,6 +72,7 @@ jobs:
 
       - name: Wait for emulator
         run: |
+          adb wait-for-device
           timeout 300s bash -c 'until adb shell getprop sys.boot_completed | grep -m 1 "1"; do sleep 5; done'
 
       - name: Make gradlew executable

@@ -2,6 +2,7 @@ name: SonarCloud
 
 on:
   push:
+    branches: [ main ]
   pull_request:
 
 jobs:
@@ -26,4 +27,4 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./gradlew test jacocoTestReport sonar
+          ./gradlew jacocoTestReport sonar

@@ -1,37 +1,35 @@
 package com.oliviermarteaux.a054_eventorias.cucumber.steps
 
+import android.util.Log
 import android.widget.TimePicker
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasClickAction
-import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.printToLog
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import com.oliviermarteaux.a054_eventorias.di.ComposeRuleHolder
+import com.oliviermarteaux.shared.firebase.firestore.data.service.PostFirebaseApi
 import io.cucumber.java.en.And
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
-import kotlin.jvm.java
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.hamcrest.Matchers.`is`
-import androidx.test.platform.app.InstrumentationRegistry
-import kotlin.text.get
 
 //_ This class requires picocontainer to inject dependency
 class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
@@ -72,10 +70,30 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
 
     @And("I should see {string} added at the top of the {string} list")
     fun iShouldSeeTextInFirstListItem(text: String, item: String){
+
+        // 1️⃣ Assert the post is displayed
         composeRule.onNodeWithText(text).assertIsDisplayed()
         val itemsNodes = composeRule.onAllNodes(hasClickAction())
         val lastItemNode: SemanticsNodeInteraction = itemsNodes[0]
         lastItemNode.assertTextContains(text)
+
+        // 2️⃣ Delete the post immediately after assertion
+        val postApi = PostFirebaseApi()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val postToDelete = postApi.getPostsOrderByCreationDateDesc()
+                    .first()   // get first emitted Result<List<Post>>
+                    .getOrNull()
+                    ?.firstOrNull { it.title == text }
+
+                postToDelete?.let { post ->
+                    postApi.deletePost(post.id, post.photoUrl)
+                    Log.d("OM_TAG", "Deleted test post '${post.title}' (ID: ${post.id})")
+                } ?: Log.d("OM_TAG", "No post with title '$text' found to delete")
+            } catch (e: Exception) {
+                Log.e("OM_TAG", "Failed to delete post '$text'", e)
+            }
+        }
     }
 
     @And("I should see a toast message {string}")

@@ -1,5 +1,7 @@
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+import org.gradle.kotlin.dsl.androidTestImplementation
 import java.util.Properties
 
 plugins {
@@ -23,15 +25,15 @@ sonarqube {
         property("sonar.host.url", "https://sonarcloud.io")
 
         // Android
-        property("sonar.sources", "src/main,src/debug")
-        property("sonar.tests", "src/test,src/androidTest")
+//        property("sonar.sources", "src/main/java")
+//        property("sonar.tests", "src/test/java,src/androidTest/java")
 
         // Kotlin
-        property("sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml")
+//        property("sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml")
         //Jacoco
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            "app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+            "build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
         )
     }
 }
@@ -140,6 +142,19 @@ val jacocoTestReport by tasks.registering(JacocoReport::class) {
         csv.required.set(false)
         xml.required.set(true)
         html.required.set(true)
+
+        // ✅ Force XML path
+        xml.outputLocation.set(
+            layout.buildDirectory.file(
+                "reports/jacoco/test/jacocoTestReport.xml"
+            )
+        )
+        // ✅ Force HTML path
+        html.outputLocation.set(
+            layout.buildDirectory.dir(
+                "reports/jacoco/test/html"
+            )
+        )
     }
 
 
@@ -273,6 +288,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    // JUnit4 rules, including GrantPermissionRule
+    androidTestImplementation(libs.androidx.test.rules) // latest stable
 
     // espresso is used only for date and time pickers interaction in cucumber tests
     androidTestImplementation(libs.androidx.espresso.core)

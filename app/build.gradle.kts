@@ -12,6 +12,28 @@ plugins {
     // Add the dependency for the Google services Gradle plugin for Firebase authentication
     alias(libs.plugins.googleservices)
     alias(libs.plugins.crashlytics) // firebase crashlytics
+    id("org.sonarqube") version "7.2.2.6593" // SonarCloud CI/CD
+}
+
+// SonarQube Cloud properties
+sonarqube {
+    properties {
+        property("sonar.projectKey", "OlivierMarteaux_A054_Eventorias")
+        property("sonar.organization", "oliviermarteaux")
+        property("sonar.host.url", "https://sonarcloud.io")
+
+        // Android
+        property("sonar.sources", "src/main,src/debug")
+        property("sonar.tests", "src/test,src/androidTest")
+
+        // Kotlin
+        property("sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml")
+        //Jacoco
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+        )
+    }
 }
 
 // Specific for JaCoCo

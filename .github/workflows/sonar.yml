@@ -84,7 +84,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: run emulator
+      - name: run emulator androidTest and sonar
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
@@ -94,11 +94,12 @@ jobs:
           force-avd-creation: true
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           emulator-boot-timeout: 600 # wait up to 10 minutes
+          script: ./gradlew connectedAndroidTest sonar --info
 #          script: ./gradlew connectedCheck
 
-      - name: Run jacoco and Sonar
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          ./gradlew jacocoTestReport sonar
+#      - name: Run jacoco and Sonar
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        run: |
+#          ./gradlew jacocoTestReport sonar
 #          ./gradlew jacocoTestReport sonar --info

@@ -65,7 +65,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-35
+          key: avd-35-x86_64
 
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -112,11 +112,21 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
+          arch: x86_64
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: ./gradlew connectedAndroidTest --debug
 #          script: ./gradlew connectedCheck
+
+      - name: Save AVD cache
+        if: success()
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.android/avd
+            ~/.android/emu*
+          key: avd-35-x86_64
 
 #      - name: Run jacoco and Sonar
 #        env:

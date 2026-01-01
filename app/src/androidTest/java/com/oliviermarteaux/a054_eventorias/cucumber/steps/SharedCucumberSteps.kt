@@ -154,7 +154,7 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
         // Wait for photo picker
         device.wait(
             Until.hasObject(By.pkg("com.android.providers.media")),
-            15_000
+            1_000
         )
 
         // Find the first photo in the picker. Using a content description is often reliable.

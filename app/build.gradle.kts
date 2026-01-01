@@ -31,10 +31,10 @@ sonarqube {
         // Kotlin
 //        property("sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml")
         //Jacoco
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            "build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
-        )
+//        property(
+//            "sonar.coverage.jacoco.xmlReportPaths",
+//            "build/reports/jacoco/jacocoTestReport/jacocoUnitTestReport.xml"
+//        )
     }
 }
 
@@ -176,6 +176,39 @@ val jacocoTestReport by tasks.registering(JacocoReport::class) {
         println("JacocoTestReport terminated: Don't forget to delete test-created posts !")
         println()
     }
+}
+
+//_ setup a jacoco test report task including only unit tests coverage for Sonar:
+val jacocoUnitTestReport by tasks.registering(JacocoReport::class) {
+    dependsOn("clean" , "testDebugUnitTest")
+    group = "Reporting"
+    description = "Generate Jacoco unit tests coverage report"
+
+    reports {
+        csv.required.set(false)
+        xml.required.set(true)
+        html.required.set(false)
+
+        // ✅ Force XML path
+        xml.outputLocation.set(
+            layout.buildDirectory.file(
+                "reports/jacoco/test/jacocoUnitTestReport.xml"
+            )
+        )
+    }
+    val debugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
+        exclude("**/di/**")        // exclude DI packages
+        exclude("**/*Module*.*")   // exclude Module classes
+    }
+    val mainSrc = androidExtension.sourceSets.getByName("main").java.srcDirs
+
+    classDirectories.setFrom(debugTree)
+    sourceDirectories.setFrom(files(mainSrc))
+    executionData.setFrom(
+        layout.buildDirectory.file(
+            "jacoco/testDebugUnitTest.exec"
+        )
+    )
 }
 
 //_ The JacocoCoverageVerification task can be used to verify if code coverage metrics are met

@@ -21,7 +21,5 @@ class ComposeRuleHolder {
 
     // ✅ 2️⃣ Then start the Activity / Compose
     @get:Rule(order = 1)
-    val composeRule = createAndroidComposeRule<MainActivity>().apply{
-        mainClock.autoAdvance = true
-    }
+    val composeRule = createAndroidComposeRule<MainActivity>()
 }

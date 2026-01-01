@@ -21,7 +21,7 @@ class AddSteps(private val composeRuleHolder: ComposeRuleHolder) {
     @Then("I should arrive on the Add Screen")
     fun iAmOnTheAddScreen() {
         // Check that the first events are visible
-        composeRule.waitUntil(15000) {
+        composeRule.waitUntil(5000) {
             composeRule.onNodeWithTag("Add Screen").isDisplayed()
         }
     }

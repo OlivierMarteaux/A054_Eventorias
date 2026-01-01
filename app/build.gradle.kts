@@ -198,7 +198,7 @@ val jacocoUnitTestReport by tasks.registering(JacocoReport::class) {
         // ✅ Force XML path
         xml.outputLocation.set(
             layout.buildDirectory.file(
-                "reports/jacoco/test/jacocoUnitTestReport.xml"
+                "reports/jacoco/test/jacocoTestReport.xml"
             )
         )
     }

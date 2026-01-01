@@ -14,7 +14,13 @@ plugins {
     // Add the dependency for the Google services Gradle plugin for Firebase authentication
     alias(libs.plugins.googleservices)
     alias(libs.plugins.crashlytics) // firebase crashlytics
-    id("org.sonarqube") version "7.2.2.6593" // SonarCloud CI/CD
+    id("org.sonarqube") version "4.4.1.3373" // SonarCloud CI/CD
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.apache.commons:commons-compress:1.25.0")
+    }
 }
 
 // SonarQube Cloud properties
@@ -205,9 +211,7 @@ val jacocoUnitTestReport by tasks.registering(JacocoReport::class) {
     classDirectories.setFrom(debugTree)
     sourceDirectories.setFrom(files(mainSrc))
     executionData.setFrom(
-        layout.buildDirectory.file(
-            "jacoco/testDebugUnitTest.exec"
-        )
+        layout.buildDirectory.file("jacoco/testDebugUnitTest.exec")
     )
 }
 

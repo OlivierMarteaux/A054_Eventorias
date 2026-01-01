@@ -169,7 +169,7 @@ fun HomeScreen(
                     )
                 }
                 Box(
-                    modifier = Modifier
+                    modifier = Modifier.testTag("home_screen")
                 ) {
                     //_ UiState management: Empty, Error, Loading, Success
                     val cdLoadingState =

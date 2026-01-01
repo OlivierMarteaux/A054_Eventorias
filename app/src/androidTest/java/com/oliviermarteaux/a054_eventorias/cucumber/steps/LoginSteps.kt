@@ -2,6 +2,7 @@ package com.oliviermarteaux.a054_eventorias.cucumber.steps
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.isDisplayed
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.printToLog
@@ -37,10 +38,13 @@ class LoginSteps(private val composeRuleHolder: ComposeRuleHolder) {
 //        composeRule.waitUntil(5000) {
 //            composeRule.onNodeWithText("City Carnival").isDisplayed()
 //        }
-        composeRule
-            .onRoot(useUnmergedTree = true)
-            .printToLog("SEMANTICS")
-        assert(true)
+        composeRule.waitUntil(5000) {
+            composeRule.onNodeWithTag("home_screen").isDisplayed()
+        }
+//        composeRule
+//            .onRoot(useUnmergedTree = true)
+//            .printToLog("SEMANTICS")
+//        assert(true)
 //        composeRule.onNodeWithText("City Carnival").assertIsDisplayed()
     }
 }

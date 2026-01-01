@@ -56,8 +56,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./gradlew clean testDebugUnitTest jacocoUnitTestReport sonar --info
-      #          ./gradlew jacocoTestReport sonar --info
+          ./gradlew testDebugUnitTest jacocoUnitTestReport sonar --info
 
 #      - name: SonarQube analysis (Gradle)
 #        run: ./gradlew sonarqube

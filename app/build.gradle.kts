@@ -210,9 +210,9 @@ val jacocoUnitTestReport by tasks.registering(JacocoReport::class) {
 
     classDirectories.setFrom(debugTree)
     sourceDirectories.setFrom(files(mainSrc))
-    executionData.setFrom(
-        layout.buildDirectory.file("jacoco/testDebugUnitTest.exec")
-    )
+    executionData.setFrom(fileTree(buildDir) {
+        include("**/*.exec", "**/*.ec")
+    })
 }
 
 //_ The JacocoCoverageVerification task can be used to verify if code coverage metrics are met

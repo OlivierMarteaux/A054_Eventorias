@@ -8,7 +8,7 @@ on:
 
 jobs:
   sonar:
-    name: Run jacocoUnitTestReport and Sonar
+    name: Run jacocoTestReport and Sonar
     runs-on: ubuntu-latest
 
     steps:
@@ -84,9 +84,14 @@ jobs:
         with:
           api-level: 35
           arch: x86_64
+          profile: resizable
+          target: google_apis
+          cores: 6
+          ram-size: 4096M
           force-avd-creation: false
+          enable-hw-keyboard: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
+          disable-animations: true
           script: echo "Generated AVD snapshot for caching."
 
       - name: Setup Android SDK
@@ -122,8 +127,9 @@ jobs:
           api-level: 35
           arch: x86_64
           profile: resizable
-          cores: 3
-          ram-size: 2048M
+          target: google_apis
+          cores: 6
+          ram-size: 4096M
           force-avd-creation: false
           enable-hw-keyboard: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none

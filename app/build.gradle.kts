@@ -216,8 +216,9 @@ val jacocoUnitTestReport by tasks.registering(JacocoReport::class) {
     )
     sourceDirectories.setFrom(files(mainSrc))
     executionData.setFrom(
-        layout.buildDirectory.file("build/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
-
+        fileTree("${buildDir}/outputs/unit_test_code_coverage/debugUnitTest") {
+            include("testDebugUnitTest.exec")
+        }
     )
 }
 

@@ -88,6 +88,8 @@ jobs:
           target: google_apis
           cores: 6
           ram-size: 4096M
+          heap-size: 228M
+          disk-size: 6G
           force-avd-creation: false
           enable-hw-keyboard: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -130,6 +132,8 @@ jobs:
           target: google_apis
           cores: 6
           ram-size: 4096M
+          heap-size: 228M
+          disk-size: 6G
           force-avd-creation: false
           enable-hw-keyboard: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none

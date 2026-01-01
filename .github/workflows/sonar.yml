@@ -59,6 +59,11 @@ jobs:
           ./gradlew clean testDebugUnitTest jacocoUnitTestReport sonar --info
       #          ./gradlew jacocoTestReport sonar --info
 
+      - name: SonarQube analysis (Gradle)
+        run: ./gradlew sonarqube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       # Check the Quality Gate status.
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check

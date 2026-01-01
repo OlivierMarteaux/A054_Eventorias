@@ -17,37 +17,37 @@ jobs:
         with:
           fetch-depth: 0
 
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: 17
-#          distribution: 'zulu' # Alternative distribution options are available
-#
-#      - name: Cache SonarQube packages
-#        uses: actions/cache@v4
-#        with:
-#          path: ~/.sonar/cache
-#          key: ${{ runner.os }}-sonar
-#          restore-keys: ${{ runner.os }}-sonar
-#
-#      - name: Cache Gradle packages
-#        uses: actions/cache@v4
-#        with:
-#          path: ~/.gradle/caches
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-#          restore-keys: ${{ runner.os }}-gradle
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'zulu' # Alternative distribution options are available
 
-#      - name: Restore google-services.json
-#        run: |
-#          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
-#
-#      - name: Generate apikey.kt
-#        run: |
-#          mkdir -p app/src/main/java/com/oliviermarteaux/apikeys
-#          cat <<EOF > app/src/main/java/com/oliviermarteaux/apikeys/apikey.kt
-#          package com.oliviermarteaux.apikeys
-#          const val GOOGLE_MAPS_API_KEY = "${{ secrets.GOOGLE_MAPS_API_KEY }}"
-#          EOF
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Restore google-services.json
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+
+      - name: Generate apikey.kt
+        run: |
+          mkdir -p app/src/main/java/com/oliviermarteaux/apikeys
+          cat <<EOF > app/src/main/java/com/oliviermarteaux/apikeys/apikey.kt
+          package com.oliviermarteaux.apikeys
+          const val GOOGLE_MAPS_API_KEY = "${{ secrets.GOOGLE_MAPS_API_KEY }}"
+          EOF
 
       - name: Make gradlew executable
         run: chmod +x gradlew

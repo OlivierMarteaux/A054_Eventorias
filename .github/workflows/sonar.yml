@@ -124,6 +124,8 @@ jobs:
 #          timeout 300s bash -c 'until adb shell getprop sys.boot_completed | grep -m 1 "1"; do sleep 5; done'
 
       - name: run instrumented tests
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35

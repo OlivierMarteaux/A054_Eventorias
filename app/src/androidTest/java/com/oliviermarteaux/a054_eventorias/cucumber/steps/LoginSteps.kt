@@ -32,10 +32,9 @@ class LoginSteps(private val composeRuleHolder: ComposeRuleHolder) {
     @Given("I am on the Home screen")
     fun iAmOnTheHomeScreen() {
         // Verify some known events are shown
-//        composeRule.waitUntil(60000) {
+//        composeRule.waitUntil(5000) {
 //            composeRule.onNodeWithText("City Carnival").isDisplayed()
-////            composeRule.onNodeWithText("Science Festival").isDisplayed()
 //        }
-        assert(true)
+        composeRule.onNodeWithText("City Carnival").assertIsDisplayed()
     }
 }

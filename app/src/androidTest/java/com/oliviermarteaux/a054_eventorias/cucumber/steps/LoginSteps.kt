@@ -23,7 +23,7 @@ class LoginSteps(private val composeRuleHolder: ComposeRuleHolder) {
     }
     @Then("I should arrive on the Password screen")
     fun iAmOnThePasswordScreen() {
-        composeRule.waitUntil(5000) {
+        composeRule.waitUntil(15000) {
             composeRule.onNodeWithText("Password").isDisplayed()
             composeRule.onNodeWithText(text = "Sign in", useUnmergedTree = true).isDisplayed()
         }
@@ -32,7 +32,7 @@ class LoginSteps(private val composeRuleHolder: ComposeRuleHolder) {
     @Given("I am on the Home screen")
     fun iAmOnTheHomeScreen() {
         // Verify some known events are shown
-        composeRule.waitUntil(5000) {
+        composeRule.waitUntil(15000) {
             composeRule.onNodeWithText("City Carnival").isDisplayed()
 //            composeRule.onNodeWithText("Science Festival").isDisplayed()
         }

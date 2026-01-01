@@ -58,6 +58,7 @@ jobs:
         run: |
           ./gradlew clean testDebugUnitTest jacocoUnitTestReport sonar --info
       #          ./gradlew jacocoTestReport sonar --info
+      
 
 #      - name: Enable KVM group perms
 #        run: |

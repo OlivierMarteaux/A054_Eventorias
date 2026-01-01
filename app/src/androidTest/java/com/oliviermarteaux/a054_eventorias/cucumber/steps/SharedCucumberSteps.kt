@@ -1,5 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.cucumber.steps
 
+import android.R.attr.button
 import android.util.Log
 import android.widget.TimePicker
 import androidx.compose.ui.test.SemanticsNodeInteraction
@@ -47,6 +48,12 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
     fun iClickOnButton(text: String) {
         // Use contentDescription or tag for your FABs
         composeRule.onNodeWithText(text = text, useUnmergedTree = true).performClick()
+    }
+
+    @When("I click on the button tagged {string}")
+    fun iClickOnButtonTagged(tag: String) {
+        // Use contentDescription or tag for your FABs
+        composeRule.onNodeWithTag(testTag = tag, useUnmergedTree = true).performClick()
     }
 
     @When("I click on the {string} card")

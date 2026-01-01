@@ -186,7 +186,7 @@ val jacocoTestReport by tasks.registering(JacocoReport::class) {
 
 //_ setup a jacoco test report task including only unit tests coverage for Sonar:
 val jacocoUnitTestReport by tasks.registering(JacocoReport::class) {
-    dependsOn("clean" , "testDebugUnitTest")
+    dependsOn("testDebugUnitTest")
     group = "Reporting"
     description = "Generate Jacoco unit tests coverage report"
 
@@ -202,17 +202,22 @@ val jacocoUnitTestReport by tasks.registering(JacocoReport::class) {
             )
         )
     }
-    val debugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
-        exclude("**/di/**")        // exclude DI packages
-        exclude("**/*Module*.*")   // exclude Module classes
-    }
     val mainSrc = androidExtension.sourceSets.getByName("main").java.srcDirs
 
-    classDirectories.setFrom(debugTree)
+    classDirectories.setFrom(
+        files(
+            fileTree("${buildDir}/tmp/kotlin-classes/debug") {
+                exclude("**/di/**", "**/*Module*.*")
+            },
+            fileTree("${buildDir}/intermediates/javac/debug/classes") {
+                exclude("**/di/**", "**/*Module*.*")
+            }
+        )
+    )
     sourceDirectories.setFrom(files(mainSrc))
-    executionData.setFrom(fileTree(buildDir) {
-        include("**/*.exec", "**/*.ec")
-    })
+    executionData.setFrom(
+        layout.buildDirectory.file("jacoco/testDebugUnitTest.exec")
+    )
 }
 
 //_ The JacocoCoverageVerification task can be used to verify if code coverage metrics are met

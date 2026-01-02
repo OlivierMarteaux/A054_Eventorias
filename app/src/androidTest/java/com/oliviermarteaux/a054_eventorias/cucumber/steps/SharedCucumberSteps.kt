@@ -53,6 +53,7 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
     @When("I click on the button tagged {string}")
     fun iClickOnButtonTagged(tag: String) {
         // Use contentDescription or tag for your FABs
+        Log.d("OM_TAG", "I click on the button tagged $tag")
         composeRule.onNodeWithTag(testTag = tag, useUnmergedTree = true).performClick()
     }
 

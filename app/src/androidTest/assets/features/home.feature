@@ -13,10 +13,10 @@ Feature: Display and scroll the events list
 #    And I click on the "Sign in" button
 #    Then I should arrive on the Home Screen
 
-  Background: Navigate to home screen
-    Given I am on the Splash screen
-    When I click on the button tagged "home_screen"
-    Then I should arrive on the Home Screen
+#  Background: Navigate to home screen
+#    Given I am on the Splash screen
+#    When I click on the button tagged "home_screen"
+#    Then I should arrive on the Home Screen
 
   Scenario: Display and scroll the events list
     Given I am on the Home screen

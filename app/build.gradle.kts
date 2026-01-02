@@ -84,6 +84,7 @@ android {
 
     buildTypes {
         release {
+//            buildConfigField("boolean", "IS_DEBUG", "false")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -93,6 +94,7 @@ android {
         }
         // to enable JaCoCo test coverage reports
         debug {
+//            buildConfigField("boolean", "IS_DEBUG", "true")
             enableAndroidTestCoverage = true
             enableUnitTestCoverage = true
             // Optional: only if you want to test minification earlier
@@ -105,6 +107,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

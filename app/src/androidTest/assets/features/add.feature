@@ -2,17 +2,22 @@
 #  As a user on the Home screen
 #  I want to add a new event
 #  So that the new event appears at the top of the event list
+##
+##  Background: Navigate to Home Screen
+##    Given I am on the Splash screen
+##    When I click on the "Sign in with email" button
+##    Then I should arrive on the Login Screen
+##    When I enter "fievel.farwest@example.com" in the "Email" field
+##    And I click on the "Next" button
+##    Then I should arrive on the Password screen
+##    When I enter "test123&" in the "Password" field
+##    And I click on the "Sign in" button
+##    Then I should arrive on the Home Screen
+##    When I click on the "Add" FAB button
+##    Then I should arrive on the Add Screen
 #
-#  Background: Navigate to Home Screen
-#    Given I am on the Splash screen
-#    When I click on the "Sign in with email" button
-#    Then I should arrive on the Login Screen
-#    When I enter "fievel.farwest@example.com" in the "Email" field
-#    And I click on the "Next" button
-#    Then I should arrive on the Password screen
-#    When I enter "test123&" in the "Password" field
-#    And I click on the "Sign in" button
-#    Then I should arrive on the Home Screen
+#  Background: Navigate to the Add screen
+#    Given I am on the Home screen
 #    When I click on the "Add" FAB button
 #    Then I should arrive on the Add Screen
 #

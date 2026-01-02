@@ -1,5 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.cucumber.steps
 
+import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithTag
@@ -16,6 +17,7 @@ class LoginSteps(private val composeRuleHolder: ComposeRuleHolder) {
 
     @Given("I am on the Splash screen")
     fun iAmOnTheSplashScreen() {
+        Log.d("OM_TAG", "I am on the Splash screen")
         composeRule.onNodeWithText("Sign in with Google").assertIsDisplayed()
         composeRule.onNodeWithText("Sign in with email").assertIsDisplayed()
     }
@@ -34,13 +36,14 @@ class LoginSteps(private val composeRuleHolder: ComposeRuleHolder) {
     @Then("I should arrive on the Home Screen")
     @Given("I am on the Home screen")
     fun iAmOnTheHomeScreen() {
+        Log.d("OM_TAG", "I should arrive on the Home screen")
         // Verify some known events are shown
-//        composeRule.waitUntil(5000) {
-//            composeRule.onNodeWithText("City Carnival").isDisplayed()
-//        }
-        composeRule.waitUntil(5000) {
-            composeRule.onNodeWithTag("home_screen").isDisplayed()
+        composeRule.waitUntil(20000) {
+            composeRule.onNodeWithText("City Carnival").isDisplayed()
         }
+//        composeRule.waitUntil(5000) {
+//            composeRule.onNodeWithTag("home_screen").isDisplayed()
+//        }
 //        composeRule
 //            .onRoot(useUnmergedTree = true)
 //            .printToLog("SEMANTICS")

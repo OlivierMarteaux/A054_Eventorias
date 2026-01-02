@@ -83,13 +83,14 @@ class AccountViewModel @Inject constructor(
 //                    }
 //                }
             userRepository.userAuthState
-                .map { it?.toUser() }
+//                .map { it}
 //                .filterNotNull()
                 .collect { currentUser ->
                     if (currentUser != null) {
                         userUiState = UiState.Success(currentUser)
                         this@AccountViewModel.user = currentUser
                         log.d("AccountViewModel: user updated to ${currentUser.email}")
+                        log.d("AccountViewModel: userPhotoUrl = ${currentUser.photoUrl}")
                     } else {
                         userUiState = UiState.Error(Throwable("No user logged in"))
                         log.d("AccountViewModel: no user logged in")

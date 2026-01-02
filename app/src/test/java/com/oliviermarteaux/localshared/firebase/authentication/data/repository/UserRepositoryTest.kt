@@ -3,6 +3,7 @@ package com.oliviermarteaux.localshared.firebase.authentication.data.repository
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeNewUser
 import com.oliviermarteaux.localshared.fake.FakeDataFactory.fakeUser
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserFirebaseRepository
 import com.oliviermarteaux.shared.firebase.authentication.data.service.UserApi
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,7 +21,7 @@ class UserRepositoryTest {
     fun setUp() {
         userApi = mockk()
         coEvery { userApi.userAuthState } returns mockk()
-        userRepository = UserRepository(userApi)
+        userRepository = UserFirebaseRepository(userApi)
     }
 
     @Test

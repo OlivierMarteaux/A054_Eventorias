@@ -7,6 +7,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserFirebaseRepository
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.firebase.authentication.data.service.UserApi
 import com.oliviermarteaux.shared.firebase.authentication.data.service.UserFirebaseApi
 import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostFirebaseRepository
@@ -65,6 +67,14 @@ class AppModule {
         postApi: PostApi,
     ): PostRepository {
         return PostFirebaseRepository(postApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(
+        userApi: UserApi,
+    ): UserRepository {
+        return UserFirebaseRepository(userApi)
     }
 
     /**

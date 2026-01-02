@@ -2,9 +2,11 @@ package com.oliviermarteaux.a054_eventorias.ui.screen.account
 
 import com.google.firebase.auth.FirebaseUser
 import com.oliviermarteaux.localshared.fake.fakeFirebaseUser
+import com.oliviermarteaux.localshared.fake.fakeUser
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.ui.UiState
 import com.oliviermarteaux.shared.datastore.NotificationPreferencesRepository
+import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.shared.test.rule.MainDispatcherRule
 import com.oliviermarteaux.shared.utils.CoroutineDispatcherProvider
 import com.oliviermarteaux.shared.utils.Logger
@@ -36,7 +38,7 @@ class AccountViewModelTest {
     private val dispatchers: CoroutineDispatcherProvider = mock()
 
     private val isOnlineFlow = MutableStateFlow(true)
-    private val userAuthStateFlow = MutableStateFlow<FirebaseUser?>(null)
+    private val userAuthStateFlow = MutableStateFlow<User?>(null)
     private val notifStateFlow = MutableStateFlow(true)
 
     private lateinit var accountViewModel: AccountViewModel
@@ -114,8 +116,9 @@ class AccountViewModelTest {
     @Test
     fun getCurrentUser_whenUserAvailable_shouldExposeSuccessUiState() = runTest {
         // Given
-        val firebaseUser = fakeFirebaseUser()
-        userAuthStateFlow.value = firebaseUser
+//        val firebaseUser = fakeFirebaseUser()
+//        userAuthStateFlow.value = firebaseUser
+        userAuthStateFlow.value = fakeUser
 
         // When
         // ⏱️ Let AuthUserViewModel observers run
@@ -124,7 +127,7 @@ class AccountViewModelTest {
 
         // Then
         assertTrue(accountViewModel.userUiState is UiState.Success)
-        assertEquals(firebaseUser.email, accountViewModel.user.email)
+        assertEquals(fakeUser.email, accountViewModel.user.email)
     }
 
     @Test

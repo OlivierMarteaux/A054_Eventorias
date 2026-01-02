@@ -355,6 +355,10 @@ dependencies {
     androidTestImplementation(libs.cucumber.picocontainer)
     androidTestImplementation(libs.cucumber.messages)
 
+    //_ Hilt testing for androidTest
+    androidTestImplementation(libs.hilt.testing)
+    kspAndroidTest(libs.hilt.compiler)
+
     // Debug conf
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)

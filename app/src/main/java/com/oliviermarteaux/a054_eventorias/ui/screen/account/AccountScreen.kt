@@ -23,7 +23,6 @@ import androidx.navigation.NavController
 import com.oliviermarteaux.a054_eventorias.R
 import com.oliviermarteaux.a054_eventorias.ui.theme.Red40
 import com.oliviermarteaux.a054_eventorias.ui.theme.White
-import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.shared.composables.CenteredCircularProgressIndicator
 import com.oliviermarteaux.shared.composables.SharedBottomAppBar
 import com.oliviermarteaux.shared.composables.SharedFilledTextField
@@ -33,6 +32,7 @@ import com.oliviermarteaux.shared.composables.extensions.cdButtonSemantics
 import com.oliviermarteaux.shared.composables.spacer.SpacerLarge
 import com.oliviermarteaux.shared.composables.spacer.SpacerSmall
 import com.oliviermarteaux.shared.composables.spacer.SpacerXl
+import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.shared.ui.UiState
 import com.oliviermarteaux.shared.ui.theme.SharedPadding
 import com.oliviermarteaux.shared.ui.theme.ToastPadding

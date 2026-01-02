@@ -28,7 +28,7 @@ ksp = "2.2.20-2.0.3"
 lifecycleRuntimeKtx = "2.9.4"
 materialIconsExtended = "1.7.8"
 mockitoKotlin = "5.4.0"
-oliviermarteaux = "4.4.0"
+oliviermarteaux = "4.8.0"
 mockkVersion = "1.13.5"
 
 [libraries]
@@ -74,6 +74,7 @@ googlemaps-sdk = {module = "com.google.android.gms:play-services-maps", version.
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+hilt-testing = {group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt"}
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name ="kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }

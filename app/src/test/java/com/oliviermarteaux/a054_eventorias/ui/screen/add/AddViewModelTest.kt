@@ -26,6 +26,8 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import com.oliviermarteaux.localshared.fake.fakeFirebaseUser
+import com.oliviermarteaux.localshared.fake.fakeUser
+import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
@@ -44,7 +46,7 @@ class AddViewModelTest {
 
 
     private val isOnlineFlow = MutableStateFlow(true)
-    private val userAuthStateFlow = MutableStateFlow<FirebaseUser?>(null)
+    private val userAuthStateFlow = MutableStateFlow<User?>(null)
 
     private lateinit var viewModel: AddViewModel
 
@@ -146,7 +148,7 @@ class AddViewModelTest {
     @Test
     fun addPost_whenRepositorySucceeds_shouldInvokeCallback() = runTest {
         // Given
-        val user = fakeFirebaseUser()
+        val user = fakeUser
         userAuthStateFlow.value = user
 
         whenever(postRepository.addPost(any()))
@@ -167,7 +169,7 @@ class AddViewModelTest {
     @Test
     fun addPost_whenRepositoryFails_shouldShowErrorAndResetUiState() = runTest {
         // Given
-        val user = fakeFirebaseUser()
+        val user = fakeUser
         userAuthStateFlow.value = user
 
         whenever(postRepository.addPost(any()))

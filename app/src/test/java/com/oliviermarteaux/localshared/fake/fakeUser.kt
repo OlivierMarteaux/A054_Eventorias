@@ -1,10 +1,11 @@
 package com.oliviermarteaux.localshared.fake
 
 import com.google.firebase.auth.FirebaseUser
+import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
-fun fakeFirebaseUser(): FirebaseUser = mock {
-    on { uid } doReturn "fake_uid"
-    on { email } doReturn "user@test.com"
-}
+val fakeUser = User(
+    id = "fake_uid",
+    email = "user@test.com"
+)

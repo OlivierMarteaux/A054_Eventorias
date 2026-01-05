@@ -5,10 +5,24 @@ import com.oliviermarteaux.a054_eventorias.MainActivity
 import io.cucumber.junit.WithJunitRule
 import org.junit.Rule
 import android.Manifest
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.rule.GrantPermissionRule
+import com.oliviermarteaux.a054_eventorias.EventoriasApplication
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import io.cucumber.java.Before
 
 @WithJunitRule
 class ComposeRuleHolder {
+
+    @Before
+    fun setup() {
+        val appContext = ApplicationProvider
+            .getApplicationContext<EventoriasApplication>()
+
+        appContext.userRepositoryContainer = UserFakeRepositoryContainer(appContext)
+    }
+
     // ✅ 1️⃣ Grant permissions FIRST
     @get:Rule(order = 0)
     val permissionRule: GrantPermissionRule =

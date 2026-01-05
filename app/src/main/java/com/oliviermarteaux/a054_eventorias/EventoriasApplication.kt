@@ -6,6 +6,9 @@ import android.util.Log
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import com.google.firebase.auth.FirebaseAuth
+import com.oliviermarteaux.a054_eventorias.di.UserFirebaseRepositoryContainer
+import com.oliviermarteaux.a054_eventorias.di.UserRepositoryContainer
+import com.oliviermarteaux.shared.di.AppContainer
 import com.oliviermarteaux.shared.firebase.messaging.subscribeToFcmNotificationTopic
 import dagger.hilt.android.HiltAndroidApp
 
@@ -16,6 +19,8 @@ import dagger.hilt.android.HiltAndroidApp
  */
 @HiltAndroidApp
 class EventoriasApplication : Application(), SingletonImageLoader.Factory {
+
+    lateinit var userRepositoryContainer: UserRepositoryContainer
 
     /**
      * Creates a new [ImageLoader] for the application.
@@ -33,6 +38,8 @@ class EventoriasApplication : Application(), SingletonImageLoader.Factory {
      */
     override fun onCreate() {
         super.onCreate()
+
+        userRepositoryContainer = UserFirebaseRepositoryContainer(this)
 
         try {
 //            //_ initialize firebase

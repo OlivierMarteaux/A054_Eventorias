@@ -48,18 +48,18 @@ class AppModule {
         return PostFirebaseApi()
     }
 
-    /**
-     * Provides a singleton instance of [UserApi].
-     *
-     * @return A singleton instance of [UserFirebaseApi].
-     */
-    @Singleton
-    @Provides
-    fun provideUserApi(
-        @ApplicationContext context: Context
-    ): UserApi {
-        return UserFirebaseApi(context)
-    }
+//    /**
+//     * Provides a singleton instance of [UserApi].
+//     *
+//     * @return A singleton instance of [UserFirebaseApi].
+//     */
+//    @Singleton
+//    @Provides
+//    fun provideUserApi(
+//        @ApplicationContext context: Context
+//    ): UserApi {
+//        return UserFirebaseApi(context)
+//    }
 
     @Provides
     @Singleton
@@ -69,13 +69,13 @@ class AppModule {
         return PostFirebaseRepository(postApi)
     }
 
-    @Provides
-    @Singleton
-    fun provideUserRepository(
-        userApi: UserApi,
-    ): UserRepository {
-        return UserFirebaseRepository(userApi)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideUserRepository(
+//        userApi: UserApi,
+//    ): UserRepository {
+//        return UserFirebaseRepository(userApi)
+//    }
 
     /**
      * Provides the [NotificationManager] system service.

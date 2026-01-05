@@ -100,21 +100,24 @@ class AccountViewModel @Inject constructor(
     }
 
     init {
-        if (BuildConfig.DEBUG) {
-            val fakeUser = User(
-                id = "123",
-                firstname = "Fievel",
-                lastname = "Farwest",
-                fullname = "Fievel Farwest",
-                email = "fievelfarwest@example.com",
-            )
-            userUiState = UiState.Success(fakeUser)
-            user = fakeUser
-            notificationState = true
-        } else {
-            userUiState = UiState.Loading
-            getCurrentUser()
-            getNotifState()
-        }
+        userUiState = UiState.Loading
+        getCurrentUser()
+        getNotifState()
+//        if (BuildConfig.DEBUG) {
+//            val fakeUser = User(
+//                id = "123",
+//                firstname = "Fievel",
+//                lastname = "Farwest",
+//                fullname = "Fievel Farwest",
+//                email = "fievelfarwest@example.com",
+//            )
+//            userUiState = UiState.Success(fakeUser)
+//            user = fakeUser
+//            notificationState = true
+//        } else {
+//            userUiState = UiState.Loading
+//            getCurrentUser()
+//            getNotifState()
+//        }
     }
 }

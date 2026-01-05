@@ -7,6 +7,7 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -111,7 +112,9 @@ class SharedCucumberSteps(private val composeRuleHolder: ComposeRuleHolder) {
 
     @Then("I should arrive on the {string} screen for the {string} item named {string}")
     fun iAmOnTheItemScreen(screen: String, item: String, itemName: String, ) {
-        composeRule.onNodeWithTag(itemName).assertIsDisplayed()
+        composeRule.waitUntil(5000) {
+            composeRule.onNodeWithTag(itemName).isDisplayed()
+        }
 //        composeRule
 //            .onRoot(useUnmergedTree = true)
 //            .printToLog("SEMANTICS")

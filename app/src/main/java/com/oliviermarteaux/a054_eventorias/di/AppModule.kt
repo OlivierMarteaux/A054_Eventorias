@@ -31,18 +31,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-    /**
-     * Provides a Singleton instance of PostApi using a PostFirebaseApi implementation.
-     * This means that whenever a dependency on PostApi is requested, the same instance of PostFirebaseApi will be used
-     * throughout the application.
-     *
-     * @return A Singleton instance of PostFirebaseApi.
-     */
-    @Provides
-    @Singleton
-    fun providePostApi(): PostApi {
-        return PostFirebaseApi()
-    }
+//    /**
+//     * Provides a Singleton instance of PostApi using a PostFirebaseApi implementation.
+//     * This means that whenever a dependency on PostApi is requested, the same instance of PostFirebaseApi will be used
+//     * throughout the application.
+//     *
+//     * @return A Singleton instance of PostFirebaseApi.
+//     */
+//    @Provides
+//    @Singleton
+//    fun providePostApi(): PostApi {
+//        return PostFirebaseApi()
+//    }
 
 //    /**
 //     * Provides a singleton instance of [UserApi].
@@ -57,13 +57,13 @@ class AppModule {
 //        return UserFirebaseApi(context)
 //    }
 
-    @Provides
-    @Singleton
-    fun providePostRepository(
-        postApi: PostApi,
-    ): PostRepository {
-        return PostFirebaseRepository(postApi)
-    }
+//    @Provides
+//    @Singleton
+//    fun providePostRepository(
+//        postApi: PostApi,
+//    ): PostRepository {
+//        return PostFirebaseRepository(postApi)
+//    }
 
 //    @Provides
 //    @Singleton

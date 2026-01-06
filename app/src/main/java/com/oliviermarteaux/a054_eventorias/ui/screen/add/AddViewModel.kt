@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.oliviermarteaux.localshared.utils.TestConfig
 import com.oliviermarteaux.shared.cameraX.CameraRepository
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.firebase.authentication.ui.screen.AuthUserViewModel
@@ -57,7 +58,7 @@ class AddViewModel @Inject constructor(
                 .stateIn ( scope = viewModelScope )
                 .collect {
                     photoUrl = it
-                    post = post.copy(photoUrl = it)
+                    post = post.copy(photoUrl = if (TestConfig.isTest) "fake_photo_url" else it)
                 }
         }
     }

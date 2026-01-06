@@ -7,6 +7,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import com.oliviermarteaux.a054_eventorias.EventoriasApplication
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserFirebaseRepository
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.firebase.authentication.data.service.UserApi
@@ -36,24 +37,25 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class UserModule {
 
-    /**
-     * Provides a singleton instance of [UserApi].
-     *
-     * @return A singleton instance of [UserFirebaseApi].
-     */
-    @Singleton
-    @Provides
-    fun provideUserApi(
-        @ApplicationContext context: Context
-    ): UserApi {
-        return UserFirebaseApi(context)
-    }
+//    /**
+//     * Provides a singleton instance of [UserApi].
+//     *
+//     * @return A singleton instance of [UserFirebaseApi].
+//     */
+//    @Singleton
+//    @Provides
+//    fun provideUserApi(
+//        @ApplicationContext context: Context
+//    ): UserApi {
+//        return UserFirebaseApi(context)
+//    }
 
     @Provides
     @Singleton
     fun provideUserRepository(
-        userApi: UserApi,
+        application: Application
     ): UserRepository {
-        return UserFirebaseRepository(userApi)
+        val app = application as EventoriasApplication
+        return app.eventoriasContainer.userRepository
     }
 }

@@ -6,9 +6,9 @@ import android.util.Log
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import com.google.firebase.auth.FirebaseAuth
-import com.oliviermarteaux.a054_eventorias.di.UserFirebaseRepositoryContainer
-import com.oliviermarteaux.a054_eventorias.di.UserRepositoryContainer
-import com.oliviermarteaux.shared.di.AppContainer
+import com.oliviermarteaux.a054_eventorias.di.EventoriasAppContainer
+import com.oliviermarteaux.a054_eventorias.di.EventoriasContainer
+import com.oliviermarteaux.localshared.utils.TestConfig
 import com.oliviermarteaux.shared.firebase.messaging.subscribeToFcmNotificationTopic
 import dagger.hilt.android.HiltAndroidApp
 
@@ -20,7 +20,8 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class EventoriasApplication : Application(), SingletonImageLoader.Factory {
 
-    lateinit var userRepositoryContainer: UserRepositoryContainer
+    lateinit var eventoriasContainer: EventoriasContainer
+        internal set
 
     /**
      * Creates a new [ImageLoader] for the application.
@@ -39,7 +40,7 @@ class EventoriasApplication : Application(), SingletonImageLoader.Factory {
     override fun onCreate() {
         super.onCreate()
 
-        userRepositoryContainer = UserFirebaseRepositoryContainer(this)
+        eventoriasContainer = createContainer()
 
         try {
 //            //_ initialize firebase
@@ -63,6 +64,24 @@ class EventoriasApplication : Application(), SingletonImageLoader.Factory {
             // manage application exceptions
         } catch (e: Exception) {
             Log.e("OM_TAG", "EventoriasApplication: onCreate(): FirebaseApp initialization failed", e)
+        }
+    }
+
+    private fun createContainer(): EventoriasContainer {
+        return try {
+            // 👇 class exists ONLY in androidTest
+            val androidTestContainerClass = Class.forName(
+                "com.oliviermarteaux.a054_eventorias.di.EventoriasTestContainer"
+            )
+
+            val androidTestContainerConstructor =
+                androidTestContainerClass.getConstructor(Context::class.java)
+            Log.d("OM_TAG", "EventoriasApplication::createContainer: 🧪 Test container loaded via reflection")
+            androidTestContainerConstructor.newInstance(this) as EventoriasContainer
+
+        } catch (e: ClassNotFoundException) {
+            Log.d("OM_TAG", "EventoriasApplication::createContainer: 🚀 Prod container loaded")
+            EventoriasAppContainer(this)
         }
     }
 }

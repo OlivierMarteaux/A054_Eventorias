@@ -1,5 +1,7 @@
 package com.oliviermarteaux.a054_eventorias.test
 
+import android.os.Bundle
+import com.oliviermarteaux.localshared.utils.TestConfig
 import io.cucumber.android.runner.CucumberAndroidJUnitRunner
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
@@ -44,4 +46,9 @@ import org.junit.runner.RunWith
     ]
 )
 @SuppressWarnings("unused")
-class MyCucumberTestRunner : CucumberAndroidJUnitRunner()
+class MyCucumberTestRunner : CucumberAndroidJUnitRunner() {
+    override fun onCreate(bundle: Bundle?) {
+        TestConfig.isTest = true
+        super.onCreate(bundle)
+    }
+}

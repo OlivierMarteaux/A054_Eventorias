@@ -19,10 +19,8 @@ import javax.inject.Singleton
  *
  * @property userApi The API for interacting with user data.
  */
-@Singleton
-class UserFakeRepository @Inject constructor(
-    private val context: Context
-): UserRepository {
+//@Singleton
+class UserFakeRepository /*@Inject constructor*/(context: Context): UserRepository {
 
     init {
         Log.d("OM_TAG", "UserFakeRepository: created and injected")

@@ -2,15 +2,16 @@ package com.oliviermarteaux.a054_eventorias.di
 
 import android.content.Context
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserFirebaseRepository
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.firebase.authentication.data.service.UserApi
 import com.oliviermarteaux.shared.firebase.authentication.data.service.UserFirebaseApi
-import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class UserFirebaseRepositoryContainer(context: Context)
-    : UserRepositoryContainer {
+class EventoriasAppContainer(context: Context)
+    : EventoriasContainer {
     private val userApi: UserApi = UserFirebaseApi(context)
 
-    override val userRepository = UserFirebaseRepository(userApi)
+    override val userRepository: UserRepository by lazy {
+        UserFirebaseRepository(userApi)
+    }
 }

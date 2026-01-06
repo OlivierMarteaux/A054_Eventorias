@@ -8,8 +8,6 @@ import android.Manifest
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.rule.GrantPermissionRule
 import com.oliviermarteaux.a054_eventorias.EventoriasApplication
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
 import io.cucumber.java.Before
 
 @WithJunitRule
@@ -20,7 +18,7 @@ class ComposeRuleHolder {
         val appContext = ApplicationProvider
             .getApplicationContext<EventoriasApplication>()
 
-        appContext.userRepositoryContainer = UserFakeRepositoryContainer(appContext)
+        appContext.eventoriasContainer = EventoriasTestContainer(appContext)
     }
 
     // ✅ 1️⃣ Grant permissions FIRST

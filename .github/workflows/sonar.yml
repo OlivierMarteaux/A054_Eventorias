@@ -21,6 +21,9 @@ jobs:
       - name: Clear Kotlin DSL cache
         run: rm -rf ~/.gradle/caches/8.13/kotlin-dsl
 
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
       - name: Build project
         run: ./gradlew clean build --refresh-dependencies --stacktrace
 

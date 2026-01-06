@@ -153,7 +153,7 @@ jobs:
           enable-hw-keyboard: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew jacocoTestReport sonar --info
+          script: ./gradlew jacocoTestReport sonar --info --refresh-dependencies
 #          script: ./gradlew connectedCheck
 
 #      - name: Save AVD cache

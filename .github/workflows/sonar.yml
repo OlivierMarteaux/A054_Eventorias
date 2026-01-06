@@ -19,7 +19,7 @@ jobs:
           java-version: 17
 
       - name: Clear Kotlin DSL cache
-        run: rm -rf ~/.gradle/caches/8.13/kotlin-dsl
+        run: rm -rf ~/.gradle/caches
 
       - name: Make gradlew executable
         run: chmod +x gradlew

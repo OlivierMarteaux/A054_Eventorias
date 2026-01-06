@@ -12,3 +12,11 @@ plugins {
     alias(libs.plugins.googleservices) apply false
     alias(libs.plugins.crashlytics) apply false // firebase crashlytics
 }
+
+//allprojects {
+//    repositories {
+//        google()
+//        mavenCentral() // ensure first
+//        maven { url = uri("https://jitpack.io") } // for your personal libs
+//    }
+//}

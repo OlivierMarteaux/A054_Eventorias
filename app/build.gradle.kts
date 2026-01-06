@@ -59,7 +59,7 @@ android {
     }
 
     // specific for JaCoCo
-    testCoverage { version = "0.8.8" }
+    testCoverage { version = "0.8.12" }
 
     defaultConfig {
         applicationId = "com.oliviermarteaux.a054_eventorias"
@@ -356,8 +356,8 @@ dependencies {
     androidTestImplementation(libs.cucumber.messages)
 
     //_ Hilt testing for androidTest
-    androidTestImplementation(libs.hilt.testing)
-    kspAndroidTest(libs.hilt.compiler)
+//    androidTestImplementation(libs.hilt.testing)
+//    kspAndroidTest(libs.hilt.compiler)
 
     // Debug conf
     debugImplementation(libs.androidx.compose.ui.tooling)

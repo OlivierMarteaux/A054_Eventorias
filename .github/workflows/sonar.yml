@@ -159,8 +159,14 @@ jobs:
 #          script: ./gradlew jacocoTestReport sonar --info --refresh-dependencies
 ##          script: ./gradlew connectedCheck
 
+      - name: Download Gradle Wrapper
+        run: ./gradlew wrapper
+
+      - name: Clear Gradle caches (force retry)
+        run: rm -rf ~/.gradle/caches/
+
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean build --refresh-dependencies --stacktrace
 
 #      - name: Save AVD cache
 #        if: success()

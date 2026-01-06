@@ -8,7 +8,6 @@ import coil3.SingletonImageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.oliviermarteaux.a054_eventorias.di.EventoriasAppContainer
 import com.oliviermarteaux.a054_eventorias.di.EventoriasContainer
-import com.oliviermarteaux.localshared.utils.TestConfig
 import com.oliviermarteaux.shared.firebase.messaging.subscribeToFcmNotificationTopic
 import dagger.hilt.android.HiltAndroidApp
 

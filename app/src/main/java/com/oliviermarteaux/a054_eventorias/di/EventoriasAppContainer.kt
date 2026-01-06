@@ -5,7 +5,6 @@ import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserFi
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.firebase.authentication.data.service.UserApi
 import com.oliviermarteaux.shared.firebase.authentication.data.service.UserFirebaseApi
-import javax.inject.Singleton
 
 class EventoriasAppContainer(context: Context)
     : EventoriasContainer {

@@ -8,171 +8,189 @@ on:
 
 jobs:
   sonar:
-    name: Run jacocoTestReport and Sonar
     runs-on: ubuntu-latest
-
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v3
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'
           java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available
 
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+      - name: Clear Kotlin DSL cache
+        run: rm -rf ~/.gradle/caches/8.13/kotlin-dsl
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-
-      - name: Restore google-services.json
-        run: |
-          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
-
-      - name: Generate apikey.kt
-        run: |
-          mkdir -p app/src/main/java/com/oliviermarteaux/apikeys
-          cat <<EOF > app/src/main/java/com/oliviermarteaux/apikeys/apikey.kt
-          package com.oliviermarteaux.apikeys
-          const val GOOGLE_MAPS_API_KEY = "${{ secrets.GOOGLE_MAPS_API_KEY }}"
-          EOF
-
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-
-#      - name: Run jacocoUnitTestReport and Sonar
-#        env:
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        run: |
-#          ./gradlew testDebugUnitTest jacocoUnitTestReport sonar --info
-
-#      - name: SonarQube analysis (Gradle)
-#        run: ./gradlew sonarqube
-#        env:
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#
-#      # Check the Quality Gate status.
-#      - name: SonarQube Quality Gate check
-#        id: sonarqube-quality-gate-check
-#        uses: sonarsource/sonarqube-quality-gate-action@master
-#        with:
-#          pollingTimeoutSec: 600
-#        env:
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-#test
-#      - name: Enable KVM group perms
-#        run: |
-#          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-#          sudo udevadm control --reload-rules
-#          sudo udevadm trigger --name-match=kvm
-
-#      - name: Gradle cache
-#        uses: gradle/actions/setup-gradle@v3
-
-#      - name: AVD cache
-#        uses: actions/cache@v4
-#        id: avd-cache
-#        with:
-#          path: |
-#            ~/.android/avd/*
-#            ~/.android/adb*
-#          key: avd-35-x86_64
-
-#test
-#      - name: create AVD and generate snapshot for caching
-#        if: steps.avd-cache.outputs.cache-hit != 'true'
-#        uses: reactivecircus/android-emulator-runner@v2
-#        with:
-#          api-level: 35
-#          arch: x86_64
-#          profile: resizable
-#          target: google_apis
-#          cores: 6
-#          ram-size: 4096M
-#          heap-size: 228M
-#          disk-size: 6G
-#          force-avd-creation: false
-#          enable-hw-keyboard: true
-#          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-#          disable-animations: true
-#          script: echo "Generated AVD snapshot for caching."
-
-#test
-#      - name: Setup Android SDK
-#        uses: android-actions/setup-android@v2
-#        with:
-#          api-level: 35
-#          target: google_apis
-#          arch: x86_64
-#          emulator: true
-
-#      - name: Install Android SDK packages
-#        run: |
-#          yes | sdkmanager --update
-#          yes | sdkmanager "platform-tools" "emulator" "platforms;android-35" "system-images;android-35;google_apis;x86_64"
-#          yes | sdkmanager --licenses
-#
-#      - name: Create Emulator
-#        run: |
-#          echo "no" | avdmanager create avd -n testEmulator -k "system-images;android-35;google_apis;x86_64" --force
-#
-#      - name: Start emulator (headless)
-#        run: |
-#          nohup emulator -avd testEmulator -no-window -no-audio -no-boot-anim &
-#
-#      - name: Wait for emulator
-#        run: |
-#          adb wait-for-device
-#          timeout 300s bash -c 'until adb shell getprop sys.boot_completed | grep -m 1 "1"; do sleep 5; done'
-
-#test
-#      - name: run instrumented tests
-#        env:
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        uses: reactivecircus/android-emulator-runner@v2
-#        with:
-#          api-level: 35
-#          arch: x86_64
-#          profile: resizable
-#          target: google_apis
-#          cores: 6
-#          ram-size: 4096M
-#          heap-size: 228M
-#          disk-size: 6G
-#          force-avd-creation: false
-#          enable-hw-keyboard: true
-#          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-#          disable-animations: true
-#          script: ./gradlew jacocoTestReport sonar --info --refresh-dependencies
-##          script: ./gradlew connectedCheck
-
-      - name: Download Gradle Wrapper
-        run: ./gradlew wrapper
-
-      - name: Clear Gradle caches (force retry)
-        run: rm -rf ~/.gradle/caches/
-
-      - name: Build with Gradle
+      - name: Build project
         run: ./gradlew clean build --refresh-dependencies --stacktrace
 
-#      - name: Save AVD cache
-#        if: success()
+#jobs:
+#  sonar:
+#    name: Run jacocoTestReport and Sonar
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: checkout
+#        uses: actions/checkout@v4
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: 17
+#          distribution: 'zulu' # Alternative distribution options are available
+#
+#      - name: Cache SonarQube packages
 #        uses: actions/cache@v4
 #        with:
-#          path: |
-#            ~/.android/avd
-#            ~/.android/emu*
-#          key: avd-35-x86_64
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar
+#          restore-keys: ${{ runner.os }}-sonar
+#
+#      - name: Cache Gradle packages
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.gradle/caches
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+#          restore-keys: ${{ runner.os }}-gradle
+#
+#      - name: Restore google-services.json
+#        run: |
+#          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+#
+#      - name: Generate apikey.kt
+#        run: |
+#          mkdir -p app/src/main/java/com/oliviermarteaux/apikeys
+#          cat <<EOF > app/src/main/java/com/oliviermarteaux/apikeys/apikey.kt
+#          package com.oliviermarteaux.apikeys
+#          const val GOOGLE_MAPS_API_KEY = "${{ secrets.GOOGLE_MAPS_API_KEY }}"
+#          EOF
+#
+#      - name: Make gradlew executable
+#        run: chmod +x gradlew
+#
+##      - name: Run jacocoUnitTestReport and Sonar
+##        env:
+##          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+##        run: |
+##          ./gradlew testDebugUnitTest jacocoUnitTestReport sonar --info
+#
+##      - name: SonarQube analysis (Gradle)
+##        run: ./gradlew sonarqube
+##        env:
+##          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+##
+##      # Check the Quality Gate status.
+##      - name: SonarQube Quality Gate check
+##        id: sonarqube-quality-gate-check
+##        uses: sonarsource/sonarqube-quality-gate-action@master
+##        with:
+##          pollingTimeoutSec: 600
+##        env:
+##          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#
+##test
+##      - name: Enable KVM group perms
+##        run: |
+##          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+##          sudo udevadm control --reload-rules
+##          sudo udevadm trigger --name-match=kvm
+#
+##      - name: Gradle cache
+##        uses: gradle/actions/setup-gradle@v3
+#
+##      - name: AVD cache
+##        uses: actions/cache@v4
+##        id: avd-cache
+##        with:
+##          path: |
+##            ~/.android/avd/*
+##            ~/.android/adb*
+##          key: avd-35-x86_64
+#
+##test
+##      - name: create AVD and generate snapshot for caching
+##        if: steps.avd-cache.outputs.cache-hit != 'true'
+##        uses: reactivecircus/android-emulator-runner@v2
+##        with:
+##          api-level: 35
+##          arch: x86_64
+##          profile: resizable
+##          target: google_apis
+##          cores: 6
+##          ram-size: 4096M
+##          heap-size: 228M
+##          disk-size: 6G
+##          force-avd-creation: false
+##          enable-hw-keyboard: true
+##          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+##          disable-animations: true
+##          script: echo "Generated AVD snapshot for caching."
+#
+##test
+##      - name: Setup Android SDK
+##        uses: android-actions/setup-android@v2
+##        with:
+##          api-level: 35
+##          target: google_apis
+##          arch: x86_64
+##          emulator: true
+#
+##      - name: Install Android SDK packages
+##        run: |
+##          yes | sdkmanager --update
+##          yes | sdkmanager "platform-tools" "emulator" "platforms;android-35" "system-images;android-35;google_apis;x86_64"
+##          yes | sdkmanager --licenses
+##
+##      - name: Create Emulator
+##        run: |
+##          echo "no" | avdmanager create avd -n testEmulator -k "system-images;android-35;google_apis;x86_64" --force
+##
+##      - name: Start emulator (headless)
+##        run: |
+##          nohup emulator -avd testEmulator -no-window -no-audio -no-boot-anim &
+##
+##      - name: Wait for emulator
+##        run: |
+##          adb wait-for-device
+##          timeout 300s bash -c 'until adb shell getprop sys.boot_completed | grep -m 1 "1"; do sleep 5; done'
+#
+##test
+##      - name: run instrumented tests
+##        env:
+##          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+##        uses: reactivecircus/android-emulator-runner@v2
+##        with:
+##          api-level: 35
+##          arch: x86_64
+##          profile: resizable
+##          target: google_apis
+##          cores: 6
+##          ram-size: 4096M
+##          heap-size: 228M
+##          disk-size: 6G
+##          force-avd-creation: false
+##          enable-hw-keyboard: true
+##          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+##          disable-animations: true
+##          script: ./gradlew jacocoTestReport sonar --info --refresh-dependencies
+###          script: ./gradlew connectedCheck
+#
+#      - name: Download Gradle Wrapper
+#        run: ./gradlew wrapper
+#
+#      - name: Clear Gradle caches (force retry)
+#        run: rm -rf ~/.gradle/caches/
+#
+#      - name: Build with Gradle
+#        run: ./gradlew clean build --refresh-dependencies --stacktrace
+#
+##      - name: Save AVD cache
+##        if: success()
+##        uses: actions/cache@v4
+##        with:
+##          path: |
+##            ~/.android/avd
+##            ~/.android/emu*
+##          key: avd-35-x86_64

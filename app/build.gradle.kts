@@ -1,6 +1,4 @@
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 import org.gradle.kotlin.dsl.androidTestImplementation
 import java.util.Properties
 
@@ -29,6 +27,9 @@ sonarqube {
         property("sonar.projectKey", "OlivierMarteaux_A054_Eventorias")
         property("sonar.organization", "oliviermarteaux")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.gradle.skipCompile", true)
+        property("sonar.coverage.jacoco.xmlReportPaths","build/reports/jacoco/test/jacocoTestReport.xml")
+        property("sonar.androidLint.reportPaths","build/reports/lint-results-debug.xml")
 
         // Android
 //        property("sonar.sources", "src/main/java")
@@ -44,12 +45,22 @@ sonarqube {
     }
 }
 
+tasks.named("sonar") {
+    dependsOn(
+        "lintDebug", "jacocoTestReport"
+    )
+}
+
 // Specific for JaCoCo
 tasks.withType<Test> {
     extensions.configure(JacocoTaskExtension::class) {
         isIncludeNoLocationClasses = true
         excludes = listOf("jdk.internal.*")
     }
+//    reports {
+//        junitXml.required.set(true)
+//        html.required.set(true)
+//    }
 }
 
 android {
@@ -143,7 +154,15 @@ val androidExtension = extensions.getByType<BaseExtension>()
 
 //_ setup a jacoco test report task including unit tests, android tests and global coverage:
 val jacocoTestReport by tasks.registering(JacocoReport::class) {
-    dependsOn("clean" , "ensureEmulator", "testDebugUnitTest", "createDebugCoverageReport")
+    dependsOn(/*"clean" , */"ensureEmulator", "testDebugUnitTest", "createDebugCoverageReport")
+    mustRunAfter(
+        "lintDebug",
+        "lintAnalyzeDebug",
+        "lintAnalyzeDebugAndroidTest",
+        "generateDebugLintReportModel",
+        "generateDebugAndroidTestLintModel",
+        "extractProguardFiles"
+    )
     group = "Reporting"
     description = "Generate Jacoco coverage reports"
 

@@ -63,21 +63,28 @@ fun AccountScreen(
                         .padding(paddingValues)
                         .padding(horizontal = SharedPadding.large)
                 )
-                if (userUiState is UiState.Loading) { CenteredCircularProgressIndicator() }
-                if (userUiState is UiState.Error) {
-                    SharedToast(
-                        text = stringResource(R.string.an_unknown_error_occurred),
-                        bottomPadding = ToastPadding.high
-                    )
+
+                when {
+                    userUiState is UiState.Loading -> { CenteredCircularProgressIndicator() }
+                    userUiState is UiState.Error -> {
+                        SharedToast(
+                            text = stringResource(R.string.an_unknown_error_occurred),
+                            bottomPadding = ToastPadding.high
+                        )
+                    }
+                    networkError -> {
+                        SharedToast(
+                            text = stringResource(R.string.network_error_check_your_internet_connection),
+                            bottomPadding = ToastPadding.medium
+                        )
+                    }
+                    authError -> {
+                        SharedToast(
+                            text = stringResource(R.string.user_is_disconnected),
+                            bottomPadding = ToastPadding.veryHigh
+                        )
+                    }
                 }
-                if (networkError) SharedToast(
-                    text = stringResource(R.string.network_error_check_your_internet_connection),
-                    bottomPadding = ToastPadding.medium
-                )
-                if (authError) SharedToast(
-                    text = stringResource(R.string.user_is_disconnected),
-                    bottomPadding = ToastPadding.veryHigh
-                )
             }
         }
     }

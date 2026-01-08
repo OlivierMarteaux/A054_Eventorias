@@ -7,10 +7,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostFirebaseRepository
-import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostRepository
-import com.oliviermarteaux.shared.firebase.firestore.data.service.PostApi
-import com.oliviermarteaux.shared.firebase.firestore.data.service.PostFirebaseApi
 import com.oliviermarteaux.shared.utils.AndroidLogger
 import com.oliviermarteaux.shared.utils.CoroutineDispatcherProvider
 import com.oliviermarteaux.shared.utils.Logger
@@ -31,47 +27,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-//    /**
-//     * Provides a Singleton instance of PostApi using a PostFirebaseApi implementation.
-//     * This means that whenever a dependency on PostApi is requested, the same instance of PostFirebaseApi will be used
-//     * throughout the application.
-//     *
-//     * @return A Singleton instance of PostFirebaseApi.
-//     */
-//    @Provides
-//    @Singleton
-//    fun providePostApi(): PostApi {
-//        return PostFirebaseApi()
-//    }
-
-//    /**
-//     * Provides a singleton instance of [UserApi].
-//     *
-//     * @return A singleton instance of [UserFirebaseApi].
-//     */
-//    @Singleton
-//    @Provides
-//    fun provideUserApi(
-//        @ApplicationContext context: Context
-//    ): UserApi {
-//        return UserFirebaseApi(context)
-//    }
-
-//    @Provides
-//    @Singleton
-//    fun providePostRepository(
-//        postApi: PostApi,
-//    ): PostRepository {
-//        return PostFirebaseRepository(postApi)
-//    }
-
-//    @Provides
-//    @Singleton
-//    fun provideUserRepository(
-//        userApi: UserApi,
-//    ): UserRepository {
-//        return UserFirebaseRepository(userApi)
-//    }
 
     /**
      * Provides the [NotificationManager] system service.

@@ -4,20 +4,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.oliviermarteaux.localshared.utils.TestConfig
 import com.oliviermarteaux.shared.cameraX.CameraRepository
+import com.oliviermarteaux.shared.extensions.toDateTypeDate
+import com.oliviermarteaux.shared.extensions.toDateTypeTime
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostRepository
 import com.oliviermarteaux.shared.firebase.firestore.domain.model.Address
 import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
-import com.oliviermarteaux.shared.extensions.toDateTypeDate
-import com.oliviermarteaux.shared.extensions.toDateTypeTime
 import com.oliviermarteaux.shared.ui.UiState
 import com.oliviermarteaux.shared.utils.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.stateIn
@@ -31,7 +31,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AddViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val postRepository: PostRepository,
     private val userRepository: UserRepository,
     private val cameraRepository: CameraRepository,
@@ -72,10 +71,11 @@ class AddViewModel @Inject constructor(
 
     /**
      * Attempts to add the current post to the repository after setting the author.
-     *
-     * TODO: Implement logic to retrieve the current user.
      */
-    fun addPost(onResult: () -> Unit) {
+    fun addPost(
+        onResult: () -> Unit,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ) {
         addPostUiState = UiState.Loading
         if(!isOnline) {
             showNetworkErrorToast()
@@ -83,7 +83,7 @@ class AddViewModel @Inject constructor(
             return
         }
         //_ add the post to the repository
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
 //      delay(3000) // simulate network delay for Loading state evidence
             postRepository.addPost(post.copy(author = currentUser)).fold(
                 onSuccess = { withContext(Dispatchers.Main) { onResult() } },
@@ -92,5 +92,4 @@ class AddViewModel @Inject constructor(
             addPostUiState = UiState.Idle
         }
     }
-//    init { post.copy(photoUrl = null) }
 }

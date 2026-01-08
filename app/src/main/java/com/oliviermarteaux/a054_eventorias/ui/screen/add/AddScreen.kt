@@ -81,7 +81,6 @@ fun AddScreen(
                     updatePostPhoto = ::updatePostPhoto,
                     navigateToCamera = navigateToCamera,
                     addPost = { addPost(navigateBack) },
-                    navigateBack = navigateBack,
                     paddingValues = paddingValues,
                 )
                 if (addPostUiState is UiState.Loading) { CenteredCircularProgressIndicator() }
@@ -110,7 +109,6 @@ fun AddScreenBody(
     updatePostPhoto: (String) -> Unit,
     navigateToCamera: ((String) -> Unit) -> Unit,
     addPost: () -> Unit,
-    navigateBack: () -> Unit,
     paddingValues: PaddingValues,
 ) {
     val configuration = LocalConfiguration.current

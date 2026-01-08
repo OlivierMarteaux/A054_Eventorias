@@ -124,6 +124,8 @@ android {
 
 //_ Ensure use an emulator for android tests
 tasks.register("ensureEmulator") {
+    group = "verification"
+    description = "Fails the build if no Android emulator is running or if physical devices are connected."
     doFirst {
         val adbOutput = ProcessBuilder("adb", "devices")
             .redirectErrorStream(true)

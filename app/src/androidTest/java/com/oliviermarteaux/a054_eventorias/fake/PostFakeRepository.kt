@@ -1,13 +1,11 @@
 package com.oliviermarteaux.a054_eventorias.fake
 
 import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostRepository
-import com.oliviermarteaux.shared.firebase.firestore.data.service.PostApi
 import com.oliviermarteaux.shared.firebase.firestore.domain.model.Comment
 import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.shared.firebase.firestore.utils.generateSamplePosts
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import javax.inject.Inject
 
 class PostFakeRepository (): PostRepository {
     /**

@@ -47,7 +47,6 @@ import com.oliviermarteaux.shared.ui.theme.SharedSize
 @Composable
 fun DetailScreen(
     onBackClick: () -> Unit,
-//    detailViewModel: DetailViewModel = hiltViewModel()
     postViewModel: PostViewModel
 ) {
     with(postViewModel) {
@@ -85,7 +84,7 @@ fun DetailBody(
 
     if (orientation == Configuration.ORIENTATION_PORTRAIT) {
         Column(
-            modifier = modifier
+            modifier = modifier.padding(paddingValues)
         ) {
             DetailImageCard(
                 post = post,
@@ -105,7 +104,7 @@ fun DetailBody(
         Row(
             modifier = modifier
         ) {
-            Column() {
+            Column {
                 DetailImageCard(
                     post = post,
                     modifier = Modifier.fillMaxHeight()
@@ -224,23 +223,5 @@ fun DetailAddressCard(post: Post) {
                 .aspectRatio(149 / 72f)
                 .clip(MaterialTheme.shapes.medium)
         )
-//            SharedGoogleMapFromCoords(
-//                modifier = Modifier
-//                    .size(200.dp)
-//                    .clip(MaterialTheme.shapes.small)
-//            )
-//            SharedGoogleMapFromString(
-//                address = post.address.fullAddress ,
-//                modifier = Modifier
-//                    .size(80.dp)
-//                    .clip(MaterialTheme.shapes.small)
-//            )
     }
 }
-
-
-//@Preview(showBackground = true)
-//@Composable
-//fun EventDetailsScreenPreview() {
-//    DetailScreen(onBackClick = {})
-//}

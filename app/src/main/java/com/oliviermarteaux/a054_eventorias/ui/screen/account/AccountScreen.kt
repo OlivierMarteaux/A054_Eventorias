@@ -52,7 +52,7 @@ fun AccountScreen(
             topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
             bottomBar = { SharedBottomAppBar(navController = navController) }
         ) { paddingValues ->
-            Box(){
+            Box {
                 AccountScreenBody(
                     user = user,
                     notificationState = notificationState,
@@ -63,21 +63,28 @@ fun AccountScreen(
                         .padding(paddingValues)
                         .padding(horizontal = SharedPadding.large)
                 )
-                if (userUiState is UiState.Loading) { CenteredCircularProgressIndicator() }
-                if (userUiState is UiState.Error) {
-                    SharedToast(
-                        text = stringResource(R.string.an_unknown_error_occurred),
-                        bottomPadding = ToastPadding.high
-                    )
+
+                when {
+                    userUiState is UiState.Loading -> { CenteredCircularProgressIndicator() }
+                    userUiState is UiState.Error -> {
+                        SharedToast(
+                            text = stringResource(R.string.an_unknown_error_occurred),
+                            bottomPadding = ToastPadding.high
+                        )
+                    }
+                    networkError -> {
+                        SharedToast(
+                            text = stringResource(R.string.network_error_check_your_internet_connection),
+                            bottomPadding = ToastPadding.medium
+                        )
+                    }
+                    authError -> {
+                        SharedToast(
+                            text = stringResource(R.string.user_is_disconnected),
+                            bottomPadding = ToastPadding.veryHigh
+                        )
+                    }
                 }
-                if (networkError) SharedToast(
-                    text = stringResource(R.string.network_error_check_your_internet_connection),
-                    bottomPadding = ToastPadding.medium
-                )
-                if (authError) SharedToast(
-                    text = stringResource(R.string.user_is_disconnected),
-                    bottomPadding = ToastPadding.veryHigh
-                )
             }
         }
     }
@@ -94,32 +101,21 @@ fun AccountScreenBody(
         modifier = modifier
     ) {
         val cdStateDescription = stringResource(R.string.not_editable)
-//        val cdUserName =
-//            stringResource(R.string.currently_registered_name_is, user.getComputedFullName())
         SharedFilledTextField(
             value = user.getComputedFullName(),
             label = stringResource(R.string.name),
-//            contentDescription = cdUserName,
             textFieldModifier = Modifier
-                .semantics {
-//                    stateDescription = cdStateDescription
-                    this.contentDescription = cdStateDescription
-                }
+                .semantics { this.contentDescription = cdStateDescription }
                 .fillMaxWidth(),
             readOnly = true
         )
         SpacerLarge()
 
-//        val cdUserEmail = stringResource(R.string.currently_registered_email_is, user.email)
         SharedFilledTextField(
             value = user.email,
             label = stringResource(R.string.email),
-//            contentDescription = cdUserEmail,
             textFieldModifier = Modifier
-                .semantics {
-//                    stateDescription = cdStateDescription
-                    this.contentDescription = cdStateDescription
-                }
+                .semantics { this.contentDescription = cdStateDescription }
                 .fillMaxWidth(),
             readOnly = true
         )

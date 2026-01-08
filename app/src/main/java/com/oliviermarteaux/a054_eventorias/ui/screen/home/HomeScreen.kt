@@ -82,9 +82,6 @@ import kotlinx.coroutines.delay
  * @param modifier The modifier to apply to this screen.
  * @param viewModel The view model for this screen.
  * @param navigateToDetailScreen A function to call when a post is clicked.
- * @param onSettingsClick A function to call when the settings button is clicked.
- * @param navigateToLoginScreen A function to call to navigate to the login screen.
- * @param navigateToAccountScreen A function to call to navigate to the account screen.
  * @param navigateToAddScreen A function to call to navigate to the add post screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,9 +92,6 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     postViewModel: PostViewModel,
     navigateToDetailScreen: () -> Unit = {},
-    onSettingsClick: () -> Unit = {},
-    navigateToLoginScreen: () -> Unit = {},
-    navigateToAccountScreen: () -> Unit = {},
     navigateToAddScreen: () -> Unit = {}
 ) {
     with(homeViewModel) {

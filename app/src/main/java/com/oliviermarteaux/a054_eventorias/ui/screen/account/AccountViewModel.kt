@@ -22,7 +22,7 @@ class AccountViewModel @Inject constructor(
     private val notificationPreferencesRepository: NotificationPreferencesRepository,
     private val log: Logger,
     private val isOnlineFlow: Flow<Boolean>,
-    private val dispatchers: CoroutineDispatcherProvider,
+    private val dispatchers: CoroutineDispatcherProvider, // used in UnitTests
 ) : AuthUserViewModel(
     userRepository = userRepository,
     isOnlineFlow = isOnlineFlow,
@@ -38,7 +38,6 @@ class AccountViewModel @Inject constructor(
     /**
      * Toggles the notification preference.
      *
-     * @param isNotifEnabled Whether notifications should be enabled.
      */
     fun toggleNotifications() {
         viewModelScope.launch {
@@ -66,23 +65,7 @@ class AccountViewModel @Inject constructor(
     private fun getCurrentUser(){
         viewModelScope.launch {
 //            delay(1500) // for test
-            /* fixed: snapshotFlow only emits when a Compose snapshot is applied.
-                then it cannot be tested thru Unit Test.
-                ==> Use Flow.map.collect instead.
-             */
-//            snapshotFlow { currentUser }
-//                .collect { currentUser ->
-//                    try {
-//                        userUiState = UiState.Success(currentUser!!)
-//                        user = currentUser
-//                        log.d("AccountViewModel: user updated to ${currentUser.email}")
-//                    } catch (e: Exception){
-//                        userUiState = UiState.Error(e)
-//                    }
-//                }
             userRepository.userAuthState
-//                .map { it}
-//                .filterNotNull()
                 .collect { currentUser ->
                     if (currentUser != null) {
                         userUiState = UiState.Success(currentUser)
@@ -102,21 +85,5 @@ class AccountViewModel @Inject constructor(
         userUiState = UiState.Loading
         getCurrentUser()
         getNotifState()
-//        if (BuildConfig.DEBUG) {
-//            val fakeUser = User(
-//                id = "123",
-//                firstname = "Fievel",
-//                lastname = "Farwest",
-//                fullname = "Fievel Farwest",
-//                email = "fievelfarwest@example.com",
-//            )
-//            userUiState = UiState.Success(fakeUser)
-//            user = fakeUser
-//            notificationState = true
-//        } else {
-//            userUiState = UiState.Loading
-//            getCurrentUser()
-//            getNotifState()
-//        }
     }
 }

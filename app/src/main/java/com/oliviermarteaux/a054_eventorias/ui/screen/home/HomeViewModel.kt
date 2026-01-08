@@ -12,7 +12,6 @@ import com.oliviermarteaux.shared.firebase.authentication.ui.screen.AuthUserView
 import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostRepository
 import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
 import com.oliviermarteaux.shared.firebase.firestore.utils.uploadSamplePosts
-import com.oliviermarteaux.shared.navigation.Screen
 import com.oliviermarteaux.shared.ui.ListUiState
 import com.oliviermarteaux.shared.utils.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel

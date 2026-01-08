@@ -74,7 +74,8 @@ class AddViewModel @Inject constructor(
      */
     fun addPost(
         onResult: () -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.IO
+        dataDispatcher: CoroutineDispatcher = Dispatchers.IO,
+        layoutDispatcher: CoroutineDispatcher = Dispatchers.Main
     ) {
         addPostUiState = UiState.Loading
         if(!isOnline) {
@@ -83,10 +84,10 @@ class AddViewModel @Inject constructor(
             return
         }
         //_ add the post to the repository
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch(dataDispatcher) {
 //      delay(3000) // simulate network delay for Loading state evidence
             postRepository.addPost(post.copy(author = currentUser)).fold(
-                onSuccess = { withContext(Dispatchers.Main) { onResult() } },
+                onSuccess = { withContext(layoutDispatcher) { onResult() } },
                 onFailure = { showUnknownErrorToast() }
             )
             addPostUiState = UiState.Idle

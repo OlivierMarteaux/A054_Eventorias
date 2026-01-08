@@ -390,6 +390,8 @@ dependencies {
  */
 val targetDevice = "adb-cb4d0d70-D3BuA7._adb-tls-connect._tcp" // ← Replace with your actual device ID
 val checkPhysicalDevice = tasks.register("checkPhysicalDevice") {
+    group = "verification"
+    description = "Fails the build if the required physical Android device is not connected."
     doFirst {
         val adbOutput = ProcessBuilder("adb", "devices")
             .redirectErrorStream(true)

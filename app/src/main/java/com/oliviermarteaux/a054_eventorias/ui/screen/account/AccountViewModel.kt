@@ -22,7 +22,7 @@ class AccountViewModel @Inject constructor(
     private val notificationPreferencesRepository: NotificationPreferencesRepository,
     private val log: Logger,
     private val isOnlineFlow: Flow<Boolean>,
-    private val dispatchers: CoroutineDispatcherProvider,
+    private val dispatchers: CoroutineDispatcherProvider, // used in UnitTests
 ) : AuthUserViewModel(
     userRepository = userRepository,
     isOnlineFlow = isOnlineFlow,
@@ -38,7 +38,6 @@ class AccountViewModel @Inject constructor(
     /**
      * Toggles the notification preference.
      *
-     * @param isNotifEnabled Whether notifications should be enabled.
      */
     fun toggleNotifications() {
         viewModelScope.launch {

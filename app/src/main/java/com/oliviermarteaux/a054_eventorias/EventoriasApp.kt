@@ -34,7 +34,7 @@ fun EventoriasApp(){
         RequestNotificationPermission()
     }
 
-    Surface(){
+    Surface {
         DismissKeyboardOnTapOutside {
             SharedNavGraph(
                 navHostController = navController,

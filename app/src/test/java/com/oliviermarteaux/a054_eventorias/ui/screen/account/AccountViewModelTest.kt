@@ -1,13 +1,11 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.account
 
-import com.google.firebase.auth.FirebaseUser
-import com.oliviermarteaux.localshared.fake.fakeFirebaseUser
 import com.oliviermarteaux.localshared.fake.fakeUser
-import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
-import com.oliviermarteaux.shared.ui.UiState
 import com.oliviermarteaux.shared.datastore.NotificationPreferencesRepository
+import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.shared.test.rule.MainDispatcherRule
+import com.oliviermarteaux.shared.ui.UiState
 import com.oliviermarteaux.shared.utils.CoroutineDispatcherProvider
 import com.oliviermarteaux.shared.utils.Logger
 import com.oliviermarteaux.shared.utils.NoOpLogger
@@ -116,8 +114,6 @@ class AccountViewModelTest {
     @Test
     fun getCurrentUser_whenUserAvailable_shouldExposeSuccessUiState() = runTest {
         // Given
-//        val firebaseUser = fakeFirebaseUser()
-//        userAuthStateFlow.value = firebaseUser
         userAuthStateFlow.value = fakeUser
 
         // When

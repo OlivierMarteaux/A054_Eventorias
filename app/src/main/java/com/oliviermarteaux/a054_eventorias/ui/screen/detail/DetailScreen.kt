@@ -104,7 +104,7 @@ fun DetailBody(
         Row(
             modifier = modifier
         ) {
-            Column() {
+            Column {
                 DetailImageCard(
                     post = post,
                     modifier = Modifier.fillMaxHeight()

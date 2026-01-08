@@ -69,7 +69,7 @@ fun AddScreen(
             screenContentDescription = cdAddScreenTitle,
             onBackClick = navigateBack
         ) { paddingValues ->
-            Box(){
+            Box {
                 AddScreenBody(
                     post = post,
                     modifier = Modifier.testTag("Add Screen"),
@@ -80,7 +80,7 @@ fun AddScreen(
                     updatePostAddress = ::updatePostAddress,
                     updatePostPhoto = ::updatePostPhoto,
                     navigateToCamera = navigateToCamera,
-                    addPost = { addPost(navigateBack) },
+                    addPost = { addPost(onResult = navigateBack) },
                     paddingValues = paddingValues,
                 )
                 if (addPostUiState is UiState.Loading) { CenteredCircularProgressIndicator() }
@@ -250,7 +250,7 @@ fun LocalePhotoPickButton(onClick: (String) -> Unit) {
         modifier = Modifier
             .testTag("Locale Photo Button")
             .size(SharedSize.medium)
-            .semantics() {
+            .semantics {
                 contentDescription = cdLocalePhotoButton
             }
     ) {
@@ -269,7 +269,7 @@ fun CameraPhotoPickButton(onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier
             .size(SharedSize.medium)
-            .semantics() {
+            .semantics {
                 contentDescription = cdCameraButton
             }
     )

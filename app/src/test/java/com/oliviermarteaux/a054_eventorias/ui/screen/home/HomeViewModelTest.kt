@@ -1,7 +1,6 @@
 package com.oliviermarteaux.a054_eventorias.ui.screen.home
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.google.firebase.auth.FirebaseUser
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
 import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostRepository

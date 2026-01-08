@@ -11,13 +11,9 @@ import com.oliviermarteaux.shared.firebase.authentication.domain.model.NewUser
 import com.oliviermarteaux.shared.firebase.authentication.domain.model.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Repository for managing user data.
- *
- * @property userApi The API for interacting with user data.
  */
 //@Singleton
 class UserFakeRepository /*@Inject constructor*/(context: Context): UserRepository {

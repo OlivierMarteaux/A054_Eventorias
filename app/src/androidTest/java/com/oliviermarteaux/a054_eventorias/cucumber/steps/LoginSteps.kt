@@ -3,10 +3,7 @@ package com.oliviermarteaux.a054_eventorias.cucumber.steps
 import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.isDisplayed
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.printToLog
 import com.oliviermarteaux.a054_eventorias.di.ComposeRuleHolder
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then

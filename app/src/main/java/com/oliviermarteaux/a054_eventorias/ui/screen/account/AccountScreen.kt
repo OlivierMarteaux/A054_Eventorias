@@ -52,7 +52,7 @@ fun AccountScreen(
             topAppBarModifier = Modifier.padding(horizontal = SharedPadding.small),
             bottomBar = { SharedBottomAppBar(navController = navController) }
         ) { paddingValues ->
-            Box(){
+            Box {
                 AccountScreenBody(
                     user = user,
                     notificationState = notificationState,

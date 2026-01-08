@@ -73,9 +73,9 @@ class AddViewModel @Inject constructor(
      * Attempts to add the current post to the repository after setting the author.
      */
     fun addPost(
-        onResult: () -> Unit,
         dataDispatcher: CoroutineDispatcher = Dispatchers.IO,
-        layoutDispatcher: CoroutineDispatcher = Dispatchers.Main
+        layoutDispatcher: CoroutineDispatcher = Dispatchers.Main,
+        onResult: () -> Unit
     ) {
         addPostUiState = UiState.Loading
         if(!isOnline) {

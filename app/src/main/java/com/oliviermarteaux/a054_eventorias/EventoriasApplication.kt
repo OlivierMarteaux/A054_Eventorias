@@ -42,10 +42,6 @@ class EventoriasApplication : Application(), SingletonImageLoader.Factory {
         eventoriasContainer = createContainer()
 
         try {
-//            //_ initialize firebase
-//            FirebaseApp.initializeApp(this)
-//            Log.d("OM_TAG", "EventoriasApplication: onCreate(): FirebaseApp initialized")
-
             //_ Firebase authentification: sign out user at app start
             FirebaseAuth.getInstance().signOut()
             val firebaseUser = FirebaseAuth.getInstance().currentUser

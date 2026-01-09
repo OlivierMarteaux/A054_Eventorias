@@ -93,9 +93,42 @@ android {
         testInstrumentationRunner = "com.oliviermarteaux.a054_eventorias.test.MyCucumberTestRunner"
     }
 
+    //_ for Firebase App Distribution via Github Action: update version from github tag
+    androidComponents {
+        onVariants { variant ->
+            val tag = System.getenv("GITHUB_REF_NAME")
+
+            if (tag != null && Regex("""\d+\.\d+\.\d+""").matches(tag)) {
+                val (major, minor, patch) = tag.split(".").map { it.toInt() }
+
+                variant.outputs.forEach { output ->
+                    output.versionName.set(tag)
+                    output.versionCode.set(major * 10000 + minor * 100 + patch)
+                }
+            }
+        }
+    }
+
+    //_ for Firebase App Distribution via Github Action: retrieve github secrets for signing keystore
+    signingConfigs {
+        create("release") {
+            val keystorePath = System.getenv("KEYSTORE_PATH")
+
+            if (!keystorePath.isNullOrBlank()) {
+                storeFile = file(keystorePath)
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
 //            buildConfigField("boolean", "IS_DEBUG", "false")
+            val keystorePath = System.getenv("KEYSTORE_PATH")
+
+            signingConfig = signingConfigs.getByName("release")//_ force assembleRelease to provide signed APK
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -103,7 +136,8 @@ android {
                 "proguard-rules.pro"
             )
         }
-        // to enable JaCoCo test coverage reports
+
+        //_ to enable JaCoCo test coverage reports
         debug {
 //            buildConfigField("boolean", "IS_DEBUG", "true")
             enableAndroidTestCoverage = true
@@ -113,7 +147,7 @@ android {
         }
     }
 
-    // Add JVM toolchain to define global java version
+    //_ Add JVM toolchain to define global java version
     kotlin { jvmToolchain(17) }
 
     buildFeatures {

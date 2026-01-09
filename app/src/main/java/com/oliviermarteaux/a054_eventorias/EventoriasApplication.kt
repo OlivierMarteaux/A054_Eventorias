@@ -5,6 +5,9 @@ import android.content.Context
 import android.util.Log
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.oliviermarteaux.a054_eventorias.di.EventoriasAppContainer
 import com.oliviermarteaux.a054_eventorias.di.EventoriasContainer
@@ -42,6 +45,12 @@ class EventoriasApplication : Application(), SingletonImageLoader.Factory {
         eventoriasContainer = createContainer()
 
         try {
+            //_ firebase init
+            FirebaseApp.initializeApp(this)
+            //_ firebase app check init
+            FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance()
+            )
             //_ Firebase authentification: sign out user at app start
             FirebaseAuth.getInstance().signOut()
             val firebaseUser = FirebaseAuth.getInstance().currentUser

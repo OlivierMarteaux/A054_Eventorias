@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
-import com.oliviermarteaux.a054_eventorias.BuildConfig
+import com.oliviermarteaux.localshared.utils.TestConfig
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
 import com.oliviermarteaux.shared.firebase.authentication.ui.screen.AuthUserViewModel
 import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostRepository
@@ -111,12 +111,13 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        setAuthObserverDelay(200)
+//        setAuthObserverDelay(1000)
 //    throw RuntimeException("Test Crash") // Force a crash
         log.d("HomeFeedViewModel: init")
 
         // Sign in the test user in case of test config
-        if (BuildConfig.DEBUG) signInTestUser()
+//        if (BuildConfig.DEBUG) signInTestUser()
+        if (TestConfig.isTest) signInTestUser()
 
         // Fetch posts from the repository
         loadPosts()

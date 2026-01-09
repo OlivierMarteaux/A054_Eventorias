@@ -1,17 +1,20 @@
 package com.oliviermarteaux.a054_eventorias
 
+import android.Manifest
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.oliviermarteaux.a054_eventorias.ui.navigation.SharedNavGraph
+import com.oliviermarteaux.localshared.utils.TestConfig
 import com.oliviermarteaux.shared.composables.startup.DismissKeyboardOnTapOutside
-import com.oliviermarteaux.shared.composables.startup.RequestCameraPermission
-import com.oliviermarteaux.shared.composables.startup.RequestMapsPermission
-import com.oliviermarteaux.shared.composables.startup.RequestNotificationPermission
+import com.oliviermarteaux.shared.composables.startup.RequestPermissionsOnFirstLaunch
 import com.oliviermarteaux.shared.navigation.LogRoutes
 import com.oliviermarteaux.shared.navigation.Screen
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun EventoriasApp(){
 
@@ -20,7 +23,7 @@ fun EventoriasApp(){
     Log.d("OM_TAG", "BuildConfig: Debug = ${BuildConfig.DEBUG}")
 
     val startDestination: String =
-        if (BuildConfig.DEBUG) {
+        if (TestConfig.isTest) {
             Log.d("OM_TAG", "start screen = ${Screen.Home.route}")
             Screen.Home.route
         } else {
@@ -28,10 +31,12 @@ fun EventoriasApp(){
             Screen.Splash.route
         }
 
-    if (!BuildConfig.DEBUG) {
-        RequestMapsPermission()
-        RequestCameraPermission()
-        RequestNotificationPermission()
+    if (!TestConfig.isTest) {
+        RequestPermissionsOnFirstLaunch(
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.POST_NOTIFICATIONS
+        )
     }
 
     Surface {

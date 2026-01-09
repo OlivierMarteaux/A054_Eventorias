@@ -28,7 +28,7 @@ ksp = "2.2.20-2.0.3"
 lifecycleRuntimeKtx = "2.9.4"
 materialIconsExtended = "1.7.8"
 mockitoKotlin = "5.4.0"
-oliviermarteaux = "4.8.0"
+oliviermarteaux = "5.0.0"
 mockkVersion = "1.13.5"
 
 [libraries]
@@ -61,6 +61,7 @@ cucumber-messages = { module = "io.cucumber:messages", version.ref = "cucumber" 
 cucumber-picocontainer = { module = "io.cucumber:cucumber-picocontainer", version.ref = "cucumber" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk" }

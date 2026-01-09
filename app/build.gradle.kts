@@ -125,21 +125,19 @@ android {
 
     buildTypes {
         release {
-//            buildConfigField("boolean", "IS_DEBUG", "false")
-            val keystorePath = System.getenv("KEYSTORE_PATH")
-
+//            applicationIdSuffix = ".release"
             signingConfig = signingConfigs.getByName("release")//_ force assembleRelease to provide signed APK
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+//            isMinifyEnabled = true
+//            isShrinkResources = true
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
         }
 
         //_ to enable JaCoCo test coverage reports
         debug {
-//            buildConfigField("boolean", "IS_DEBUG", "true")
+//            applicationIdSuffix = ".debug"
             enableAndroidTestCoverage = true
             enableUnitTestCoverage = true
             // Optional: only if you want to test minification earlier
@@ -350,6 +348,7 @@ dependencies {
     implementation(libs.play.services.credentials)
     implementation(libs.androidx.credentials)
     implementation(libs.googleid)
+    implementation(libs.firebase.appcheck.playintegrity)
 
     //_ hilt for DI
     implementation(libs.hilt)

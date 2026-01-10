@@ -133,7 +133,7 @@ fun HomeScreen(
                 searchLabel = stringResource(R.string.look_for_an_event),
                 searchBarIcon = IconSource.VectorIcon(Icons.Default.Clear),
                 searchBarIconSemantics = cdCustomAccessibilityActionClear,
-                onSearchBarIconClick = ::clearQuery,
+                onSearchBarIconClick = {clearQuery(); hideSearchBar()},
                 toggleSearchBar = ::toggleSearchBar,
                 searchBarDisplayed = searchBarDisplayed,
                 onSearch = { focusOnSearchResult() },

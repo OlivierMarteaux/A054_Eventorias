@@ -20,7 +20,24 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+###########################################
+# Credentials
+###########################################
 -if class androidx.credentials.CredentialManager
 -keep class androidx.credentials.playservices.** {
  *;
+}
+###########################################
+# Project Firebase Firestore Models
+###########################################
+-keep class com.oliviermarteaux.shared.firebase.firestore.domain.model.** {
+    <fields>;
+    <methods>;
+}
+###########################################
+# Project Firebase Authentication Models
+###########################################
+-keep class com.oliviermarteaux.shared.firebase.authentication.domain.model.** {
+    <fields>;
+    <methods>;
 }

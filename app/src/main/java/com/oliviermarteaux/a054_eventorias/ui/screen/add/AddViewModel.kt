@@ -10,7 +10,7 @@ import com.oliviermarteaux.shared.cameraX.CameraRepository
 import com.oliviermarteaux.shared.extensions.toDateTypeDate
 import com.oliviermarteaux.shared.extensions.toDateTypeTime
 import com.oliviermarteaux.shared.firebase.authentication.data.repository.UserRepository
-import com.oliviermarteaux.shared.firebase.authentication.ui.screen.AuthUserViewModel
+import com.oliviermarteaux.shared.firebase.authentication.ui.AuthUserViewModel
 import com.oliviermarteaux.shared.firebase.firestore.data.repository.PostRepository
 import com.oliviermarteaux.shared.firebase.firestore.domain.model.Address
 import com.oliviermarteaux.shared.firebase.firestore.domain.model.Post
@@ -84,13 +84,20 @@ class AddViewModel @Inject constructor(
             return
         }
         //_ add the post to the repository
-        viewModelScope.launch(dataDispatcher) {
-//      delay(3000) // simulate network delay for Loading state evidence
-            postRepository.addPost(post.copy(author = currentUser)).fold(
-                onSuccess = { withContext(layoutDispatcher) { onResult() } },
-                onFailure = { showUnknownErrorToast() }
-            )
-            addPostUiState = UiState.Idle
-        }
+        checkUserState(
+            onUserLogged = { user ->
+                viewModelScope.launch(dataDispatcher) {
+                    //      delay(3000) // simulate network delay for Loading state evidence
+                    postRepository.addPost(post.copy(author = user)).fold(
+                        onSuccess = { withContext(layoutDispatcher) { onResult() } },
+                        onFailure = { showUnknownErrorToast() }
+                    )
+                    addPostUiState = UiState.Idle
+                }
+            },
+            onNoUserLogged = {
+                showAuthErrorToast()
+            }
+        )
     }
 }

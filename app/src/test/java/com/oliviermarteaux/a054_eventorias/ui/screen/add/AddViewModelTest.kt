@@ -12,6 +12,8 @@ import com.oliviermarteaux.shared.utils.Logger
 import com.oliviermarteaux.shared.utils.NoOpLogger
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -37,11 +39,9 @@ class AddViewModelTest {
     private val userRepository: UserRepository = mock()
     private val cameraRepository: CameraRepository = mock()
     private val logger: Logger = NoOpLogger
-
-
+    private val testDispatcher = UnconfinedTestDispatcher()
     private val isOnlineFlow = MutableStateFlow(true)
     private val userAuthStateFlow = MutableStateFlow<User?>(null)
-
     private lateinit var viewModel: AddViewModel
 
     @Before
@@ -121,15 +121,15 @@ class AddViewModelTest {
     fun addPost_whenOffline_shouldNotAddPostAndResetUiState() = runTest {
         // Given
         isOnlineFlow.value = false
-
-        // ⏱️ Let observeOnlineState() run
-        advanceTimeBy(300)   // >= delay(200)
         advanceUntilIdle()
 
         var callbackCalled = false
 
         // When
-        viewModel.addPost { callbackCalled = true }
+        viewModel.addPost (
+            dataDispatcher = testDispatcher,
+            layoutDispatcher = testDispatcher
+        ){ callbackCalled = true }
         advanceUntilIdle()
 
         // Then
@@ -141,8 +141,9 @@ class AddViewModelTest {
     @Test
     fun addPost_whenRepositorySucceeds_shouldInvokeCallback() = runTest {
         // Given
-        val user = fakeUser
-        userAuthStateFlow.value = user
+        advanceUntilIdle() // ✅ let collectors start
+        userAuthStateFlow.value = fakeUser // ✅ emit AFTER collector exists
+        advanceUntilIdle()
 
         whenever(postRepository.addPost(any()))
             .thenReturn(Result.success(Unit))
@@ -150,7 +151,10 @@ class AddViewModelTest {
         var callbackCalled = false
 
         // When
-        viewModel.addPost { callbackCalled = true }
+        viewModel.addPost (
+            dataDispatcher = testDispatcher,
+            layoutDispatcher = testDispatcher
+        ){ callbackCalled = true }
         advanceUntilIdle()
 
         // Then
@@ -162,14 +166,18 @@ class AddViewModelTest {
     @Test
     fun addPost_whenRepositoryFails_shouldShowErrorAndResetUiState() = runTest {
         // Given
-        val user = fakeUser
-        userAuthStateFlow.value = user
+        advanceUntilIdle() // ✅ let collectors start
+        userAuthStateFlow.value = fakeUser // ✅ emit AFTER collector exists
+        advanceUntilIdle()
 
         whenever(postRepository.addPost(any()))
             .thenReturn(Result.failure(RuntimeException("Error")))
 
         // When
-        viewModel.addPost {}
+        viewModel.addPost (
+            dataDispatcher = testDispatcher,
+            layoutDispatcher = testDispatcher
+        ){}
         advanceUntilIdle()
 
         // Then

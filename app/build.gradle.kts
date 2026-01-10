@@ -127,21 +127,22 @@ android {
         release {
 //            applicationIdSuffix = ".release"
             signingConfig = signingConfigs.getByName("release")//_ force assembleRelease to provide signed APK
-//            isMinifyEnabled = true
-//            isShrinkResources = true
-//            proguardFiles(
-//                getDefaultProguardFile("proguard-android-optimize.txt"),
-//                "proguard-rules.pro"
-//            )
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
 
-        //_ to enable JaCoCo test coverage reports
         debug {
 //            applicationIdSuffix = ".debug"
+            //_ to enable JaCoCo test coverage reports
             enableAndroidTestCoverage = true
             enableUnitTestCoverage = true
             // Optional: only if you want to test minification earlier
 //            isMinifyEnabled = true
+//            isShrinkResources = true
         }
     }
 

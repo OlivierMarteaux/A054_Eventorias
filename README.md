@@ -9,6 +9,8 @@ It uses Firebase as autenthication, database and media storage functions.
 
 The project was developed as part of an educational and demonstration initiative showcasing how to structure Android apps with strong architectural boundaries.
 
+[Check the preview video on my Dev Freelance Site](https://oliviermarteaux.dev/projects/eventorias)
+
 
 ## ✨ Features
 
@@ -29,23 +31,25 @@ The project was developed as part of an educational and demonstration initiative
 
 ## 🧰 Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| Language | Kotlin |
-| UI | Jetpack Compose, Material 3 |
-| Architecture | MVVM, ViewModel, State Management |
-| Navigation | Jetpack Navigation Compose |
-| Authentication | Firebase Auth, Google Credential |
-| Backend Storage | Firebase FireStore and Storage |
-| Push notifications | Firebase Cloud Messaging and Preferences DataStore |
-| Crash Analyses | Firebase CrashLytics|
-| Background Work | Kotlin Coroutines, Flows |
-| Image Handling | URI-based storage in internal memory using Coil |
-| Image Capture | Camera X |
-| Static map display | GoogleMaps API |
-| Dependency Injection | Dagger/Hilt |
-| Build | Gradle (KTS) |
-| Testing | JUnit4, MockK, Espresso, Cucumber, Jacoco |
+| Layer                  | Technology                                         |
+|------------------------|----------------------------------------------------|
+| Language               | Kotlin                                             |
+| UI                     | Jetpack Compose, Material 3                        |
+| Architecture           | MVVM, ViewModel, State Management                  |
+| Navigation             | Jetpack Navigation Compose                         |
+| Authentication         | Firebase Auth, Google Credential                   |
+| Backend Storage        | Firebase FireStore and Storage                     |
+| Push notifications     | Firebase Cloud Messaging and Preferences DataStore |
+| Crash Analyses         | Firebase CrashLytics                               |
+| Background Work        | Kotlin Coroutines, Flows                           |
+| Image Handling         | URI-based storage in internal memory using Coil    |
+| Image Capture          | Camera X                                           |
+| Static map display     | GoogleMaps API                                     |
+| Dependency Injection   | Dagger/Hilt                                        |
+| Build                  | Gradle (KTS)                                       |
+| Testing                | JUnit4, MockK, Espresso, Cucumber, Jacoco          |
+| Continuous Integration | SonarQube, GitHub Action                           |
+| Continuous Delivery    | Firebase App Distribution, GitHub Action           |
 
 
 ## 📂 Project Structure
@@ -141,6 +145,7 @@ Former aerospace engineer turned Android developer.
 
 Read more about my transition on [LinkedIn](https://linkedin.com/in/olivier-marteaux).  
 Check out my journey and projects:
+- 📱 [My Dev Freelance Site](https://oliviermarteaux.dev)
 - 🔗 [Google Developer Profile](https://g.dev/OlivierMarteaux)
 - 💻 [GitHub Projects](https://github.com/OlivierMarteaux)
 - 📢 [LinkedIn Post – Career Change](https://www.linkedin.com/posts/olivier-marteaux_androidbasics-careerchange-androiddevelopment-activity-7351370158369628164-FmqZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAACynrz8BkrhJFrStq3CEX6rQIEfnG7goFdg)
